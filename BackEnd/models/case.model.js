@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { setFieldCounter, getCounterAndIncrement } from '../utils/db.utils';
+import dbUtils from '../utils/db.utils';
 
 const caseSchema = new Schema({
     caseNumber: { type: Number, required: true, unique: true, default: getCaseNumber },
@@ -26,10 +26,10 @@ const caseSchema = new Schema({
 caseSchema.statics.caseNumberCounter = 1;
 
 const Case = model("Case", caseSchema, "Case");
-setFieldCounter(Case, "caseNumber", "caseNumberCounter", 1);
+dbUtils.setFieldCounter(Case, "caseNumber", "caseNumberCounter", 1);
 
 function getCaseNumber() {
-    return getCounterAndIncrement(Case, "caseNumberCounter");
+    return dbUtils.getCounterAndIncrement(Case, "caseNumberCounter");
 }
 
 export default Case;
