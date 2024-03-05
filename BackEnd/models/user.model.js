@@ -5,7 +5,7 @@ const userSchema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     userType: { type: Schema.Types.ObjectId, ref: 'UserType', required: true } ,
-    email: { type: String, required: true, unique: true},
+    email: { type: String, required: true, unique: true, lowercase: true},
     phoneNumber: { type: String, required: true },
     city: { type: String, required: true } ,
     street: { type: String, required: true },
