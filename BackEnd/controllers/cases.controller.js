@@ -1,4 +1,4 @@
-class CaseController {
+class CasesController {
     createCase(req, res) {
 
     }
@@ -16,9 +16,9 @@ class CaseController {
     }
 
     updateCaseStatus(req, res) {
-        
+
     }
 }
 
-const caseController = new CaseController();
-export default caseController;
+const casesController = new CaseController();
+export default casesController;

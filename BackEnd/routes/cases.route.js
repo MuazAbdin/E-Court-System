@@ -1,12 +1,12 @@
 import { Router } from "express";
-import caseController from "../controllers/cases.controller";
+import casesController from "../controllers/cases.controller";
 
 const router = Router();
 
-router.post("/", caseController.createCase);
-router.get("/", caseController.getCases);
-router.get("/:id", caseController.getCaseById);
-router.patch("/", caseController.updateCase);
-router.patch("/status", caseController.updateCaseStatus);
+router.post("/", casesController.createCase);
+router.get("/", casesController.getCases);
+router.get("/:id", casesController.getCaseById);
+router.patch("/", casesController.updateCase);
+router.patch("/status", casesController.updateCaseStatus);
 
 export default router;
