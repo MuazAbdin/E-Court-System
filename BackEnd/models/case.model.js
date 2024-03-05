@@ -11,7 +11,7 @@ const caseSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: "User" }],
         default: []
     },
-    creationDate: { type: Date, default: Date.now },
+    creationDate: { type: Date, required: true, default: Date.now },
     lastUpdateDate: { type: Date, default: null },
     events: {
         type: [{ type: Schema.Types.ObjectId, ref: "Event" }],
