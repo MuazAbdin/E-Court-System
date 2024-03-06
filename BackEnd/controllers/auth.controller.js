@@ -2,7 +2,7 @@ import errorHandler from "../errors/errorHandler.js";
 import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
 import authUtils from "../utils/auth.utils.js";
-import RegisterDataValidator from "../validators/register.validate.js";
+import RegisterDataValidator from "../validators/auth.validate.js";
 
 class AuthController {
 	async register(req, res) {
