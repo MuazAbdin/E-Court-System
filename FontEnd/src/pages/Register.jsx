@@ -1,7 +1,6 @@
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import Wrapper from "../assets/stylingWrappers/Register";
 import { FaFacebookF, FaGooglePlusG } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -11,10 +10,9 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import toast, { Toaster } from "react-hot-toast";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
-export default function Register() {
-  const [isFlipped, setIsFlipped] = useState(false);
+export default function Register(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,10 +25,6 @@ export default function Register() {
   const [city, setCity] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  const flip = () => {
-    setIsFlipped(!isFlipped);
-  };
 
   const handlePassword = () => {
     setShowPassword(!showPassword);
@@ -104,18 +98,18 @@ export default function Register() {
     }
 
     Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Registration Successful!",
-        html: "<p>Congratulation! Your account has been successfully created. Welcome aboard!</p>",
-        showConfirmButton: false,
-        timer: 3500,
-      });
+      position: "center",
+      icon: "success",
+      title: "Registration Successful!",
+      html: "<p>Congratulation! Your account has been successfully created. Welcome aboard!</p>",
+      showConfirmButton: false,
+      timer: 3500,
+    });
   };
 
   return (
     <Wrapper>
-      <form className={`register-form ${isFlipped ? "flipped" : ""}`}>
+      <form>
         <h2>Create Account</h2>
         <div className="social-container">
           <div className="social">
@@ -160,13 +154,7 @@ export default function Register() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={handlePassword}
-                      style={{
-                        backgroundColor: "transparent",
-                        marginLeft: "5vw",
-                      }}
-                    >
+                    <IconButton className="eye-icon" onClick={handlePassword}>
                       {showPassword ? (
                         <VisibilityIcon />
                       ) : (
@@ -188,11 +176,8 @@ export default function Register() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
+                      className="eye-icon"
                       onClick={handleConfirmPassword}
-                      style={{
-                        backgroundColor: "transparent",
-                        marginLeft: "5vw",
-                      }}
                     >
                       {showConfirmPassword ? (
                         <VisibilityIcon />
@@ -279,11 +264,11 @@ export default function Register() {
         </div>
         <button onClick={handleSubmit}>SIGN UP</button>
         <p>
-          Already have an account?{" "}
-          <Link className="signUpLink" to="/login" onClick={flip}>
+          Already have an account?
+          <span className="signUpLink" onClick={props.flip}>
             {" "}
-            Sign In
-          </Link>
+            Sign In{" "}
+          </span>
         </p>
         <Toaster position="bottom-center" />
       </form>

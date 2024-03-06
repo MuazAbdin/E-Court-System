@@ -19,6 +19,7 @@ form{
   transform-style: preserve-3d;
   box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.2);
   margin-bottom: 2%;
+ 
 
 }
 .MuiInputBase-root {
@@ -65,7 +66,7 @@ h2{
 	height: 50px;
 	width: 50px;
 	background: #f2eee3;
-    
+    cursor: pointer;
 }
 
 .or{
@@ -97,13 +98,16 @@ h2{
     cursor: pointer;
 }
 
-.login-form {
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
+.remember-me{
+    font-family: var(--subtitle-font);
+  align-items: start;
+  align-content: start;
+  justify-content: start;
+  margin-right: 45%;
+  padding: 2%;
 }
-
-.login-form.flipped {
-  transform: rotateY(180deg);
+.remember{
+    padding: 5%;
 }
 `
 

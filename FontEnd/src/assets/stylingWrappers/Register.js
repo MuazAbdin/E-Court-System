@@ -24,7 +24,7 @@ form{
     border-radius: 5px;
     transition: border-color 0.3s;
     margin-bottom: 3vh;
-    margin-right: 5vh;
+    /* margin-right: 5vh; */
     width: 15vw;
 }
 p{
@@ -55,7 +55,7 @@ h2{
 	height: 50px;
 	width: 50px;
 	background: #f2eee3;
-    
+  cursor: pointer;
 }
 
 .or{
@@ -84,15 +84,6 @@ h2{
 }
 
 
-.register-form {
-    transform-style: preserve-3d;
-  transition: transform 0.6s;
-}
-
-.register-form.flipped {
-  transform: rotateY(180deg);
-}
-
 .signUpLink{
     text-decoration: underline;
     cursor: pointer;
@@ -112,6 +103,10 @@ h2{
 .address-container{
     display: flex;
     column-gap: 10%;
+}
+.eye-icon{
+    background-color: transparent;
+    margin-left: 50%;
 }
 `;
 

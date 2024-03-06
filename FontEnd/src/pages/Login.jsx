@@ -1,26 +1,46 @@
 import { FaFacebookF, FaGooglePlusG } from "react-icons/fa6";
 import Wrapper from "../assets/stylingWrappers/Login";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
 import EmailIcon from "@mui/icons-material/Email";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-export default function Login() {
-  const [isFlipped, setIsFlipped] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  
-  const flip = () => {
-    setIsFlipped(!isFlipped)
-  }
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+export default function Login(props) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
 
+  const handlePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe);
+  };
+  useEffect(() => {
+    setRememberMe(localStorage.rememberMe === "true");
+    if (localStorage.rememberMe === "true") {
+      setEmail(localStorage.email);
+    }
+  }, []);
+
+  const rememberLogin = () => {
+    localStorage.setItem("rememberMe", rememberMe);
+    if (rememberMe) {
+      localStorage.setItem("email", email);
+    } else {
+      localStorage.removeItem("email");
+    }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    rememberLogin();
+  };
   return (
     <Wrapper>
-      <form className={`login-form ${isFlipped ? "flipped" : ""}`}>
+      <form>
         <h2>Sign In</h2>
         <div className="social-container">
           <div className="social">
@@ -37,12 +57,14 @@ export default function Login() {
           <span className="line-after"></span>
         </div>
 
-        <p>use your account</p>
+        <p>Use your account</p>
         <div className="account">
           <TextField
             label="Email"
             variant="outlined"
             title="email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -64,7 +86,7 @@ export default function Login() {
                       backgroundColor: "transparent",
                       marginLeft: "5vw",
                     }}
-                    onClick={handleTogglePasswordVisibility}
+                    onClick={handlePassword}
                   >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
@@ -73,13 +95,23 @@ export default function Login() {
             }}
           />
         </div>
-        <button>SIGN IN</button>
+
+        <div className="remember-me">
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={handleRememberMe}
+          />
+          <label className="remember">Remember Me</label>
+        </div>
+
+        <button onClick={handleLogin}>SIGN IN</button>
         <p>
           Don't have an account?
-          <Link className="signUpLink" to="/register" onClick={flip}>
+          <span className="signUpLink" onClick={props.flip}>
             {" "}
             Sign Up
-          </Link>
+          </span>
         </p>
       </form>
     </Wrapper>

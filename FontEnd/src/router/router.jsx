@@ -3,6 +3,8 @@ import HomeLayout from "../pages/HomeLayout.jsx";
 import Landing from "../pages/Landing.jsx";
 import Register from "../pages/Register.jsx";
 import Login from "../pages/Login.jsx";
+import AuthForm from "../pages/AuthForm.jsx";
+import DocumentForm from "../pages/DocumentForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -13,13 +15,21 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
+      // {
+      //   path: "register",
+      //   element: <Register />,
+      // },
+      // {
+      //   path: "login",
+      //   element: <Login />,
+      // },
       {
-        path: "register",
-        element: <Register />,
+        path: "auth/:page",
+        element: <AuthForm />,
       },
       {
-        path: "login",
-        element: <Login />,
+        path: "cases",
+        element: <DocumentForm />,
       },
       // {
       //   path: "dashboard",
