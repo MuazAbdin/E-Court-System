@@ -8,7 +8,7 @@ class CourtsController {
 	async getCourtById(req, res) {
 		const { id } = req.params;
 		try {
-			const court = await Court.findById(courtId);
+			const court = await Court.findById(id);
 			res.json(court);
 		} catch(error) {
 			res.sendStatus(500);
