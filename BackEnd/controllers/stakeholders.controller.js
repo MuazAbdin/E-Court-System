@@ -1,4 +1,4 @@
-import Stakeholder from "../models/stakeholder.model";
+import Stakeholder from "../models/stakeholder.model.js";
 
 class StakeholdersController {
 	createStakeholder(req, res) {
@@ -6,9 +6,9 @@ class StakeholdersController {
 	}
 
 	async getStakeholderById(req, res) {
-		const { stackHoldlerId } = req.params;
+		const { id } = req.params;
 		try {
-			const stackHoldler = await Stakeholder.findById(stackHoldlerId);
+			const stackHoldler = await Stakeholder.findById(id);
 			res.json(stackHoldler);
 		} catch {
 			res.sendStatus(500);
