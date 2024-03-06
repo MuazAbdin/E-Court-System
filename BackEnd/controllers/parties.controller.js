@@ -8,7 +8,7 @@ class PartiesController {
 	async getPartyById(req, res) {
 		const { id } = req.params;
 		try {
-			const party = await Party.findById(partyId);
+			const party = await Party.findById(id);
 			res.json(party);
 		} catch(error) {
 			res.sendStatus(500);
