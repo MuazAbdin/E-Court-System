@@ -1,15 +1,23 @@
+import Court from "../models/court.model.js";
+
 class CourtsController {
-    createCourt(req, res) {
-        res.status(404).send("Work In Progress!");
-    }
+	createCourt(req, res) {
+		res.status(404).send("Work In Progress!");
+	}
 
-    getCourtById(req, res) {
-        res.status(404).send("Work In Progress!");
-    }
+	async getCourtById(req, res) {
+		const { courtId } = req.params;
+		try {
+			const court = await Court.findById(courtId);
+			res.json(court);
+		} catch {
+			res.sendStatus(500);
+		}
+	}
 
-    updateCourt(req, res) {
-        res.status(404).send("Work In Progress!");
-    }
+	updateCourt(req, res) {
+		res.status(404).send("Work In Progress!");
+	}
 }
 
 const courtsController = new CourtsController();
