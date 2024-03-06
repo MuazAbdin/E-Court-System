@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import errorGenerator from "../utils/errorGenerator.utils";
+import errorGenerator from "../utils/errorGenerator.utils.js";
 
 export const InvalidEmailError = errorGenerator.invalidValueErrorGenerator("email");
 export const InvalidPhoneNumberError = errorGenerator.invalidValueErrorGenerator("phone number");

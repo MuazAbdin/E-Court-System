@@ -1,4 +1,5 @@
-import Config from "../config";
+import Config from "../config.js";
+import jwt from "jsonwebtoken";
 
 export function authorizationMiddleWare(req, res, next) {
     const token = req.cookies.token;
