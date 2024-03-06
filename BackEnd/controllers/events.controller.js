@@ -10,7 +10,7 @@ class EventsController {
 		try {
 			const events = await Event.find({ case: caseId });
 			res.json(events);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}
@@ -20,7 +20,7 @@ class EventsController {
 		try {
 			const event = await Event.findById(id);
 			res.json(event);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}

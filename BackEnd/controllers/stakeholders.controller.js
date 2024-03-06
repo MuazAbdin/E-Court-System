@@ -10,7 +10,7 @@ class StakeholdersController {
 		try {
 			const stackHoldler = await Stakeholder.findById(id);
 			res.json(stackHoldler);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}
@@ -20,7 +20,7 @@ class StakeholdersController {
 		try {
 			const stackHoldler = await Stakeholder.find({ party: partyId });
 			res.json(stackHoldler);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}

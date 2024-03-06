@@ -10,7 +10,7 @@ class CourtsController {
 		try {
 			const court = await Court.findById(courtId);
 			res.json(court);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}

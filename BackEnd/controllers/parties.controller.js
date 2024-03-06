@@ -10,7 +10,7 @@ class PartiesController {
 		try {
 			const party = await Party.findById(partyId);
 			res.json(party);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}
@@ -20,7 +20,7 @@ class PartiesController {
 		try {
 			const party = await Party.find({ case: caseId });
 			res.json(party);
-		} catch {
+		} catch(error) {
 			res.sendStatus(500);
 		}
 	}
