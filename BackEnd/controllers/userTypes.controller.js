@@ -1,5 +1,5 @@
 import errorHandler from "../errors/errorHandler.js";
-import { NoUserTypesFoundError } from "../errors/userType.error.js";
+import { NoUserTypesFoundError, UserTypeDoesNotExistError } from "../errors/userType.error.js";
 import UserType from "../models/userType.model.js";
 import UserTypesValidator from "../validators/userTypes.validate.js";
 
@@ -19,8 +19,9 @@ class UserTypesController {
     async getAllUserTypes(req, res) {
         try {
             const userTypes = await UserType.find();
-            if(userTypes.length === 0)
+            if(userTypes.length === 0) {
                 throw new NoUserTypesFoundError();
+            }
             res.send(userTypes);
         }
         catch(error) {
@@ -28,8 +29,18 @@ class UserTypesController {
         }
     }
 
-    updateUserType(req, res) {
-        res.status(404).send("Work In Progress!");
+    async updateUserType(req, res) {
+        const { id, userType } = req.body;
+        try {
+            const updatedUserType = await UserType.findByIdAndUpdate(id, {userType}, { new: true});
+            if(updatedUserType === null) {
+                throw new UserTypeDoesNotExistError();
+            }
+            res.send(updatedUserType);
+        }
+        catch(error) {
+            errorHandler.handleError(res, error);
+        }
     }
 
     deleteUserType(req, res) {
