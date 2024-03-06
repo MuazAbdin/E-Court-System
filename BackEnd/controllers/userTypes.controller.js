@@ -1,3 +1,4 @@
+import { StatusCodes } from "http-status-codes";
 import errorHandler from "../errors/errorHandler.js";
 import { NoUserTypesFoundError, UserTypeDoesNotExistError } from "../errors/userType.error.js";
 import UserType from "../models/userType.model.js";
@@ -8,7 +9,7 @@ class UserTypesController {
         const { userType } = req.body;
         try {
             UserTypesValidator.validateUserType(userType);
-            const newUserType = await UserType.create({ userType });
+            const newUserType = await UserType.createNew(userType);
             res.send(newUserType);
         }
         catch(error) {
@@ -18,7 +19,7 @@ class UserTypesController {
 
     async getAllUserTypes(req, res) {
         try {
-            const userTypes = await UserType.find();
+            const userTypes = await UserType.getAll();
             if(userTypes.length === 0) {
                 throw new NoUserTypesFoundError();
             }
@@ -43,8 +44,18 @@ class UserTypesController {
         }
     }
 
-    deleteUserType(req, res) {
-        res.status(404).send("Work In Progress!");
+    async deleteUserType(req, res) {
+        const { id } = req.body;
+        try {
+            const updatedUserType = UserType.softDelete(id);
+            if(updatedUserType === null) {
+                throw new UserTypeDoesNotExistError();
+            }
+            res.sendStatus(StatusCodes.NO_CONTENT);
+        }
+        catch(error) {
+            errorHandler.handleError(res, error);
+        }
     }
 }
 
