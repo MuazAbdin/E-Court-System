@@ -9,7 +9,7 @@ const userSchema = new Schema({
     phoneNumber: { type: String, required: true },
     city: { type: String, required: true } ,
     street: { type: String, required: true },
-    licenseNumber: { type: String, required: true, default: null },
+    licenseNumber: { type: String, default: null },
     documents: { 
         type: [{ type: Schema.Types.ObjectId, ref: 'Document' }],
         default: []

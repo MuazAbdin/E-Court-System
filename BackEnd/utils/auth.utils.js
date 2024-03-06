@@ -1,6 +1,7 @@
 import Config from "../config.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
 
 class AuthUtils {
     createTokenCookie(payload) {

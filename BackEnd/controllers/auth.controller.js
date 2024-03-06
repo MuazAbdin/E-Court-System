@@ -1,4 +1,5 @@
 import errorHandler from "../errors/errorHandler.js";
+import { EmailAlreadyUsedError, IdNumberAlreadyUsedError } from "../errors/user.error.js";
 import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
 import authUtils from "../utils/auth.utils.js";
@@ -11,15 +12,23 @@ class AuthController {
 		try {
 			RegisterDataValidator.validatePassword(password, confirmPassword);
 			const hashedPassword = authUtils.hashPassword(password);
-	
+			
 			const userData = { idNumber, firstName, lastName, userType, email, phoneNumber, city, street };
 			// TODO add check for userType instead of licenseNumber value
 			if(licenseNumber)
 				userData.licenseNumber = licenseNumber;
+
 			RegisterDataValidator.validateUserData(userData);
+			if(await User.findOne({email})) {
+				throw new EmailAlreadyUsedError();
+			}
+			if(await User.findOne({idNumber})) {
+				throw new IdNumberAlreadyUsedError();
+			}
+
 			const user = new User(userData);
-			const userAuth = new UserAuth(user, hashedPassword);
-	
+			const userAuth = new UserAuth({user, hashedPassword});
+
 			user.save();
 			userAuth.save();
 		
