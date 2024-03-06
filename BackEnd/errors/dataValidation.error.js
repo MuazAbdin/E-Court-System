@@ -8,4 +8,3 @@ export const InvalidPasswordError = errorGenerator.invalidValueErrorGenerator("p
 export const InvalidIdNumberError = errorGenerator.invalidValueErrorGenerator("ID number");
 
 export const DataMissingError = errorGenerator.createErrorClass("Some data is missing!", StatusCodes.BAD_REQUEST)
-
