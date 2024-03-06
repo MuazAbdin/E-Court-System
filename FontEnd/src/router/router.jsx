@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomeLayout from "../pages/HomeLayout.jsx";
 import Landing from "../pages/Landing.jsx";
+import CasesMangment from "../pages/CasesMangment.jsx"
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,12 @@ const router = createBrowserRouter([
       //   path: "login",
       //   element: <Login />,
       // },
+
+      {
+        path: "Cases",
+        element: <CasesMangment/>,
+      },
+
       // {
       //   path: "dashboard",
       //   element: <DashboardLayout />,
