@@ -15,8 +15,14 @@ class EventsController {
 		}
 	}
 
-	getEventById(req, res) {
-		res.status(404).send("Work In Progress!");
+	async getEventById(req, res) {
+		const { id } = req.params;
+		try {
+			const event = await Event.findById(id);
+			res.json(event);
+		} catch {
+			res.sendStatus(500);
+		}
 	}
 
 	updateEvent(req, res) {

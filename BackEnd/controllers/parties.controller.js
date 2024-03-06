@@ -6,7 +6,7 @@ class PartiesController {
 	}
 
 	async getPartyById(req, res) {
-		const { partyId } = req.params;
+		const { id } = req.params;
 		try {
 			const party = await Party.findById(partyId);
 			res.json(party);

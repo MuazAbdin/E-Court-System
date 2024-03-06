@@ -6,7 +6,7 @@ class CourtsController {
 	}
 
 	async getCourtById(req, res) {
-		const { courtId } = req.params;
+		const { id } = req.params;
 		try {
 			const court = await Court.findById(courtId);
 			res.json(court);
