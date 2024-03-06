@@ -1,10 +1,8 @@
 import { Router } from "express";
-import courtsController from "../controllers/courts.controller";
+import courtsController from "../controllers/courts.controller.js";
 
-const router = Router();
+export const router = Router();
 
 router.post("/", courtsController.createCourt);
 router.get("/:id", courtsController.getCourtById);
 router.patch("/", courtsController.updateCourt);
-
-export default router;

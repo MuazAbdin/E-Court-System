@@ -1,11 +1,9 @@
 import { Router } from "express";
-import userTypesController from "../controllers/userTypes.controller";
+import userTypesController from "../controllers/userTypes.controller.js";
 
-const router = Router();
+export const router = Router();
 
 router.post("/", userTypesController.createUserType);
 router.get("/", userTypesController.getAllUserTypes);
 router.put("/", userTypesController.updateUserType);
 router.delete("/", userTypesController.deleteUserType);
-
-export default router;
