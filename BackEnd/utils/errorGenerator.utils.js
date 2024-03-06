@@ -6,7 +6,15 @@ class ErrorGenerator {
             static msg = `No ${dataTypeName} found.`;
             static statusCode = StatusCodes.NOT_FOUND;
         };
+    }
+
+    itemDoesNotExistErrorGenerator(itemTypeName) {
+        return class extends Error {
+            static msg = `${itemTypeName} does not exist`;
+            static statusCode = StatusCodes.NOT_FOUND;
+        }
     } 
+
 }
 
 const errorGenerator = new ErrorGenerator();
