@@ -1,6 +1,11 @@
 import { StatusCodes } from "http-status-codes";
+import errorGenerator from "../utils/errorGenerator.utils";
 
-export class UserIsNotALawyerError {
-    static msg = "Some data is missing!";
-    static statusCode = StatusCodes.BAD_REQUEST;
-}
+export const InvalidEmailError = errorGenerator.invalidValueErrorGenerator("email");
+export const InvalidPhoneNumberError = errorGenerator.invalidValueErrorGenerator("phone number");
+export const InvalidDateError = errorGenerator.invalidValueErrorGenerator("date");
+export const InvalidPasswordError = errorGenerator.invalidValueErrorGenerator("password");
+export const InvalidIdNumberError = errorGenerator.invalidValueErrorGenerator("ID number");
+
+export const DataMissingError = errorGenerator.createErrorClass("Some data is missing!", StatusCodes.BAD_REQUEST)
+

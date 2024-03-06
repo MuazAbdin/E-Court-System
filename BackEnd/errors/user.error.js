@@ -7,12 +7,7 @@ export const UserDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerat
 export const LawyerDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("Lawyer");
 export const JudgeDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("Judge");
 
-export class UserIsNotAJudgeError {
-    static msg = "User is not a judge";
-    static statusCode = StatusCodes.BAD_REQUEST;
-}
+export const UserIsNotAJudgeError = errorGenerator.createErrorClass("User is not a judge", StatusCodes.BAD_REQUEST)
+export const UserIsNotALawyerError = errorGenerator.createErrorClass("User is not a lawyer", StatusCodes.BAD_REQUEST)
 
-export class UserIsNotALawyerError {
-    static msg = "User is not a lawyer";
-    static statusCode = StatusCodes.BAD_REQUEST;
-}
+export const EmailAlreadyUsedError = errorGenerator.createErrorClass("An account with this email already exists!", StatusCodes.CONFLICT);

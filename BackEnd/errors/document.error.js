@@ -5,7 +5,4 @@ export const NoDocumentsFoundError = errorGenerator.noDataErrorGenerator("docume
 
 export const DocumentDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("Document");
 
-export class FailedToSaveDocumentError {
-    static msg = "Failed to save document, please try again.";
-    static statusCode = StatusCodes.SERVICE_UNAVAILABLE;
-}
+export const FailedToSaveDocumentError = errorGenerator.createErrorClass("Failed to save document, please try again.", StatusCodes.SERVICE_UNAVAILABLE);
