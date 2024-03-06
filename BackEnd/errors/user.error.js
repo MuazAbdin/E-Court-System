@@ -11,3 +11,4 @@ export const UserIsNotAJudgeError = errorGenerator.createErrorClass("User is not
 export const UserIsNotALawyerError = errorGenerator.createErrorClass("User is not a lawyer", StatusCodes.BAD_REQUEST)
 
 export const EmailAlreadyUsedError = errorGenerator.createErrorClass("An account with this email already exists!", StatusCodes.CONFLICT);
+
