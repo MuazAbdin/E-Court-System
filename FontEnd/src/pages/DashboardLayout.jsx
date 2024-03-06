@@ -1,7 +1,12 @@
 import Wrapper from "../assets/stylingWrappers/DashboardLayout";
+import { Aside } from "../components";
 
 function DashboardLayout() {
-  return <Wrapper>DashboardLayout</Wrapper>;
+  return (
+    <Wrapper>
+      <Aside />
+    </Wrapper>
+  );
 }
 
 export default DashboardLayout;
