@@ -17,8 +17,3 @@
   background-repeat: no-repeat;
   transition: all 1s ease;
 }
-
-#app-main-section {
-  flex-grow: 1;
-  overflow-y: scroll;
-}

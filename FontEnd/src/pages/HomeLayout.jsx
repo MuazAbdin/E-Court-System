@@ -16,9 +16,7 @@ function HomeLayout() {
     <div id="app-container" className={isDark ? "dark-theme" : ""}>
       <ToastContainer position="bottom-left" />
       <MainHeader isDark={isDark} themeToggle={themeToggle} />
-      <main id="app-main-section">
-        <Outlet />
-      </main>
+      <Outlet />
       <MainFooter />
     </div>
   );
