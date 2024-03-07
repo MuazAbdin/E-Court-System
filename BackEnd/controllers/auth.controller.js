@@ -1,5 +1,6 @@
+import mongoose from "mongoose";
 import errorHandler from "../errors/errorHandler.js";
-import { EmailAlreadyUsedError, IdNumberAlreadyUsedError, UserDoesNotExistError } from "../errors/user.error.js";
+import { EmailAlreadyUsedError, IdNumberAlreadyUsedError, InvalidUserTypeError, UserDoesNotExistError } from "../errors/user.error.js";
 import { InvalidCredintialsError } from "../errors/userAuth.error.js";
 import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
@@ -29,8 +30,8 @@ class AuthController {
 			const user = new User(userData);
 			const userAuth = new UserAuth({user, hashedPassword: password});
 
-			user.save();
-			userAuth.save();
+			await user.save();
+			await userAuth.save();
 		
 			const payload = { userId: user._id };
 			const tokenCookie = authUtils.createTokenCookie(payload);
@@ -38,6 +39,11 @@ class AuthController {
 			res.json({ firstName: user.firstName, lastName: user.lastName });
 		}
 		catch(error) {
+			if(error instanceof mongoose.Error.ValidationError) {
+				if(error.errors.userType) {
+					return errorHandler.handleError(res, new InvalidUserTypeError());
+				}
+			}
 			errorHandler.handleError(res, error);
 		}
 	}
