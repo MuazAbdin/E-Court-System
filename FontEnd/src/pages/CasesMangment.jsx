@@ -1,10 +1,10 @@
 import React from 'react';
-import { Wrapper, CasesList, CaseRow, CreateButton, EditButton, Title, CaseText } from '../assets/stylingWrappers/CasesMangment';
+import { Wrapper } from '../assets/stylingWrappers/CasesMangment';
 
 export default function CasesMangment() {
   return (
     <Wrapper>
-      <Title>Cases</Title>
+      <div className='title'>Cases</div>
       <CreateButton>Create</CreateButton>
       <CasesList>
         <CaseRow> 

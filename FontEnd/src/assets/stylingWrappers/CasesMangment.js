@@ -5,15 +5,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   font-weight: bold; 
-
-`;
-
-const CasesList = styled.div`
+.title{
   width: 80%;
   margin-top: 20px;
   font-weight: bold; 
-
+}
 `;
+
+
 
 const CaseItem = styled.div`
   border: 5px solid #3498db; 
