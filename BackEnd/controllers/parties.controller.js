@@ -17,7 +17,7 @@ class PartiesController {
 			}
 			res.json(party);
 		} catch(error) {
-			return errorHandler.handleError(res, error)
+			errorHandler.handleError(res, error);
 		}
 	}
 
