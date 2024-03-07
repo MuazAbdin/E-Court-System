@@ -2,12 +2,13 @@ import { CourtDoesNotExistError } from "../errors/court.error.js";
 import errorHandler from "../errors/errorHandler.js";
 import Court from "../models/court.model.js";
 import CourtValidator from "../validators/courts.validate.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class CourtsController {
 	async createCourt(req, res) {
 		const { courtName, city, street, phoneNumber, email } = req.body;
 		try {
-			CourtValidator.validateCourtData(req.body);
+			CourtValidator.validateCourtData({ courtName, city, street, phoneNumber, email });
 			const court = await Court.create({ name: courtName, city, street, phoneNumber, email });
 			res.json(court);
 		}
@@ -19,7 +20,11 @@ class CourtsController {
 	async getCourtById(req, res) {
 		const { id } = req.params;
 		try {
+			GenericValidator.validateObjectId(id);
 			const court = await Court.findById(id);
+			if(court === null) {
+				throw new CourtDoesNotExistError();
+			}
 			res.json(court);
 		} catch(error) {
 			errorHandler.handleError(res, error);
@@ -29,9 +34,10 @@ class CourtsController {
 	async updateCourt(req, res) {
 		const { id, name, phoneNumber, email } = req.body;
 		try {
-			CourtValidator.validateCourtData(req.body);
-			const updatedCourt = await Court.findByIdAndUpdate(id, {$set: { name, phoneNumber, email }});
-			if(this.updateCourt === null) {
+			GenericValidator.validateObjectId(id);
+			CourtValidator.validateCourtData({ name, phoneNumber, email });
+			const updatedCourt = await Court.findByIdAndUpdate(id, {$set: { name, phoneNumber, email }}, { new: true });
+			if(updatedCourt === null) {
 				throw new CourtDoesNotExistError();
 			}
 			res.json(updatedCourt);
