@@ -1,4 +1,3 @@
-import { error } from "jquery";
 import CustomError from "./customError.error.js";
 
 class ErrorHandler {

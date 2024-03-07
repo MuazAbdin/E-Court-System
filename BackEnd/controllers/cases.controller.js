@@ -1,3 +1,7 @@
+import Case from '../models/Case.model.js'; 
+import { CaseDoesNotExistError } from '../errors/case.error.js'; 
+import errorHandler from '../errors/errorHandler.js'; 
+
 class CasesController {
 	createCase(req, res) {
 		res.status(404).send("Work In Progress!");
