@@ -1,4 +1,6 @@
+import errorHandler from "../errors/errorHandler.js";
 import Event from "../models/event.model.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class EventsController {
 	createEvent(req, res) {
@@ -29,8 +31,16 @@ class EventsController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	deleteEvent(req, res) {
-		res.status(404).send("Work In Progress!");
+	async deleteEvent(req, res) {
+		const { eventId } = req.body;
+		try {
+			GenericValidator.validateObjectId(eventId);
+			await Event.softDelete(eventId);
+			res.sendStatus(204);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 
