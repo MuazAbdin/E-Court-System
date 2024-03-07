@@ -2,6 +2,7 @@ import Stakeholder from "../models/stakeholder.model.js";
 
 class StakeholdersController {
 	createStakeholder(req, res) {
+		const stackHoldler = new Stakeholder(req.body)
 		res.status(404).send("Work In Progress!");
 	}
 
