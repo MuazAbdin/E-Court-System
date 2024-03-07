@@ -13,6 +13,12 @@ function Aside() {
             Icon={FaRegCircleUser}
             subsectoins={[]}
           />
+          <Accordion.Item
+            id="nav-cases"
+            title="cases"
+            Icon={FaRegCircleUser}
+            subsectoins={[{ name: "browse", to: "" }]}
+          />
         </Accordion>
       </nav>
     </Wrapper>
