@@ -1,6 +1,7 @@
 import errorHandler from "../errors/errorHandler.js";
 import { PartyDoesNotExistError } from "../errors/party.error.js";
 import Party from "../models/party.model.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class PartiesController {
 	createParty(req, res) {
@@ -34,8 +35,16 @@ class PartiesController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	deleteParty(req, res) {
-		res.status(404).send("Work In Progress!");
+	async deleteParty(req, res) {
+		const { partyId } = req.body;
+		try {
+			GenericValidator.validateObjectId(partyId);
+			await Party.softDelete(partyId);
+			res.sendStatus(204);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 

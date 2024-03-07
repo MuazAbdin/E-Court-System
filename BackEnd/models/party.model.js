@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { PartyDoesNotExistError } from '../errors/party.error.js';
+import dbUtils from '../utils/db.utils.js';
 
 const partySchema = new Schema({
     name: { type: String, required: true },
@@ -9,6 +11,8 @@ const partySchema = new Schema({
     },
     case: { type: Schema.Types.ObjectId, ref: "Case", required: true }
 })
+
+partySchema.statics.softDelete = dbUtils.createSoftDeleteFunction(PartyDoesNotExistError);
 
 const Party = model("Party", partySchema, "Party");
 
