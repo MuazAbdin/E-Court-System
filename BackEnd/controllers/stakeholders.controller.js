@@ -23,7 +23,7 @@ class StakeholdersController {
 	async getStakeholderByPartyId(req, res) {
 		const { partyId } = req.params;
 		try {
-			const stackHoldler = await Stakeholder.find({ party: partyId });
+			const stackHoldler = await Stakeholder.find({ party: partyId });               
 			if( stackHoldler.length === 0){
 				throw new NoStakeholdersFoundError()
 			}
@@ -31,7 +31,7 @@ class StakeholdersController {
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
-	}
+	} 
 
 	updateStakeholder(req, res) {
 		res.status(404).send("Work In Progress!");

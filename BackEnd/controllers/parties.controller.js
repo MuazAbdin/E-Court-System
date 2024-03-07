@@ -10,8 +10,8 @@ class PartiesController {
 	async getPartyById(req, res) {
 		const { id } = req.params;
 		try {
-			const parties = await Party.findById(id);
-			if( parties === null){
+			const party = await Party.findById(id);
+			if( party === null){
 				throw new PartyDoesNotExistError()
 			}
 			res.json(party);
@@ -23,11 +23,11 @@ class PartiesController {
 	async getPartyByCaseId(req, res) {
 		const { caseId } = req.params;
 		try {
-			const party = await Party.find({ case: caseId });
-			if(party.length === 0 ){
+			const parties = await Party.find({ case: caseId });
+			if(parties.length === 0 ){
 				throw new NoPartiesFoundError()
 			}
-			res.json(party);
+			res.json(parties);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
