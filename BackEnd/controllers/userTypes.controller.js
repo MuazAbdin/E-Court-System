@@ -33,10 +33,11 @@ class UserTypesController {
     async updateUserType(req, res) {
         const { id, userType } = req.body;
         try {
-            const updatedUserType = await UserType.findByIdAndUpdate(id, {userType}, { new: true});
+            const updatedUserType = await UserType.findByIdAndUpdate(id, { userType }, { new: true});
             if(updatedUserType === null) {
                 throw new UserTypeDoesNotExistError();
             }
+            updatedUserType.deleted = undefined;
             res.send(updatedUserType);
         }
         catch(error) {
