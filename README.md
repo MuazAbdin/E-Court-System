@@ -35,7 +35,7 @@ I want to work on register form on the frontend:
 ##### StakeholderData: { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
 ##### Stakeholder: { _id, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
 ##### Party: { name, lawyer, caseId, [ Stakeholder ] }
-##### UserData: { idNumber, firstName, LastName, userType, email, phoneNumber, city, street, licenseNumber? }
+##### UserData: { password, confirmPassword, idNumber, firstName, LastName, userType, email, phoneNumber, city, street, licenseNumber? }
 ##### User: { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street }
 ##### Event: {_id, caseId, eventType, date, description }
 ##### Document: { _id, caseId, title, uploadedBy, fileName }
