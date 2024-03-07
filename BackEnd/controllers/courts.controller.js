@@ -1,3 +1,5 @@
+import { CourtDoesNotExistError } from "../errors/court.error.js";
+import errorHandler from "../errors/errorHandler.js";
 import Court from "../models/court.model.js";
 
 class CourtsController {
@@ -9,9 +11,12 @@ class CourtsController {
 		const { id } = req.params;
 		try {
 			const court = await Court.findById(id);
+			if( court === null){
+				throw new CourtDoesNotExistError()
+			}
 			res.json(court);
 		} catch(error) {
-			res.sendStatus(500);
+			return errorHandler.handleError(res, error)
 		}
 	}
 
