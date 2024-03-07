@@ -7,9 +7,11 @@ import {
   AuthForm,
   DocumentForm,
 } from "../pages";
+
 import Search from "../components/Search";
 import CaseForm from "../pages/CaseForm";
 import CourtForm from "../pages/CourtForm";
+
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,7 @@ const router = createBrowserRouter([
             path: "court",
             element: <CourtForm />,
           },
+
         ],
       },
     ],

@@ -4,6 +4,7 @@ import Accordion from "./Accordion";
 import { MdGavel } from "react-icons/md";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 
+
 function Aside() {
   return (
     <Wrapper>
@@ -32,6 +33,7 @@ function Aside() {
             subsectoins={[
               { name: "create new court", to: "court" },
             ]}
+
           />
         </Accordion>
       </nav>
