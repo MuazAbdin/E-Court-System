@@ -6,7 +6,7 @@ display: flex;
     justify-content: center;
     align-items: center;
     justify-items: center;
-   
+   /* overflow-y: scroll; */
 form{
     background-color: var(--background-color-transparent);
     height: 85%;
