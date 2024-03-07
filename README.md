@@ -27,3 +27,111 @@ I want to work on register form on the frontend:
    merge with main and resolve conflicts: `git merge main`
 6. push to remote branch `git push orgin feat/registerForm`
 7. go to hithub and open pull request.
+
+
+
+## API Routes
+#### Data Definitions:
+##### StakeholderData: { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
+##### Stakeholder: { _id, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
+##### Party: { name, lawyer, caseId, [ Stakeholder ] }
+##### UserData: { idNumber, firstName, LastName, userType, email, phoneNumber, city, street, licenseNumber? }
+##### User: { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street }
+##### Event: {_id, caseId, eventType, date, description }
+##### Document: { _id, caseId, title, uploadedBy, fileName }
+##### Case: { _id, title, description ,status, court, judge, creationDate, lastUpdatedDate }
+##### Court: { _id, name, city, street, phoneNumber, email }
+
+### Authentication Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Register | /auth/register/ | POST | UserData | firstName, lastName |
+| Login | /auth/login/ | POST | email, password | firstName, lastName |
+| Logout | /auth/logout/ | POST | | |
+JWT-HTTP-Only-Cookie is set after a successful Register or Login
+
+### Case Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Case | /cases/ | POST | title, decription, status, court, judge? | Case |
+| Get All Cases | /cases/?caseTitle&status&courtName&judgeName&lawyerName | GET | | [ Case ] |
+| Get Case | /cases/:id | GET | | CASE
+| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | Case |
+| Update Case Status | /cases/status/ | PATCH | _id, status | CASE |
+
+### Court Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Court | /courts/ | POST | courtName, city, street, phoneNumber, email | Court |
+| Get Court | /court/:id | GET | | Court |
+| Update Court | /court/ | Patch | _id, name, phoneNumber, email | Court
+
+### Document Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Document | /documents/ | POST | caseId, title, uploadedBy, documentFile | _id, caseId, title, uploadedBy |
+| Get User Documents | /documents/:userId | GET | | Document |
+| Get Document | /documents/:id | GET | | Document |
+| Get Party Documents | /documents/:partyId | GET | | Document |
+| Get Case Documents | /documents/:caseId | GET | | Document |
+| Update Document Title | /documents/ | PATCH | title | | Document |
+
+### Event Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Event | /events/ | POST | caseId, eventType, date, description | Event |
+| Get Case Events | /events/:caseId | GET | | [ Event ] |
+| Get Event | /events/:id | GET | | Event |
+| Update Event | /events/ | PATCH | eventId, date, description | Event |
+| Delete Event | /events/ | DELETE | eventId | |
+
+### Party Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Party | /parties/ | POST | partyName, lawyer?, caseId, [ StakeholderData ] | Party |
+| Get Case Parties | /parties/:caseId | GET | | [ Party ] |
+| Get Party | /parties/:id | GET | | Party |
+| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | Party |
+| Delete Party | /parties/ | DELETE | partyId | |
+
+### Stakeholder Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Stakeholder | /stakeholders/ | POST | StakeholderData | Stakeholder |
+| Get Stakeholders | /stakeholders/:partyId | GET |  | [ Stakeholder ] |
+| Get Stakeholders | /stakeholders/:id | GET |  | Stakeholder |
+| Update Stakeholder | /stakeholders/ | PUT | Stakeholder | Stakeholder |
+| Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |
+
+### User Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Get Judges | /users/judges | GET | | [ User ] |
+| Get Lawyers | /users/lawyers | GET | | [ User ] |
+| Get All Users | /users/ | GET | | [ User ] |
+| Update User(Admin) | /users/ | PUT | User | User |
+| Update User | /users/ | PATCH | phoneNumber, city, street | User |
+
+### CaseStatusTypes Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Case Status Type | /case-status-types/ | POST | caseStatusType | _id, caseStatusType |
+| Get Case Status Types | /case-status-types/ | GET | | _id, status |
+| Update Case Status Type | /case-status-types/ | PUT | id, status | _id, status |
+| Delete Case Status Type | /case-status-types/ | DELETE | id | |
+
+### EventTypes Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create Event Type | /event-types/ | POST | eventType | _id, eventType |
+| Get Event Types | /event-types/ | GET | | _id, eventType |
+| Update Event Type | /event-types/ | PUT | id, eventType | _id, eventType |
+| Delete Event Type | /event-types/ | DELETE | id | |
+
+### UserTypes Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Create User Type | /user-types | POST | userType | _id, userType |
+| Get User Types | /user-types/ | GET | | _id, userType |
+| Delete User Type | /user-types/ | DELETE | id | |
+| Update User Type | /user-types/ | PUT | id, userType | _id, userType |
