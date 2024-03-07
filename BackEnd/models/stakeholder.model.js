@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { StakeholderDoesNotExistError } from '../errors/stakeholders.error.js';
+import dbUtils from '../utils/db.utils.js';
 
 const stakeholderSchema = new Schema({
     party: { type: Schema.Types.ObjectId, ref: 'Party', required: true },
@@ -10,6 +12,8 @@ const stakeholderSchema = new Schema({
     city: { type: String, required: true },
     street: { type: String, required: true }
 })
+
+stakeholderSchema.statics.softDelete = dbUtils.createSoftDeleteFunction(StakeholderDoesNotExistError);
 
 const Stakeholder = model("Stakeholder", stakeholderSchema, "Stakeholder");
 

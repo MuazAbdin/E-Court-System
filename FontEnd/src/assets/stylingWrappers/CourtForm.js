@@ -31,7 +31,7 @@ button{
     font-size: 20px;
     background-color: var(--primary-300);
     border-radius: 18px;
-    margin-bottom: 4%;
+    margin-top: 5%;
 }
 h2{
     font-family: var(--title-font);
@@ -39,64 +39,22 @@ h2{
     padding-top: 5%;
     font-size: 50px;
 }
-
-.document-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
-    width: 100%;
-}
 .MuiInputBase-root {
     border-radius: 5px;
     transition: border-color 0.3s;
-    margin-bottom: 3vh;
+    margin-bottom: 5vh;
     margin-right: 5vh;
     width: 18vw;
 }
-
-#case-dropdown-label{
-    /* align-items: start;
-    justify-content: start;
-    justify-items: start; */
-    margin-right: 43%;
-    margin-top: 1%;
-    margin-bottom: 1%;
-}
-.MuiButtonBase-root{
-    background-color: transparent;
-}
-#case-dropdown{
+.contact-container,
+.address-container{
     display: flex;
-    justify-content: start;
-    width: 100%;
+    column-gap: 10%;
+    padding-right: 10%;
 }
-
-.address-container,
-.details-container{
-    display: flex;
-    column-gap: 5%;
-    /* width: 30%; */
-}
-.address-container .MuiInputBase-root,
-.details-container .MuiInputBase-root {
+.contact-container .MuiInputBase-root,
+.address-container .MuiInputBase-root  {
     width: 15vw;
-}
-
-.requirement-container .MuiInputBase-root{
-    width: 25vw;
-    /* height: 20lvh; */
-}
-#case-dropdown{
-    width: 50vw;
-}
-.submit-btn{
-    /* display: flex; */
-    margin-left: 21lvw;
-    width: 10vw;
-    margin-top: 8%;
-    /* margin-bottom: 1%; */
 }
 `
 export default Wrapper
