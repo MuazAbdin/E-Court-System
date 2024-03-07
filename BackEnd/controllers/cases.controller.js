@@ -19,10 +19,7 @@ class CasesController {
             errorHandler.handleError(res, error);
         }
     }
-	// getCaseById(req, res) {
-	// 	res.status(404).send("Work In Progress!");
-	// }
-
+	
 	updateCase(req, res) {
 		res.status(404).send("Work In Progress!");
 	}

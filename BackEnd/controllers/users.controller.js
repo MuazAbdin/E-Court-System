@@ -1,9 +1,12 @@
+import { JudgeDoesNotExistError, LawyerDoesNotExistError, NoUsersFoundError } from '../errors/user.error.js';
+import errorHandler from '../errors/errorHandler.js'; 
+import User from '../models/User'; 
 class UserController {
     async getJudges(req, res) {
         try {
             const judges = await User.find({ role: 'judge' });
             if (judges.length === 0) {
-                return res.status(404).send("Work In Progress!");
+                throw new JudgeDoesNotExistError();
             }
             res.json(judges);
         } catch (error) {
@@ -15,19 +18,32 @@ class UserController {
         try {
             const lawyers = await User.find({ role: 'lawyer' });
             if (lawyers.length === 0) {
-                return res.status(404).send("Work In Progress!");
+                throw new LawyerDoesNotExistError();
             }
             res.json(lawyers);
         } catch (error) {
             errorHandler.handleError(res, error);
         }
     }
+
     async getUsers(req, res) {
         try {
             const users = await User.find({});
             if (users.length === 0) {
-               
-                return res.status(404).send("Work In Progress!");
+                throw new NoUsersFoundError();
+            }
+            res.json(users);
+        } catch (error) {
+            errorHandler.handleError(res, error);
+        }
+    }
+
+
+    async getUsers(req, res) {
+        try {
+            const users = await User.find({});
+            if (users.length === 0) {
+                throw new NoUsersFoundError(); 
             }
             res.json(users);
         } catch (error) {
