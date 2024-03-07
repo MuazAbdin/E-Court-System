@@ -26,9 +26,8 @@ class AuthController {
 				throw new IdNumberAlreadyUsedError();
 			}
 			
-			const hashedPassword = authUtils.hashPassword(password);
 			const user = new User(userData);
-			const userAuth = new UserAuth({user, hashedPassword});
+			const userAuth = new UserAuth({user, hashedPassword: password});
 
 			user.save();
 			userAuth.save();
