@@ -1,10 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomeLayout from "../pages/HomeLayout.jsx";
-import Landing from "../pages/Landing.jsx";
-import Register from "../pages/Register.jsx";
-import Login from "../pages/Login.jsx";
-import AuthForm from "../pages/AuthForm.jsx";
-import DocumentForm from "../pages/DocumentForm.jsx";
+import {
+  HomeLayout,
+  Landing,
+  DashboardLayout,
+  Overview,
+  AuthForm,
+  DocumentForm,
+} from "../pages";
+import Search from "../components/Search";
+import CaseForm from "../pages/CaseForm";
+import CourtForm from "../pages/CourtForm";
 
 const router = createBrowserRouter([
   {
@@ -15,27 +20,36 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
-      // {
-      //   path: "register",
-      //   element: <Register />,
-      // },
-      // {
-      //   path: "login",
-      //   element: <Login />,
-      // },
       {
         path: "auth/:page",
         element: <AuthForm />,
       },
       {
-        path: "cases",
-        element: <DocumentForm />,
+        path: "dashboard",
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <Overview />,
+          },
+          {
+            path: "document",
+            element: <DocumentForm />,
+          },
+          {
+            path: "case",
+            element: <CaseForm />,
+          },
+          {
+            path: "browse",
+            element: <Search />,
+          },
+          {
+            path: "court",
+            element: <CourtForm />,
+          },
+        ],
       },
-      // {
-      //   path: "dashboard",
-      //   element: <DashboardLayout />,
-      //   children: [],
-      // },
     ],
   },
 ]);

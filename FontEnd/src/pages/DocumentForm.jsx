@@ -145,10 +145,12 @@ export default function DocumentForm() {
               variant="outlined"
               value={requirement}
               onChange={(e) => setRequirement(e.target.value)}
+              multiline
+              rows={4}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <ChecklistRtlIcon />
+                    <ChecklistRtlIcon/>
                   </InputAdornment>
                 ),
               }}
