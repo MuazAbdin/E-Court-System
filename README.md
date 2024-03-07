@@ -64,7 +64,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 |-------|-------|------|---------|----------|
 | Create Court | /courts/ | POST | courtName, city, street, phoneNumber, email | Court |
 | Get Court | /court/:id | GET | | Court |
-| Update Court | /court/ | Patch | _id, name, phoneNumber, email | Court
+| Update Court | /court/ | Patch | id, name, phoneNumber, email | Court
 
 ### Document Routes
 | Title | Route | Type | Request | Response |
