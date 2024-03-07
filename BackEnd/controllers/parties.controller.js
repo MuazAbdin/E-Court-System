@@ -1,3 +1,4 @@
+import { NoPartiesFoundError } from "../errors/party.error.js";
 import Party from "../models/party.model.js";
 
 class PartiesController {
@@ -19,6 +20,9 @@ class PartiesController {
 		const { caseId } = req.params;
 		try {
 			const party = await Party.find({ case: caseId });
+			if(party === null){
+				throw new NoPartiesFoundError()
+			}
 			res.json(party);
 		} catch(error) {
 			res.sendStatus(500);
