@@ -2,6 +2,7 @@ import Config from "../config.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
+import { InvalidCredintialsError } from "../errors/userAuth.error.js";
 
 class AuthUtils {
     createTokenCookie(payload) {
@@ -32,6 +33,14 @@ class AuthUtils {
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
         return hashedPassword;
+    }
+
+    verifyPassword(password, hashedPassword) {
+        const passwordVerified = bcrypt.compareSync(password, hashedPassword);
+        if(!passwordVerified) {
+            throw new InvalidCredintialsError();
+        }
+        return passwordVerified;
     }
 }
 

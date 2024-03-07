@@ -1,9 +1,10 @@
 import errorHandler from "../errors/errorHandler.js";
-import { EmailAlreadyUsedError, IdNumberAlreadyUsedError } from "../errors/user.error.js";
+import { EmailAlreadyUsedError, IdNumberAlreadyUsedError, UserDoesNotExistError } from "../errors/user.error.js";
+import { InvalidCredintialsError } from "../errors/userAuth.error.js";
 import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
 import authUtils from "../utils/auth.utils.js";
-import RegisterDataValidator from "../validators/auth.validate.js";
+import AuthDataValidator from "../validators/auth.validate.js";
 
 class AuthController {
 	async register(req, res) {
@@ -18,7 +19,7 @@ class AuthController {
 			if(licenseNumber)
 				userData.licenseNumber = licenseNumber;
 
-			RegisterDataValidator.validateUserData(userData);
+			AuthDataValidator.validateRegisterData(userData);
 			if(await User.findOne({email})) {
 				throw new EmailAlreadyUsedError();
 			}
@@ -42,8 +43,28 @@ class AuthController {
 		}
 	}
 
-	login(req, res) {
-		res.status(404).send("Work In Progress!");
+	async login(req, res) {
+        const { email, password } = req.body;
+		try {
+			AuthDataValidator.validateLoginData(req.body);
+	
+			const user = await User.findOne({ email });
+			if(!user) {
+				throw new UserDoesNotExistError();
+			}
+
+			const userAuth = await UserAuth.findOne({ user: user._id });
+			const userHashedPassword = userAuth.hashedPassword;
+			authUtils.verifyPassword(password, userHashedPassword);
+
+			const payload = {userId: user._id};
+			const tokenCookie = authUtils.createTokenCookie(payload);
+			res.setHeader('Set-Cookie', tokenCookie);
+			res.json({ firstName: user.firstName, lastName: user.lastName });
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	logout(req, res) {
