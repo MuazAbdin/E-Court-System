@@ -1,5 +1,6 @@
+import mongoose from "mongoose";
 import errorHandler from "../errors/errorHandler.js";
-import { EmailAlreadyUsedError, IdNumberAlreadyUsedError, UserDoesNotExistError } from "../errors/user.error.js";
+import { EmailAlreadyUsedError, IdNumberAlreadyUsedError, InvalidUserTypeError, UserDoesNotExistError } from "../errors/user.error.js";
 import { InvalidCredintialsError } from "../errors/userAuth.error.js";
 import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
@@ -11,27 +12,26 @@ class AuthController {
         const { password, confirmPassword, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber } = req.body;
 
 		try {
-			RegisterDataValidator.validatePassword(password, confirmPassword);
-			const hashedPassword = authUtils.hashPassword(password);
-			
-			const userData = { idNumber, firstName, lastName, userType, email, phoneNumber, city, street };
+			const userData = { password, confirmPassword, idNumber, firstName, lastName, userType, email, phoneNumber, city, street };
 			// TODO add check for userType instead of licenseNumber value
-			if(licenseNumber)
+			if(licenseNumber) {
 				userData.licenseNumber = licenseNumber;
-
+			}
+		
 			AuthDataValidator.validateRegisterData(userData);
-			if(await User.findOne({email})) {
+			const foundUser = await User.findOne({ $or:[ { 'email': email }, { 'idNumber': idNumber } ]});
+			if(foundUser && foundUser.email === email) {
 				throw new EmailAlreadyUsedError();
 			}
-			if(await User.findOne({idNumber})) {
+			if(foundUser && foundUser.idNumber === idNumber) {
 				throw new IdNumberAlreadyUsedError();
 			}
-
+			
 			const user = new User(userData);
-			const userAuth = new UserAuth({user, hashedPassword});
+			const userAuth = new UserAuth({user, hashedPassword: password});
 
-			user.save();
-			userAuth.save();
+			await user.save();
+			await userAuth.save();
 		
 			const payload = { userId: user._id };
 			const tokenCookie = authUtils.createTokenCookie(payload);
@@ -39,6 +39,11 @@ class AuthController {
 			res.json({ firstName: user.firstName, lastName: user.lastName });
 		}
 		catch(error) {
+			if(error instanceof mongoose.Error.ValidationError) {
+				if(error.errors.userType) {
+					return errorHandler.handleError(res, new InvalidUserTypeError());
+				}
+			}
 			errorHandler.handleError(res, error);
 		}
 	}

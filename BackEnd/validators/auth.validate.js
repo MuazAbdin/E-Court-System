@@ -1,34 +1,26 @@
+import validator from "validator";
 import { ConfirmationPasswordDoesNotMatchError } from "../errors/userAuth.error.js";
 import GenericValidator from "./generic.validate.js";
 
 export default class AuthDataValidator {
-    static validatePassword(password, confirmPassword) {
-        if(password !== confirmPassword) {
+    static validatePasswordConfirm(password, confirmPassword) {
+        if(!validator.equals(password + "", confirmPassword + "")) {
             throw new ConfirmationPasswordDoesNotMatchError();
         }
     }
 
     static validateRegisterData(data) {
-        GenericValidator.validateNotEmpty(
-            data.idNumber, 
-            data.firstName,
-            data.lastName,
-            data.userType,
-            data.email,
-            data.phoneNumber,
-            data.city,
-            data.street
-        );
+        Object.keys(data).forEach(key => 
+            GenericValidator.validateNotEmpty(data[key]));
+        this.validatePasswordConfirm(data.password, data.confirmPassword);
         GenericValidator.validateIdNumber(data.idNumber);
         GenericValidator.validateEmail(data.email);
         GenericValidator.validatePhoneNumber(data.phoneNumber);
     }
 
     static validateLoginData(data) {
-        GenericValidator.validateNotEmpty(
-            data.email,
-            data.password
-        );
+        Object.keys(data).forEach(key => 
+            GenericValidator.validateNotEmpty(data[key]));
         GenericValidator.validateEmail(data.email);
     }
 }
