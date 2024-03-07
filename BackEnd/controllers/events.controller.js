@@ -1,3 +1,5 @@
+import errorHandler from "../errors/errorHandler.js";
+import { EventDoesNotExistError, NoEventsFoundError } from "../errors/event.error.js";
 import Event from "../models/event.model.js";
 
 class EventsController {
@@ -9,9 +11,12 @@ class EventsController {
 		const { caseId } = req.params;
 		try {
 			const events = await Event.find({ case: caseId });
+			if(events === null){
+				throw new NoEventsFoundError()
+			}
 			res.json(events);
 		} catch(error) {
-			res.sendStatus(500);
+			return errorHandler.handleError(res, error)
 		}
 	}
 
@@ -19,9 +24,12 @@ class EventsController {
 		const { id } = req.params;
 		try {
 			const event = await Event.findById(id);
+			if( event === null){
+				throw new EventDoesNotExistError()
+			}
 			res.json(event);
 		} catch(error) {
-			res.sendStatus(500);
+			return errorHandler.handleError(res, error)
 		}
 	}
 

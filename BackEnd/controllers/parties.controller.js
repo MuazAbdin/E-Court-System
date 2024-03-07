@@ -1,4 +1,5 @@
-import { NoPartiesFoundError } from "../errors/party.error.js";
+import errorHandler from "../errors/errorHandler.js";
+import { NoPartiesFoundError, PartyDoesNotExistError } from "../errors/party.error.js";
 import Party from "../models/party.model.js";
 
 class PartiesController {
@@ -10,9 +11,12 @@ class PartiesController {
 		const { id } = req.params;
 		try {
 			const party = await Party.findById(id);
+			if( party === null){
+				throw new PartyDoesNotExistError()
+			}
 			res.json(party);
 		} catch(error) {
-			res.sendStatus(500);
+			return errorHandler.handleError(res, error)
 		}
 	}
 
@@ -20,12 +24,12 @@ class PartiesController {
 		const { caseId } = req.params;
 		try {
 			const party = await Party.find({ case: caseId });
-			if(party === null){
+			if(party.length === 0 ){
 				throw new NoPartiesFoundError()
 			}
 			res.json(party);
 		} catch(error) {
-			res.sendStatus(500);
+			return errorHandler.handleError(res, error)
 		}
 	}
 
