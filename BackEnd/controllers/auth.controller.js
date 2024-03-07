@@ -11,7 +11,7 @@ class AuthController {
         const { password, confirmPassword, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber } = req.body;
 
 		try {
-			RegisterDataValidator.validatePassword(password, confirmPassword);
+			AuthDataValidator.validatePassword(password, confirmPassword);
 			const hashedPassword = authUtils.hashPassword(password);
 			
 			const userData = { idNumber, firstName, lastName, userType, email, phoneNumber, city, street };
@@ -20,10 +20,11 @@ class AuthController {
 				userData.licenseNumber = licenseNumber;
 
 			AuthDataValidator.validateRegisterData(userData);
-			if(await User.findOne({email})) {
+			const foundUser = await User.findOne({ $or:[ { 'email': email }, { 'idNumber': idNumber } ]});
+			if(foundUser && foundUser.email === email) {
 				throw new EmailAlreadyUsedError();
 			}
-			if(await User.findOne({idNumber})) {
+			if(foundUser && foundUser.idNumber === idNumber) {
 				throw new IdNumberAlreadyUsedError();
 			}
 
