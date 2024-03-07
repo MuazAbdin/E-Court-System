@@ -1,4 +1,4 @@
-import { CardsDeck } from "../components";
+import { Breakdown, CardsDeck } from "../components";
 
 const CARD_DECKS = [
   {
@@ -97,8 +97,7 @@ function Overview() {
     <>
       <h3 className="section-title">overview</h3>
       <CardsDeck title={CARD_DECKS[0].title} cards={CARD_DECKS[0].cards} />
-
-      {/* <PieChart /> */}
+      <Breakdown />
     </>
   );
 }

@@ -6,3 +6,4 @@ export { default as Accordion } from "./Accordion";
 export { default as Aside } from "./Aside";
 export { default as PageHeader } from "./PageHeader";
 export { default as CardsDeck } from "./CardsDeck";
+export { default as Breakdown } from "./Breakdown";
