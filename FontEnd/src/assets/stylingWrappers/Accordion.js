@@ -76,6 +76,7 @@ const Wrapper = styled.menu`
     text-decoration: underline;
     /* font-weight: 500; */
   }
+
 `;
 
 export default Wrapper;
