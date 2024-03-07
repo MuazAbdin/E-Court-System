@@ -1,6 +1,7 @@
 import errorHandler from "../errors/errorHandler.js";
 import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../errors/stakeholders.error.js";
 import Stakeholder from "../models/stakeholder.model.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class StakeholdersController {
 	createStakeholder(req, res) {
@@ -37,8 +38,16 @@ class StakeholdersController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	deleteStakeholder(req, res) {
-		res.status(404).send("Work In Progress!");
+	async deleteStakeholder(req, res) {
+		const { stakeholderId } = req.body;
+		try {
+			GenericValidator.validateObjectId(stakeholderId);
+			await Stakeholder.softDelete(stakeholderId);
+			res.sendStatus(204);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 
