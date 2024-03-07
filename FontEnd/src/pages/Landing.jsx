@@ -21,10 +21,10 @@ function Landing() {
           Don't have an account? Register to open one!
         </p>
         <div className="btn-group">
-          <Link to="register">
+          <Link to="auth/register">
             <button className="btn register-btn">register</button>
           </Link>
-          <Link to="login">
+          <Link to="auth/login">
             <button className="btn login-btn">login</button>
           </Link>
         </div>
