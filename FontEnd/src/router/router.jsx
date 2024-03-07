@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { HomeLayout, Landing, DashboardLayout } from "../pages";
+import { HomeLayout, Landing, DashboardLayout, Overview } from "../pages";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +21,12 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardLayout />,
-        children: [],
+        children: [
+          {
+            index: true,
+            element: <Overview />,
+          },
+        ],
       },
     ],
   },
