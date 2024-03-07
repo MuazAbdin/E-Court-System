@@ -10,9 +10,9 @@ const caseStatusTypeSchema = new Schema({
 caseStatusTypeSchema.statics.getAll = dbUtils.createGetNonDeletedRecordsFunction();
 
 caseStatusTypeSchema.statics.createNew = async function(status) {
-    const unDeletedUserType = await dbUtils.undeleteIfExists(this, { status });
-    if(unDeletedUserType) {
-        return unDeletedUserType;
+    const unDeletedCaseStatusType = await dbUtils.undeleteIfExists(this, { status });
+    if(unDeletedCaseStatusType) {
+        return unDeletedCaseStatusType;
     }
     else {
         try {

@@ -1,3 +1,4 @@
+import { StatusCodes } from "http-status-codes";
 import errorGenerator from "../utils/errorGenerator.utils.js";
 
 export const NoEventTypesFoundError = errorGenerator.noDataErrorGenerator("event types");
@@ -5,3 +6,5 @@ export const NoEventTypesFoundError = errorGenerator.noDataErrorGenerator("event
 export const EventTypeDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("Event type");
 
 export const InvalidEventType = errorGenerator.invalidValueErrorGenerator("event type")
+
+export const EventTypeAlreadyExistsError = errorGenerator.createErrorClass("Event status type already exists!", StatusCodes.CONFLICT)

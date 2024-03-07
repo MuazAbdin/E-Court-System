@@ -26,7 +26,7 @@ app.use("/case-status-types", caseStatusTypesRoutes);
 app.use("/courts", courtsRoutes);
 app.use("/documents", documentsRoutes);
 app.use("/events", eventsRoutes);
-app.use("/eventTypes", eventTypesRoutes);
+app.use("/event-types", eventTypesRoutes);
 app.use("/parties", partiesRoutes);
 app.use("/stakeholders", stakeholdersRoutes);
 app.use("/user-types", userTypesRoutes);
