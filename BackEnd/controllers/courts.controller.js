@@ -22,12 +22,12 @@ class CourtsController {
 		try {
 			GenericValidator.validateObjectId(id);
 			const court = await Court.findById(id);
-			if(court === null) {
-				throw new CourtDoesNotExistError();
+			if( court === null){
+				throw new CourtDoesNotExistError()
 			}
 			res.json(court);
 		} catch(error) {
-			errorHandler.handleError(res, error);
+			return errorHandler.handleError(res, error)
 		}
 	}
 
