@@ -68,7 +68,7 @@ class AuthController {
 	}
 
 	logout(req, res) {
-		res.status(404).send("Work In Progress!");
+		res.clearCookie("token").sendStatus(204);
 	}
 }
 
