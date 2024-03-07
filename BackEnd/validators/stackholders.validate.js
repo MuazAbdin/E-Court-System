@@ -11,15 +11,4 @@ export default class StackHolderValidator {
 	}
 }
 
-// async createStackHolder(req, res) {
-// 		    const { idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
-// 		try {
-// 			StackHolderValidator.validateStackHolderData(req.body);
 
-// 			const court = await StackHolder.create({ name: courtName, city, street, phoneNumber, email });
-// 			res.json(court);
-// 		}
-// 		catch(error) {
-// 			errorHandler.handleError(res, error);
-// 		}
-// 	}
