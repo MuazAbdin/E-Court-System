@@ -4,55 +4,66 @@ import { Wrapper } from '../assets/stylingWrappers/CasesMangment';
 export default function CasesMangment() {
   return (
     <Wrapper>
-      <div className='title'>Cases</div>
-      <CreateButton>Create</CreateButton>
-      <CasesList>
-        <CaseRow> 
-          <CaseText title="Title">Title</CaseText>
-          <CaseText title="Case number">Case number</CaseText>
-          <CaseText title="Case Status">Case Status</CaseText>
-          <CaseText title="Case Court">Case Court</CaseText>
-        </CaseRow>
-        <CaseRow>
-          <CaseText title="Title">Case 1</CaseText>
-          <CaseText title="Case number">Case number</CaseText>
-          <CaseText title="Case Status">Status</CaseText>
-          <CaseText title="Case Court">Court</CaseText>
-          <EditButton>Edit</EditButton>
-        </CaseRow>
+    <div className='title'>Cases</div>
+    <button className='create-button'>Create</button>
+    <div className='case-row'>
+      <span className='case-text' title="Title">Title</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Case Status</span>
+      <span className='case-text' title="Case Court">Case Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
+    <div className='case-row'>
+      <span className='case-text' title="Title">Case 1</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Status</span>
+      <span className='case-text' title="Case Court">Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
+    <div className='case-row'>
+      <span className='case-text' title="Title">Case 2</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Status</span>
+      <span className='case-text' title="Case Court">Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
 
-        <CaseRow>
-          <CaseText title="Title">Case 2</CaseText>
-          <CaseText title="Case number">Case number</CaseText>
-          <CaseText title="Case Status">Status</CaseText>
-          <CaseText title="Case Court">Court</CaseText>
-          <EditButton>Edit</EditButton>
-        </CaseRow>
 
-        <CaseRow>
-          <CaseText title="Title">Case 3</CaseText>
-          <CaseText title="Case number">Case number</CaseText>
-          <CaseText title="Case Status">Status</CaseText>
-          <CaseText title="Case Court">Court</CaseText>
-          <EditButton>Edit</EditButton>
-        </CaseRow>
+    <div className='case-row'>
+      <span className='case-text' title="Title">Case 3</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Status</span>
+      <span className='case-text' title="Case Court">Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
 
-        <CaseRow>
-          <CaseText title="Title">Case 4</CaseText>
-          <CaseText title="Case number">Case number</CaseText>
-          <CaseText title="Case Status">Status</CaseText>
-          <CaseText title="Case Court">Court</CaseText>
-          <EditButton>Edit</EditButton>
-        </CaseRow>
 
-        <CaseRow>
-          <CaseText title="Title">Case 5</CaseText>
-          <CaseText title="Case number">Case number</CaseText>
-          <CaseText title="Case Status">Status</CaseText>
-          <CaseText title="Case Court">Court</CaseText>
-          <CreateButton>Edit</CreateButton>
-        </CaseRow>
-        </CasesList>
-    </Wrapper>
+    <div className='case-row'>
+      <span className='case-text' title="Title">Case 4</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Status</span>
+      <span className='case-text' title="Case Court">Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
+
+
+    <div className='case-row'>
+      <span className='case-text' title="Title">Case 5</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Status</span>
+      <span className='case-text' title="Case Court">Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
+
+
+    <div className='case-row'>
+      <span className='case-text' title="Title">Case 6</span>
+      <span className='case-text' title="Case number">Case number</span>
+      <span className='case-text' title="Case Status">Status</span>
+      <span className='case-text' title="Case Court">Court</span>
+      <button className='edit-button'>Edit</button>
+    </div>
+    
+  </Wrapper>
   );
 }
