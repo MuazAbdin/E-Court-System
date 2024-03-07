@@ -10,11 +10,11 @@ class StakeholdersController {
 	async getStakeholderById(req, res) {
 		const { id } = req.params;
 		try {
-			const stackHoldler = await Stakeholder.findById(id);
-			if(stackHoldler === null){
+			const stackHoldlers = await Stakeholder.findById(id);
+			if(stackHoldlers === null){
 				throw new StakeholderDoesNotExistError()
 			}
-			res.json(stackHoldler);
+			res.json(stackHoldlers);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}

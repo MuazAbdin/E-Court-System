@@ -10,8 +10,8 @@ class PartiesController {
 	async getPartyById(req, res) {
 		const { id } = req.params;
 		try {
-			const party = await Party.findById(id);
-			if( party === null){
+			const parties = await Party.findById(id);
+			if( parties === null){
 				throw new PartyDoesNotExistError()
 			}
 			res.json(party);

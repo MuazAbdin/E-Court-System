@@ -11,7 +11,7 @@ class EventsController {
 		const { caseId } = req.params;
 		try {
 			const events = await Event.find({ case: caseId });
-			if(events === null){
+			if(events.length === 0){
 				throw new NoEventsFoundError()
 			}
 			res.json(events);
