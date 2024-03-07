@@ -4,3 +4,5 @@ export { default as Landing } from "./Landing";
 // export { default as Login } from "./Login";
 export { default as DashboardLayout } from "./DashboardLayout";
 export { default as Overview } from "./Overview";
+export { default as AuthForm } from "./AuthForm";
+export { default as DocumentForm } from "./DocumentForm";

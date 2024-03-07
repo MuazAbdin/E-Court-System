@@ -1,5 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
-import { HomeLayout, Landing, DashboardLayout, Overview } from "../pages";
+import {
+  HomeLayout,
+  Landing,
+  DashboardLayout,
+  Overview,
+  AuthForm,
+  DocumentForm,
+} from "../pages";
 
 const router = createBrowserRouter([
   {
@@ -10,14 +17,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
-      // {
-      //   path: "register",
-      //   element: <Register />,
-      // },
-      // {
-      //   path: "login",
-      //   element: <Login />,
-      // },
+      {
+        path: "auth/:page",
+        element: <AuthForm />,
+      },
       {
         path: "dashboard",
         element: <DashboardLayout />,
@@ -25,6 +28,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Overview />,
+          },
+          {
+            path: "cases",
+            element: <DocumentForm />,
           },
         ],
       },

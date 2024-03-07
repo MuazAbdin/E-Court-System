@@ -12,7 +12,7 @@ const Wrapper = styled.header`
   border-bottom: 1px solid black;
   box-shadow: 0 1px 15px black;
   background-color: var(--background-color-transparent);
-
+  z-index: 10;
   menu {
     list-style-type: none;
     margin: 0;
@@ -34,6 +34,7 @@ const Wrapper = styled.header`
     border-radius: var(--border-radius);
     padding: 0.5rem;
     transition: var(--transition);
+    
   }
 
   li:hover {
