@@ -12,7 +12,7 @@ class CourtsController {
 			res.json(court);
 		}
 		catch(error) {
-			errorHandler.handleError(error);
+			errorHandler.handleError(res, error);
 		}
 	}
 
@@ -37,7 +37,7 @@ class CourtsController {
 			res.json(updatedCourt);
 		}
 		catch(error) {
-			errorHandler.handleError(error);
+			errorHandler.handleError(res, error);
 		}
 	}
 }
