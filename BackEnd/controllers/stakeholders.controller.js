@@ -5,12 +5,12 @@ import StackHolderValidator from "../validators/stackholders.validate.js";
 
 class StakeholdersController {
 	
-	async createStackHolder(req, res) {
-		    const { idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
+	async createStakeholder(req, res) {
+		    const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
 		try {
 			StackHolderValidator.validateStackHolderData(req.body);
-			const court = await Stakeholder.create({ name: courtName, city, street, phoneNumber, email });
-			res.json(court);
+			const stackHolder = await Stakeholder.create({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			res.json(stackHolder);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
