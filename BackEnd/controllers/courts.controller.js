@@ -27,7 +27,7 @@ class CourtsController {
 			}
 			res.json(court);
 		} catch(error) {
-			errorHandler.handleError(res, error);
+			return errorHandler.handleError(res, error)
 		}
 	}
 
