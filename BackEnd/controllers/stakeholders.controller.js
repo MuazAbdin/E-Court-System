@@ -13,11 +13,11 @@ class StakeholdersController {
 		const { id } = req.params;
 		try {
 			GenericValidator.validateObjectId(id)
-			const stackholdlers = await Stakeholder.findById(id);
-			if(stackholdlers === null){
+			const stackholdler = await Stakeholder.findById(id);
+			if(stackholdler === null){
 				throw new StakeholderDoesNotExistError()
 			}
-			res.json(stackholdlers);
+			res.json(stackholdler);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
@@ -27,11 +27,11 @@ class StakeholdersController {
 		const { partyId } = req.params;
 		try {
 			GenericValidator.validateObjectId(partyId)
-			const stackholdler = await Stakeholder.find({ party: partyId });               
-			if( stackholdler.length === 0){
+			const stackholdlers = await Stakeholder.find({ party: partyId });               
+			if( stackholdlers.length === 0){
 				throw new NoStakeholdersFoundError()
 			}
-			res.json(stackholdler);
+			res.json(stackholdlers);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
