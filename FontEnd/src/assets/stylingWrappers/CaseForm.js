@@ -29,9 +29,9 @@ button{
     width: 40%;
     font-family: var(--subtitle-font);
     font-size: 20px;
-    background-color: var(--primary-300);
+    background-color: var(--primary-400);
     border-radius: 18px;
-    margin-bottom: 4%;
+    margin-top: 5%;
 }
 h2{
     font-family: var(--title-font);
@@ -55,48 +55,40 @@ h2{
     margin-right: 5vh;
     width: 18vw;
 }
-
-#case-dropdown-label{
-    /* align-items: start;
-    justify-content: start;
-    justify-items: start; */
-    margin-right: 43%;
-    margin-top: 1%;
-    margin-bottom: 1%;
+#demo-error-radios{
+    margin-right: 50%;
+    height: 10%;
+    margin-top: -50px;
+}
+.status{
+    margin-top: -2%;
+}
+.description .MuiInputBase-root{
+    width: 25vw;
+}
+.MuiFormGroup-root{
+    margin-left: 21%;
+    margin-bottom: 2%;
+    padding-left: 2%;
+}
+button{
+    height: 7lvh;
+    width: 30%;
+    font-family: var(--subtitle-font);
+    font-size: 20px;
+    background-color: var(--primary-300);
+    margin-left: 65%;
 }
 .MuiButtonBase-root{
     background-color: transparent;
 }
-#case-dropdown{
+.court-container{
     display: flex;
-    justify-content: start;
-    width: 100%;
+    column-gap: 10%;
+    padding-right: 10%;
 }
-
-.address-container,
-.details-container{
-    display: flex;
-    column-gap: 5%;
-    /* width: 30%; */
-}
-.address-container .MuiInputBase-root,
-.details-container .MuiInputBase-root {
+.court-container .MuiInputBase-root {
     width: 15vw;
-}
-
-.requirement-container .MuiInputBase-root{
-    width: 25vw;
-    /* height: 20lvh; */
-}
-#case-dropdown{
-    width: 50vw;
-}
-.submit-btn{
-    /* display: flex; */
-    margin-left: 21lvw;
-    width: 10vw;
-    margin-top: 8%;
-    /* margin-bottom: 1%; */
 }
 `
 export default Wrapper

@@ -16,9 +16,12 @@ class DBUtils {
         }
     }
 
-    createSoftDeleteFunction() {
-        return function(id) {
-            return this.findByIdAndUpdate(id, {$set: {deleted: true}}).exec();
+    createSoftDeleteFunction(DoesNotExistError) {
+        return async function(id) {
+            const deletedRecord = await this.findByIdAndUpdate(id, {$set: {deleted: true}}).exec();
+            if(deletedRecord === null) {
+                throw new DoesNotExistError();
+            }
         }
     }
 

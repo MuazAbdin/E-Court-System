@@ -1,5 +1,6 @@
 import validator from "validator";
-import { DataMissingError, InvalidEmailError, InvalidIdNumberError, InvalidPhoneNumberError } from "../errors/dataValidation.error.js"
+import { DataMissingError, InvalidEmailError, InvalidIdNumberError, InvalidObjectIdError, InvalidPhoneNumberError } from "../errors/dataValidation.error.js"
+import { Types } from "mongoose";
 
 export default class GenericValidator {
     static validateNotEmpty(...data) {
@@ -25,6 +26,12 @@ export default class GenericValidator {
     static validateIdNumber(idNumber) {
         if(!validator.isNumeric(idNumber)) {
             throw new InvalidIdNumberError();
+        }
+    }
+
+    static validateObjectId(id) {
+        if(!Types.ObjectId.isValid(id)) {
+            throw new InvalidObjectIdError();
         }
     }
 }
