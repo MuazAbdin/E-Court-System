@@ -34,8 +34,20 @@ class EventsController {
 		}
 	}
 
-	updateEvent(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateEvent(req, res) {
+	const { eventId, date, description } = req.body
+		try {
+			GenericValidator.validateObjectId(eventId);
+			EventValidator.validateEventData({ date, description });
+			const updatedEvent = await Event.findByIdAndUpdate(eventId, {$set: { date, description }}, { new: true });
+			if(updatedEvent === null) {
+				throw new EventDoesNotExistError();
+			}
+			res.json(updatedStackholder);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async deleteEvent(req, res) {
