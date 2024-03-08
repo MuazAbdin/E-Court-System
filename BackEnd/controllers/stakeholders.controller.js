@@ -2,7 +2,7 @@ import errorHandler from "../errors/errorHandler.js";
 import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../errors/stakeholders.error.js";
 import Stakeholder from "../models/stakeholder.model.js";
 import GenericValidator from "../validators/generic.validate.js";
-import StackHolderValidator from "../validators/stackholder.validate.js";
+import StackholderValidator from "../validators/stackholder.validate.js";
 
 class StakeholdersController {
 	createStakeholder(req, res) {
@@ -12,11 +12,12 @@ class StakeholdersController {
 	async getStakeholderById(req, res) {
 		const { id } = req.params;
 		try {
-			const stackHoldlers = await Stakeholder.findById(id);
-			if(stackHoldlers === null){
+			GenericValidator.validateObjectId(id)
+			const stackholdlers = await Stakeholder.findById(id);
+			if(stackholdlers === null){
 				throw new StakeholderDoesNotExistError()
 			}
-			res.json(stackHoldlers);
+			res.json(stackholdlers);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
@@ -25,11 +26,12 @@ class StakeholdersController {
 	async getStakeholderByPartyId(req, res) {
 		const { partyId } = req.params;
 		try {
-			const stackHoldler = await Stakeholder.find({ party: partyId });               
-			if( stackHoldler.length === 0){
+			GenericValidator.validateObjectId(partyId)
+			const stackholdler = await Stakeholder.find({ party: partyId });               
+			if( stackholdler.length === 0){
 				throw new NoStakeholdersFoundError()
 			}
-			res.json(stackHoldler);
+			res.json(stackholdler);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
@@ -39,7 +41,7 @@ class StakeholdersController {
 		const { _id, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body
 		try {
 			GenericValidator.validateObjectId(_id);
-			StackHolderValidator.validateStackHolderData({ idNumber, firstName, lastName, email, phoneNumber, city, street  });
+			StackholderValidator.validateStackholderData({ idNumber, firstName, lastName, email, phoneNumber, city, street  });
 			const updatedStackholder = await Stakeholder.findByIdAndUpdate(_id, {$set: { idNumber, firstName, lastName, email, phoneNumber, city, street  }}, { new: true });
 			if(updatedStackholder === null) {
 				throw new StakeholderDoesNotExistError();

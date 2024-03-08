@@ -1,7 +1,7 @@
 import GenericValidator from "./generic.validate.js";
 
-export default class StackHolderValidator {
-	static validateStackHolderData(data) {
+export default class StackholderValidator {
+	static validateStackholderData(data) {
 		Object.keys(data).forEach((key) =>
 			GenericValidator.validateNotEmpty(data[key])
 		);
