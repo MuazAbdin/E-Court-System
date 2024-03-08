@@ -1,7 +1,8 @@
-import UserValidator from "../validators/user.validate";
+import UserValidator from "../validators/user.validate.js";
 import User from "../models/user.model.js"
 import { UserDoesNotExistError } from "../errors/user.error.js";
 import GenericValidator from "../validators/generic.validate.js";
+import errorHandler from "../errors/errorHandler.js";
 
 class UserController {
     getJudges(req, res) {
@@ -25,11 +26,11 @@ class UserController {
 		try {
             GenericValidator.validateObjectId(_id);
 			UserValidator.validateUserData({ phoneNumber, city, street });
-			const updateUser = await User.findByIdAndUpdate(_id, {$set: { phoneNumber, city, street }}, { new: true });
-			if(updateUser === null) {
+			const updatedUser = await User.findByIdAndUpdate(_id, {$set: { phoneNumber, city, street }}, { new: true });
+			if(updatedUser === null) {
 				throw new UserDoesNotExistError();
 			}
-			res.json(updateUser);
+			res.json(updatedUser);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
