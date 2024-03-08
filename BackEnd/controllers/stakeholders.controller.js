@@ -8,7 +8,7 @@ class StakeholdersController {
 	async createStakeholder(req, res) {
 		    const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
 		try {
-			StackholderValidator.validateStackHolderData(req.body);
+			StackholderValidator.validateStackholderData(req.body);
 			const stackholder = await Stakeholder.create({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			res.json(stackholder);
 		}
