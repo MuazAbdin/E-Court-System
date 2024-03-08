@@ -3,7 +3,7 @@ import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../error
 import Stakeholder from "../models/stakeholder.model.js";
 import StackholderValidator from "../validators/stackholders.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
-import StackholderValidator from "../validators/stackholder.validate.js";
+
 
 class StakeholdersController {
 	
