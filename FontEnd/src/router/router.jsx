@@ -8,6 +8,11 @@ import {
   DocumentForm,
 } from "../pages";
 
+import Search from "../components/Search";
+import CaseForm from "../pages/CaseForm";
+import CourtForm from "../pages/CourtForm";
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,9 +35,22 @@ const router = createBrowserRouter([
             element: <Overview />,
           },
           {
-            path: "cases",
+            path: "document",
             element: <DocumentForm />,
           },
+          {
+            path: "case",
+            element: <CaseForm />,
+          },
+          {
+            path: "browse",
+            element: <Search />,
+          },
+          {
+            path: "court",
+            element: <CourtForm />,
+          },
+
         ],
       },
     ],

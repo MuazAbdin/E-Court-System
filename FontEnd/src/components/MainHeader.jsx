@@ -18,7 +18,7 @@ function MainHeader({ isDark, themeToggle }) {
           </li>
           <li>
             <FaFile />
-            <Link to="/cases">Cases</Link>
+            <Link to="dashboard/cases">Cases</Link>
           </li>
           <li>
             <FaScaleBalanced />

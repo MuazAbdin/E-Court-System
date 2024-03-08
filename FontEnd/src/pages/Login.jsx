@@ -5,11 +5,15 @@ import EmailIcon from "@mui/icons-material/Email";
 import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Login(props) {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handlePassword = () => {
     setShowPassword(!showPassword);
@@ -37,6 +41,24 @@ export default function Login(props) {
   const handleLogin = (e) => {
     e.preventDefault();
     rememberLogin();
+
+    const fields = [
+      { name: "Email", value: email },
+      { name: "Password", value: password },
+    ];
+
+    for (const field of fields) {
+      if (!field.value) {
+        toast.error(`${field.name} cannot be empty!`);
+        return;
+      }
+
+      if (field.name === "Email" && !field.value.match(emailRegex)) {
+        toast.error("Invalid email format!");
+        return;
+      }
+    }
+    window.location.href = "/";
   };
   return (
     <Wrapper>
@@ -77,6 +99,8 @@ export default function Login(props) {
             label="Password"
             variant="outlined"
             title="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             type={showPassword ? "text" : "password"}
             InputProps={{
               endAdornment: (
@@ -113,6 +137,7 @@ export default function Login(props) {
             Sign Up
           </span>
         </p>
+        <Toaster position="bottom-center" />
       </form>
     </Wrapper>
   );
