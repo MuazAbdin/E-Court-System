@@ -2,6 +2,7 @@ import errorHandler from "../errors/errorHandler.js";
 import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../errors/stakeholders.error.js";
 import Stakeholder from "../models/stakeholder.model.js";
 import GenericValidator from "../validators/generic.validate.js";
+import StackHolderValidator from "../validators/stackholder.validate.js";
 
 class StakeholdersController {
 	createStakeholder(req, res) {
@@ -34,8 +35,20 @@ class StakeholdersController {
 		}
 	} 
 
-	updateStakeholder(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateStakeholder(req, res) {
+		const { _id, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body
+		try {
+			GenericValidator.validateObjectId(_id);
+			StackHolderValidator.validateStackHolderData({ idNumber, firstName, lastName, email, phoneNumber, city, street  });
+			const updatedStackholder = await Stakeholder.findByIdAndUpdate(_id, {$set: { idNumber, firstName, lastName, email, phoneNumber, city, street  }}, { new: true });
+			if(updatedStackholder === null) {
+				throw new StakeholderDoesNotExistError();
+			}
+			res.json(updatedStackholder);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async deleteStakeholder(req, res) {
