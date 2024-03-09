@@ -1,5 +1,5 @@
 import { IconButton, InputAdornment, TextField } from "@mui/material";
-import Wrapper from "../assets/stylingWrappers/Register";
+import Wrapper from "../assets/stylingWrappers/RegisterForm";
 import { FaFacebookF, FaGooglePlusG } from "react-icons/fa6";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -12,7 +12,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 
-export default function Register(props) {
+export default function Register({ className, ...props }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -107,10 +107,21 @@ export default function Register(props) {
     });
   };
 
+  const USER_TYPES = ["judge", "lawyer", "visitor"];
+  const [userType, setUserType] = useState("judge");
+
   return (
     <Wrapper>
-      <form>
-        <h2>Create Account</h2>
+      <menu className="register-form-navigator">
+        {USER_TYPES.map((t) => (
+          <li key={t} onClick={() => setUserType(t)}>
+            {t}
+          </li>
+        ))}
+        <li></li>
+      </menu>
+      <form action="">
+        <h3 className="title">sign up</h3>
         <div className="social-container">
           <div className="social">
             <FaGooglePlusG />

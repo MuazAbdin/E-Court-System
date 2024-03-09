@@ -4,7 +4,6 @@ import Accordion from "./Accordion";
 import { MdGavel } from "react-icons/md";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 
-
 function Aside() {
   return (
     <Wrapper>
@@ -14,7 +13,7 @@ function Aside() {
             id="nav-profile"
             title="profile"
             Icon={FaRegCircleUser}
-            subsectoins={[]}
+            subsectoins={[{ name: "overview", to: "" }]}
           />
           <Accordion.Item
             id="nav-cases"
@@ -30,10 +29,7 @@ function Aside() {
             id="nav-court"
             title="court"
             Icon={AccountBalanceIcon}
-            subsectoins={[
-              { name: "create new court", to: "court" },
-            ]}
-
+            subsectoins={[{ name: "create new court", to: "court" }]}
           />
         </Accordion>
       </nav>
