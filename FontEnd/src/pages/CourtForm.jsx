@@ -112,7 +112,7 @@ export default function CourtForm() {
         </div>
 
         <button className="submit-btn" onClick={handleSubmit}>
-          Submit
+          ADD COURT
         </button>
         <Toaster position="bottom-center" />
       </form>

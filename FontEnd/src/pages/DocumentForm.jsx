@@ -225,7 +225,7 @@ export default function DocumentForm() {
           />
         </div>
         <button onClick={handleSubmit} className="submit-btn">
-          Submit
+          SUBMIT
         </button>
         <Toaster position="bottom-center" />
       </form>

@@ -173,8 +173,9 @@ export default function CaseForm() {
             ),
           }}
         /> */}
-        <div>
+        <div className="add-party-container">
           <TextField
+          id="party"
             label="Parties"
             variant="outlined"
             title="the parties to the case"
@@ -190,22 +191,23 @@ export default function CaseForm() {
               ),
             }}
           />
-          <Button variant="outlined" onClick={addParty}>
+          <div className="add-btn">
+          <button onClick={addParty}>
             +
-          </Button>
-          <br></br><br></br>
-          {parties.map((party, index) => (
-            <TextField
-              key={index}
-              label={`Party ${index + 1}`}
-              variant="outlined"
-              value={party}
-              disabled
-            />
-          ))}
-          
+          </button>
         </div>
-        <button onClick={handleSubmit}>Submit</button>
+        </div>
+        {parties.map((party, index) => (
+          <TextField
+            key={index}
+            label={`Party ${index + 1}`}
+            variant="standard"
+            value={party}
+            disabled
+          />
+        ))}
+
+        <button onClick={handleSubmit}>SUBMIT</button>
         <Toaster position="bottom-center" />
       </form>
     </Wrapper>

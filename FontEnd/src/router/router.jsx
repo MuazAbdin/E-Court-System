@@ -10,6 +10,9 @@ import {
 import Search from "../components/Search";
 import CaseForm from "../pages/CaseForm";
 import CourtForm from "../pages/CourtForm";
+import EventForm from "../pages/EventForm";
+import PartyForm from "../pages/PartyForm";
+import StakeholderForm from "../pages/StakeholderForm";
 
 const router = createBrowserRouter([
   {
@@ -45,8 +48,20 @@ const router = createBrowserRouter([
             element: <Search />,
           },
           {
+            path: "event",
+            element: <EventForm />,
+          },
+          {
             path: "court",
             element: <CourtForm />,
+          },
+          {
+            path: "party",
+            element: <PartyForm />,
+          },
+          {
+            path: "stakeholder",
+            element: <StakeholderForm />,
           },
         ],
       },

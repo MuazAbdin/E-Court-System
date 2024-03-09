@@ -16,13 +16,13 @@ function MainHeader({ isDark, themeToggle }) {
             <FaHouse/>
             <Link to="/">Home</Link>
           </li>
-          <li>
+          {/* <li>
             <FaFile />
             <Link to="dashboard/cases">Cases</Link>
-          </li>
+          </li> */}
           <li>
             <FaScaleBalanced />
-            <Link to="/">Services</Link>
+            <Link to="dashboard">Services</Link>
           </li>
           <li>
             <FaEnvelope />
