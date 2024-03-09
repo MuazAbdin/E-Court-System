@@ -3,6 +3,7 @@ import Wrapper from "../assets/stylingWrappers/Search";
 import { FormControlLabel, InputAdornment, Menu, Radio, RadioGroup, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import CaseCard from "./CaseCard";
 
 export default function Search() {
   const [isFilterVisible, setFilterVisible] = useState(false);
@@ -106,6 +107,7 @@ export default function Search() {
         </div>
 
         <p className="text-case">Cases |</p>
+        <CaseCard/>
       </div>
     </Wrapper>
   );

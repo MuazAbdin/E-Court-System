@@ -37,7 +37,7 @@ const router = createBrowserRouter([
             element: <Overview />,
           },
           {
-            path: "document",
+            path: "document/:caseId",
             element: <DocumentForm />,
           },
           {
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             element: <Search />,
           },
           {
-            path: "event",
+            path: "event/:caseId",
             element: <EventForm />,
           },
           {
