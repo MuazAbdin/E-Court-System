@@ -56,8 +56,10 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Create Case | /cases/ | POST | title, decription, status, court, judge? | Case |
 | Get All Cases | /cases/?caseTitle&status&courtName&judgeName&lawyerName | GET | | [ Case ] |
 | Get Case | /cases/:id | GET | | CASE
+| Get Case Status Types | /cases/status/types | GET | | [ Case ] |
 | Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | Case |
 | Update Case Status | /cases/status/ | PATCH | _id, status | CASE |
+
 
 ### Court Routes
 | Title | Route | Type | Request | Response |
@@ -82,6 +84,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Create Event | /events/ | POST | caseId, eventType, date, description | Event |
 | Get Case Events | /events/:caseId | GET | | [ Event ] |
 | Get Event | /events/:id | GET | | Event |
+| Get Event Types | /events/types | GET | | [ Event ] |
 | Update Event | /events/ | PATCH | eventId, date, description | Event |
 | Delete Event | /events/ | DELETE | eventId | |
 
@@ -109,5 +112,6 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Get Judges | /users/judges | GET | | [ User ] |
 | Get Lawyers | /users/lawyers | GET | | [ User ] |
 | Get All Users | /users/ | GET | | [ User ] |
+|Get User Types	/users/types | GET | |[ User ] |
 | Update User(Admin) | /users/ | PUT | User | User |
 | Update User | /users/ | PATCH | phoneNumber, city, street | User |
