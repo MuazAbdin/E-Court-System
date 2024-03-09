@@ -1,3 +1,5 @@
+import Document from "../models/document.model.js"
+import { DocumentDoesNotExistError } from "../errors/document.error.js";
 import errorHandler from "../errors/errorHandler.js";
 import DocumentsValidator from "../validators/documents.validate.js";
 
@@ -21,15 +23,14 @@ class DocumentsController {
 	}
 
 	async updateDocumentTitle(req, res) {
-		const { _id, title } = req.body
+		const { id, title } = req.body;
 		try {
-			GenericValidator.validateObjectId(_id);
-			DocumentsValidator.validateDocumentData({ title });
-			const updatedDocument = await Stakeholder.findByIdAndUpdate(_id, {$set: { title }});
+			DocumentsValidator.validateDocumentData({ id, title });
+			const updatedDocument = await Document.findByIdAndUpdate(id, {$set: { title }});
 			if(updatedDocument === null) {
-				throw new StakeholderDoesNotExistError();
+				throw new DocumentDoesNotExistError();
 			}
-			res.json("document updated successfully");
+			res.json(updatedDocument);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
