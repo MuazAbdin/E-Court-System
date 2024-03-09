@@ -5,6 +5,5 @@ export default class EventValidator {
 		Object.keys(data).forEach((key) =>
 			GenericValidator.validateNotEmpty(data[key])
 		);
-		GenericValidator.validateIdNumber(data.idNumber);
 	}
 }
