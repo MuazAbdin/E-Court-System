@@ -9,27 +9,32 @@ function BreakdownForm({ className }) {
   const [to, setTo] = React.useState(null);
   return (
     <Form noValidate className={className}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          margin="normal"
-          disableFuture
-          label="From"
-          name="from"
-          value={from}
-          onChange={(newValue) => setFrom(newValue)}
-          format="DD-MM-YYYY"
-        />
-        <DatePicker
-          margin="normal"
-          disableFuture
-          label="To"
-          name="to"
-          value={to}
-          onChange={(newValue) => setTo(newValue)}
-          format="DD-MM-YYYY"
-          color="var(--text-color)"
-        />
-      </LocalizationProvider>
+      <fieldset>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            margin="normal"
+            disableFuture
+            label="Start"
+            name="start"
+            value={from}
+            onChange={(newValue) => setFrom(newValue)}
+            format="DD-MM-YYYY"
+            slotProps={{ textField: { size: "small", variant: "filled" } }}
+          />
+          <span className="separator">to</span>
+          <DatePicker
+            margin="normal"
+            disableFuture
+            label="End"
+            name="end"
+            value={to}
+            onChange={(newValue) => setTo(newValue)}
+            format="DD-MM-YYYY"
+            slotProps={{ textField: { size: "small", variant: "filled" } }}
+          />
+        </LocalizationProvider>
+      </fieldset>
+      <button className="btn">show results</button>
     </Form>
   );
 }

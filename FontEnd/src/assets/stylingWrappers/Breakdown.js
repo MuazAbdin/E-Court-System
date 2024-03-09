@@ -24,19 +24,32 @@ const Wrapper = styled.section`
 
     form {
       display: flex;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       gap: 1rem;
 
-      & > div {
-        /* background-color: var(--grey-200); */
+      fieldset {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        border: none;
+
+        & > div {
+          background-color: var(--grey-200);
+          border-radius: var(--border-radius);
+
+          label,
+          input {
+            font-family: var(--main-font);
+          }
+        }
       }
 
-      label {
-        font-family: var(--main-font);
-      }
-      input {
-        color: var(--text-color);
-        font-family: var(--main-font);
+      .btn {
+        font-size: 1.2rem;
+        width: max-content;
       }
     }
   }
