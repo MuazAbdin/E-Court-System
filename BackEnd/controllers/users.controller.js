@@ -1,4 +1,4 @@
-import UserValidator from "../validators/user.validate.js";
+import AllUserDataValidator from "../validators/alluserdata.validate.js";
 import User from "../models/user.model.js"
 import { UserDoesNotExistError } from "../errors/user.error.js";
 import GenericValidator from "../validators/generic.validate.js";
@@ -17,9 +17,22 @@ class UserController {
         res.status(404).send("Work In Progress!");
     }
 
-    updateAllUserData(req, res) {
-        res.status(404).send("Work In Progress!");
+   async updateAllUserData(req, res) {
+          const { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street } = req.body
+		try {
+            GenericValidator.validateObjectId(_id);
+			AllUserDataValidator.validateAllUserData({ idNumber, firstName, lastName, userType, email, phoneNumber, city, street });
+			const updatedAllUserData = await User.findByIdAndUpdate(_id, {$set: { idNumber, firstName, lastName, userType, email, phoneNumber, city, street }}, { new: true });
+			if(updatedAllUserData === null) {
+				throw new UserDoesNotExistError();
+			}
+			res.json(updatedAllUserData);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
     }
+    
 
    async updateUser(req, res) {
        const { _id, phoneNumber, city, street } = req.body
