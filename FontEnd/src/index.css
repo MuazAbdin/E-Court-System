@@ -18,11 +18,13 @@ html {
 
 :root {
   /* MAIN PALETTE COLORS */
-  --primary-600:#6e5138;
-  --primary-400: #A4907C;
-  --primary-300: #C8B6A6;
 
-
+  --primary-600: #6e5138;
+  --primary-400: #a4907c;
+  --primary-300: #c8b6a6;
+  /*   --primary-600: hsl(218, 43%, 37%);
+  --primary-400: hsl(192, 54%, 67%);
+  --primary-300: hsl(177, 46%, 91%); */
 
   /* GREY */
   --grey-50: #f8fafc;

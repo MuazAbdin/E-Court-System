@@ -13,7 +13,7 @@ function Aside() {
             id="nav-profile"
             title="profile"
             Icon={FaRegCircleUser}
-            subsectoins={[]}
+            subsectoins={[{ name: "overview", to: "" }]}
           />
           <Accordion.Item
             id="nav-cases"

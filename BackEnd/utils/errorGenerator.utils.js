@@ -1,4 +1,5 @@
 import StatusCodes from "http-status-codes";
+import CustomError from "../errors/customError.error.js";
 
 class ErrorGenerator {
     noDataErrorGenerator(dataTypeName) {
@@ -14,9 +15,12 @@ class ErrorGenerator {
     }
 
     createErrorClass(msg, statusCode) {
-        return class extends Error {
-            static msg = msg;
-            static statusCode = statusCode;
+        return class extends CustomError {
+            constructor() {
+                super();
+                this.msg = msg;
+                this.statusCode = statusCode;
+            }
         }
     };
 }

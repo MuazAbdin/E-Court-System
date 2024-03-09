@@ -31,7 +31,7 @@ const Wrapper = styled.menu`
     padding: 0.75rem;
     border-top: 1px dashed var(--highlight-color);
     border-bottom: 1px dashed var(--highlight-color);
-    
+
     &:hover,
     &.open {
       background-color: var(--highlight-background-color);
@@ -76,7 +76,7 @@ const Wrapper = styled.menu`
     text-decoration: underline;
     /* font-weight: 500; */
   }
-  
+
 `;
 
 export default Wrapper;

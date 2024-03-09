@@ -1,9 +1,10 @@
 import { model, Schema } from 'mongoose';
-import dbUtils from '../utils/db.utils';
+import dbUtils from '../utils/db.utils.js';
 
 const caseSchema = new Schema({
     caseNumber: { type: Number, required: true, unique: true, default: getCaseNumber },
-    status: { type: Schema.Types.ObjectId, ref: "CaseStatusType", required: true },
+    status: { type: String, required: true,
+         enum: ["Created", "Closed"] },
     title: { type: String, required: true },
     description: { type: String, required: true },
     court: { type: Schema.Types.ObjectId, ref: "Court", required: true },

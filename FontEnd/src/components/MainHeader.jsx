@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/MainHeader.js";
-import { FaBriefcase, FaCapsules, FaEnvelope, FaFile, FaHouse, FaHouseMedical, FaScaleBalanced } from "react-icons/fa6";
+import {
+  FaBriefcase,
+  FaCapsules,
+  FaEnvelope,
+  FaFile,
+  FaHouse,
+  FaHouseMedical,
+  FaScaleBalanced,
+} from "react-icons/fa6";
 import Logo from "./Logo.jsx";
 import ToggleTheme from "./ToggleTheme.jsx";
 
