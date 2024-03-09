@@ -2,10 +2,18 @@ import errorHandler from "../errors/errorHandler.js";
 import { NoPartiesFoundError, PartyDoesNotExistError } from "../errors/party.error.js";
 import Party from "../models/party.model.js";
 import GenericValidator from "../validators/generic.validate.js";
+import PartyValidator from "../validators/parties.validate.js";
 
 class PartiesController {
 	createParty(req, res) {
-		res.status(404).send("Work In Progress!");
+		const { partyName, lawyer, caseId, StakeholderData } = req.body;
+		try {
+			PartyValidator.validatePartyData({ partyName, lawyer, caseId })
+
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async getPartyById(req, res) {

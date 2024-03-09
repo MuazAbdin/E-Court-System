@@ -1,6 +1,14 @@
+import CaseValidator from "../validators/cases.validate.js";
+
 class CasesController {
 	createCase(req, res) {
-		res.status(404).send("Work In Progress!");
+		const { courtName, city, street, phoneNumber, email } = req.body;
+		try {
+			CaseValidator.validateCaseData({ courtName, city, street, phoneNumber, email });
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	getCases(req, res) {

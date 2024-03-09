@@ -5,7 +5,13 @@ import GenericValidator from "../validators/generic.validate.js";
 
 class EventsController {
 	createEvent(req, res) {
-		res.status(404).send("Work In Progress!");
+		const { caseId, eventType, date, description } = req.body;
+		try {
+
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async getEventsByCaseId(req, res) {
