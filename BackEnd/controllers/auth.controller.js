@@ -44,7 +44,7 @@ class AuthController {
 					return errorHandler.handleError(res, new InvalidUserTypeError());
 				}
 			}
-			errorHandler.handleError(res, error);
+			errorHandler.handleError(res, error); 
 		}
 	}
 

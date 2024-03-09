@@ -1,6 +1,8 @@
-import { NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError } from '../errors/user.error.js';
+import { NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, UserTypeNotFoundError } from '../errors/user.error.js';
 import errorHandler from '../errors/errorHandler.js'; 
 import User from '../models/user.model.js'; 
+import { dbConfig } from "../config.js";
+
 class UserController {
     async getJudges(req, res) {
         try {
@@ -14,7 +16,7 @@ class UserController {
         }
     }
 
-       async getLawyers(req, res) {
+    async getLawyers(req, res) {
         try {
             const lawyers = await User.find({userType: 'Lawyer' });
             if (lawyers.length === 0) {
@@ -38,6 +40,13 @@ class UserController {
         }
     }
 
+    getUserTypes(req, res) {
+        try {
+            res.json(dbConfig.USER_TYPES);
+        } catch (error) {
+            errorHandler.handleError(res, new UserTypeNotFoundError());
+        }
+    }
 
     updateAllUserData(req, res) {
         res.status(404).send("Work In Progress!");

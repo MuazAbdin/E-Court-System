@@ -1,7 +1,8 @@
 import errorHandler from "../errors/errorHandler.js";
-import { EventDoesNotExistError, NoEventsFoundError } from "../errors/event.error.js";
+import { EventDoesNotExistError, NoEventsFoundError, NoEventTypesFoundError } from "../errors/event.error.js";
 import Event from "../models/event.model.js";
 import GenericValidator from "../validators/generic.validate.js";
+import { dbConfig } from "../config.js";
 
 class EventsController {
 	createEvent(req, res) {
@@ -33,6 +34,18 @@ class EventsController {
 			return errorHandler.handleError(res, error)
 		}
 	}
+	getEventTypes(req, res) {
+        try {
+            const eventTypes = dbConfig.EVENT_TYPES;
+            if (!eventTypes || eventTypes.length === 0) {
+                throw new NoEventTypesFoundError(); 
+            }
+            res.json(eventTypes);
+		} catch (error) {
+            errorHandler.handleError(res, error); 
+        }
+	}
+	
 
 	updateEvent(req, res) {
 		res.status(404).send("Work In Progress!");
@@ -49,6 +62,7 @@ class EventsController {
 			errorHandler.handleError(res, error);
 		}
 	}
+
 }
 
 const eventsController = new EventsController();
