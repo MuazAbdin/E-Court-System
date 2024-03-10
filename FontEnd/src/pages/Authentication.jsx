@@ -7,12 +7,19 @@ import { LOGIN_FIELDS, REGISTER_FIELDS } from "../utils/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import { action as submitAction } from "../utils/submitAction";
+import { useState } from "react";
 
 function Authentication() {
   const { page } = useParams();
   const navigate = useNavigate();
   // const [isFlipped, setIsFlipped] = useState(page === "register");
   const isFlipped = page !== "register";
+
+  const [radioValue, setRadiovalue] = useState("Lawyer");
+
+  const changeSelection = (e) => {
+    setRadiovalue(e.target.value);
+  };
 
   return (
     <Wrapper>
@@ -31,6 +38,31 @@ function Authentication() {
             buttonText="submit"
             fields={REGISTER_FIELDS}
           >
+            <fieldset className="user-role">
+              <legend> Your Role </legend>
+              <div className="d-selector">
+                <input
+                  type="radio"
+                  id="lawyer"
+                  name="register-form-userType"
+                  value="Lawyer"
+                  onChange={changeSelection}
+                  checked={radioValue === "Lawyer"}
+                />
+                <label htmlFor="lawyer">lawyer</label>
+              </div>
+              <div className="d-selector">
+                <input
+                  type="radio"
+                  id="judge"
+                  name="register-form-userType"
+                  value="Judge"
+                  onChange={changeSelection}
+                  checked={radioValue === "Judge"}
+                />
+                <label htmlFor="judge">judge</label>
+              </div>
+            </fieldset>
             <div
               className="switch-form"
               // onClick={() => setIsFlipped(!isFlipped)}
@@ -39,7 +71,7 @@ function Authentication() {
               Already have an account?
             </div>
             <section className="google-auth">
-              <div className="separator-text"> OR </div>
+              <div className="separator-text"> Sign in as a vistor </div>
               <GoogleLoginButton />
             </section>
           </StyledRegisterForm>
@@ -61,7 +93,7 @@ function Authentication() {
               Don't have an account?
             </div>
             <section className="google-auth">
-              <div className="separator-text"> OR </div>
+              <div className="separator-text"> Sign in as a vistor </div>
               <GoogleLoginButton />
             </section>
           </StyledLoginForm>
