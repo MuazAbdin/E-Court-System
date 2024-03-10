@@ -17,7 +17,7 @@ import StakeholderForm from "../pages/StakeholderForm";
 // import { action as searchAction } from "../components/Search";
 
 import { action as authAction } from "../pages/Authentication";
-
+import { action as caseAction } from "../pages/CaseForm";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,11 +47,11 @@ const router = createBrowserRouter([
           {
             path: "case",
             element: <CaseForm />,
+            action: caseAction,
           },
           {
             path: "browse",
             element: <Search />,
-            // action: searchAction,
           },
           {
             path: "event/:caseId",

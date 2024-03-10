@@ -310,6 +310,8 @@ export const CASE_FIELDS = [
     type: "text",
     variant: "outlined",
     title: "case description",
+    multiline: true,
+    rows: 4,
     icon: <EditNoteIcon />,
   },
   {

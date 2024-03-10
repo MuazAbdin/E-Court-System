@@ -89,17 +89,12 @@ function AuthForm({
             validator={validator}
             required={f.required}
             severErrorMsg={severErrorMsg}
-<<<<<<< HEAD
-            prevValue={""}
-            isSubmitted={false}
             multiline={f.multiline ?? false}
             rows={f.rows ?? undefined}
-            />
-=======
+           
             prevValue={values?.[f.id] || ""}
             isSubmitted={actionData?.msg === "Invalid inputs"}
           />
->>>>>>> main
         );
       })}
       <button name="submit" className="btn" disabled={isSubmitting}>

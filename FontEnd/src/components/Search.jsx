@@ -11,7 +11,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CaseCard from "./CaseCard";
-import axios from "axios";
+import { fetcher } from "../utils/fetcher";
 
 export default function Search() {
   const [isFilterVisible, setFilterVisible] = useState(false);
@@ -35,13 +35,19 @@ export default function Search() {
 
   const getCases = async () => {
     try {
-      // .get(`http://localhost:4000/cases/?query=${search}&caseTitle=${title}&creationDate=${date}`)
-      const response = await axios.get(
-        `http://localhost:4000/cases/?query=${search}&options=${selectedOption}`
-      );
-      setCases(response.data);
+      // .get(`http://localhost:4000/cases/?query=${search}&caseTitle=${title}&creationDate=${date}&options=${selectedOption}`)
+      const response = await fetcher(`/cases/?query=${search}`);
+      // 
+      if (!response.ok) {
+        const data = await response.text();
+        console.log(data);
+        throw new Error(data);
+      }
+      const data = await response.json()
+      console.log(data)
+      setCases(data)
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error fetching data: ", error.message);
     }
   };
 
@@ -148,13 +154,13 @@ export default function Search() {
   );
 }
 
-// export async function action({request}) {
-//   const fd = await request.formData();
+export async function action({request}) {
+  const fd = await request.formData();
 
-//   // try {
-//   //   const { data } = await axios.get(`http://localhost:4000/?query=${search}`);
-//   //   return data;
-//   // } catch (error) {
-//   //   console.error("Error fetching data: ", error);
-//   // }
-// }
+  try {
+    const { data } = await axios.get(`http://localhost:4000/?query=${search}`);
+    return data;
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  }
+}

@@ -126,6 +126,5 @@ export default function CourtForm() {
     buttonText="ADD COURT"
     fields={COURT_FIELDS}
     />
-
   );
 }
