@@ -22,6 +22,9 @@ import { action as courtAction } from "../pages/CourtForm";
 import { action as documentCreation } from "../pages/DocumentForm";
 import { action as partyCreation } from "../pages/PartyForm";
 import { action as stakeholderCreation } from "../pages/StakeholderForm";
+
+import { loader as dashboardLoader } from "../pages/DashboardLayout";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +42,7 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardLayout />,
+        loader: dashboardLoader,
         children: [
           {
             index: true,
