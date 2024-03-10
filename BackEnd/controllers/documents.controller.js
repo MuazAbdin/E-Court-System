@@ -12,10 +12,10 @@ class DocumentsController {
 	}
 
 	async getDocumentByPartyId(req, res) {
-			const { partyId } = req.params;
+			const { id } = req.params;
 		try {
-			GenericValidator.validateObjectId(partyId)
-			const document = await Document.find({ party: partyId });               
+			GenericValidator.validateObjectId(id)
+			const document = await Document.find({ party: id });               
 			if( document.length === 0){
 				throw new NoDocumentsFoundError()
 			}
@@ -25,12 +25,32 @@ class DocumentsController {
 		}
 	}
 
-	getDocumentByCaseId(req, res) {
-		res.status(404).send("Work In Progress!");
+	async getDocumentByCaseId(req, res) {
+		const { id } = req.params;
+		try {
+			GenericValidator.validateObjectId(id)
+			const document = await Document.find({ case: id });               
+			if( document.length === 0){
+				throw new NoDocumentsFoundError()
+			}
+			res.json(document);
+		} catch(error) {
+			return errorHandler.handleError(res, error)
+		}
 	}
 
-	getDocumentByUserId(req, res) {
-		res.status(404).send("Work In Progress!");
+	async getDocumentByUserId(req, res) {
+			const { id } = req.params;
+		try {
+			GenericValidator.validateObjectId(id)
+			const document = await Document.find({ uploadedBy: id });               
+			if( document.length === 0){
+				throw new NoDocumentsFoundError()
+			}
+			res.json(document);
+		} catch(error) {
+			return errorHandler.handleError(res, error)
+		}
 	}
 
 	async updateDocumentTitle(req, res) {
