@@ -2,6 +2,7 @@ import errorHandler from "../errors/errorHandler.js";
 import { NoPartiesFoundError, PartyDoesNotExistError } from "../errors/party.error.js";
 import Party from "../models/party.model.js";
 import GenericValidator from "../validators/generic.validate.js";
+import PartyValidator from "../validators/party.validate.js";
 
 class PartiesController {
 	createParty(req, res) {
@@ -34,8 +35,20 @@ class PartiesController {
 		}
 	}
 
-	updateParty(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateParty(req, res) {
+		const { partyId, partyName, lawyer } = req.body
+		try {
+			GenericValidator.validateObjectId(partyId);
+			PartyValidator.validatePartyData({ partyName, lawyer });
+			const updatedParty = await Party.findByIdAndUpdate(partyId, {$set: { partyName, lawyer  }}, { new: true });
+			if(updatedParty === null) {
+				throw new PartyDoesNotExistError();
+			}
+			res.json(updatedParty);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async deleteParty(req, res) {
