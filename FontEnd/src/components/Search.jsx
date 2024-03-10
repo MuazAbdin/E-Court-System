@@ -19,6 +19,7 @@ export default function Search() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [search, setSearch] = useState("");
   const [cases, setCases] = useState([]);
+
   const handleToggleFilter = () => {
     setFilterVisible(!isFilterVisible);
     setSelectedStatus("");
@@ -36,7 +37,7 @@ export default function Search() {
     try {
       // .get(`http://localhost:4000/cases/?query=${search}&caseTitle=${title}&creationDate=${date}`)
       const response = await axios.get(
-        `http://localhost:4000/cases/?query=${search}`
+        `http://localhost:4000/cases/?query=${search}&options=${selectedOption}`
       );
       setCases(response.data);
     } catch (error) {
