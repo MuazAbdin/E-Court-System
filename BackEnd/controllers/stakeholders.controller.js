@@ -3,18 +3,24 @@ import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../error
 import Stakeholder from "../models/stakeholder.model.js";
 import StackholderValidator from "../validators/stackholders.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
+import mongoose from "mongoose";
 
 
 class StakeholdersController {
 	
 	async createStakeholder(req, res) {
-		    const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
+		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
 		try {
 			StackholderValidator.validateStackholderData(req.body);
-			const stackholder = await Stakeholder.create({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			const stackholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			res.json(stackholder);
 		}
 		catch(error) {
+			if(error instanceof mongoose.Error.ValidationError) {
+				if(error.errors.type) {
+					return errorHandler.handleError(res, new InvalidStakeholderStatusError());
+				}
+			}
 			errorHandler.handleError(res, error);
 		}
 	}

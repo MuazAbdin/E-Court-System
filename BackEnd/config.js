@@ -5,3 +5,7 @@ export default class Config {
     static JWT_SECRET_KEY = "1234";
     static JWT_EXPIRE_TIME = 60 * 60 * 24 * 7;
 }
+
+export class DBConfig {
+    static STAKEHOLDER_TYPES = ["Witness", "Client"];
+}

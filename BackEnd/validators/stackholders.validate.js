@@ -2,9 +2,9 @@ import GenericValidator from "./generic.validate.js";
 
 export default class StackholderValidator {
 	static validateStackholderData(data) {
+		GenericValidator.validateObjectId(data.partyId);
 		Object.keys(data).forEach((key) =>
-			GenericValidator.validateNotEmpty(data[key])
-		);
+			GenericValidator.validateNotEmpty(data[key]));
 		GenericValidator.validateEmail(data.email);
 		GenericValidator.validatePhoneNumber(data.phoneNumber);
 		GenericValidator.validateIdNumber(data.idNumber);

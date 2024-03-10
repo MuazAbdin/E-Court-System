@@ -10,7 +10,7 @@ class CasesController {
 			CaseValidator.validateCaseData({ title, description, status, court, judge, parties });
 
 			// create case
-			const newCase = Case.create(title, description, status, court, judge);
+			const newCase = new Case(title, description, status, court, judge);
 			// create parties
 			const newParties = [];
 			for(const party of parties) {

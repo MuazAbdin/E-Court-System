@@ -3,6 +3,8 @@ import GenericValidator from "./generic.validate.js";
 
 export default class CaseValidator {
     static validateCaseData(data) {
+        GenericValidator.validateObjectId(data.judge);
+        GenericValidator.validateObjectId(data.court);
         Object.keys(data).forEach(key => 
             GenericValidator.validateNotEmpty(data[key]));
         GenericValidator.validateEmail(data.email);

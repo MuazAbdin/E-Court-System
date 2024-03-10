@@ -6,10 +6,35 @@ import PartyValidator from "../validators/parties.validate.js";
 
 class PartiesController {
 	createParty(req, res) {
-		const { partyName, lawyer, caseId, StakeholderData } = req.body;
+		const { lawyer, client, caseId, stakeholders } = req.body;
 		try {
+			// A case must have less then 2 parties inorder to be able to add another!!
 			PartyValidator.validatePartyData({ partyName, lawyer, caseId })
+			// validate client data
+			//validate stakeholders data
 
+			// create party
+			const newParty = new Party();
+
+			// create client
+			client = new Stakeholder();
+
+			// create stakeholders
+			const newStakeholders = [];
+			for(const stakeholder of stakeholders) {
+				
+			}
+
+			// save all
+			newParty.client = client;
+			newParty.stakeholders = newStakeholders;
+			newParty.save();
+			client.save();
+			for(const stakeholder of stakeholders) {
+				stakeholder.save();
+			}
+
+			res.send(newParty);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
