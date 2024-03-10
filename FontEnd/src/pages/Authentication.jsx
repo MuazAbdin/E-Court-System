@@ -15,7 +15,7 @@ function Authentication() {
   // const [isFlipped, setIsFlipped] = useState(page === "register");
   const isFlipped = page !== "register";
 
-  const [radioValue, setRadiovalue] = useState("lawyer");
+  const [radioValue, setRadiovalue] = useState("Lawyer");
 
   const changeSelection = (e) => {
     setRadiovalue(e.target.value);
@@ -47,7 +47,7 @@ function Authentication() {
                   name="register-form-userType"
                   value="Lawyer"
                   onChange={changeSelection}
-                  checked={radioValue === "lawyer"}
+                  checked={radioValue === "Lawyer"}
                 />
                 <label htmlFor="lawyer">lawyer</label>
               </div>
@@ -58,7 +58,7 @@ function Authentication() {
                   name="register-form-userType"
                   value="Judge"
                   onChange={changeSelection}
-                  checked={radioValue === "judge"}
+                  checked={radioValue === "Judge"}
                 />
                 <label htmlFor="judge">judge</label>
               </div>
