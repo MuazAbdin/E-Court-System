@@ -3,24 +3,26 @@ import { ConfirmationPasswordDoesNotMatchError } from "../errors/userAuth.error.
 import GenericValidator from "./generic.validate.js";
 
 export default class AuthDataValidator {
-    static validatePasswordConfirm(password, confirmPassword) {
-        if(!validator.equals(password + "", confirmPassword + "")) {
-            throw new ConfirmationPasswordDoesNotMatchError();
-        }
+  static validatePasswordConfirm(password, confirmPassword) {
+    if (!validator.equals(password + "", confirmPassword + "")) {
+      throw new ConfirmationPasswordDoesNotMatchError();
     }
+  }
 
-    static validateRegisterData(data) {
-        Object.keys(data).forEach(key => 
-            GenericValidator.validateNotEmpty(data[key]));
-        this.validatePasswordConfirm(data.password, data.confirmPassword);
-        GenericValidator.validateIdNumber(data.idNumber);
-        GenericValidator.validateEmail(data.email);
-        GenericValidator.validatePhoneNumber(data.phoneNumber);
-    }
+  static validateRegisterData(data) {
+    Object.keys(data).forEach((key) =>
+      GenericValidator.validateNotEmpty(data[key])
+    );
+    this.validatePasswordConfirm(data.password, data.confirmPassword);
+    GenericValidator.validateIdNumber(data.idNumber);
+    GenericValidator.validateEmail(data.email);
+    GenericValidator.validatePhoneNumber(data.phoneNumber);
+  }
 
-    static validateLoginData(data) {
-        Object.keys(data).forEach(key => 
-            GenericValidator.validateNotEmpty(data[key]));
-        GenericValidator.validateEmail(data.email);
-    }
+  static validateLoginData(data) {
+    Object.keys(data).forEach((key) =>
+      GenericValidator.validateNotEmpty(data[key])
+    );
+    GenericValidator.validateIdNumber(data.idNumber);
+  }
 }

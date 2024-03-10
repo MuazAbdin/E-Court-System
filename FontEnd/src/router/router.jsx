@@ -12,6 +12,8 @@ import Search from "../components/Search";
 import CaseForm from "../pages/CaseForm";
 import CourtForm from "../pages/CourtForm";
 
+import { action as authAction } from "../pages/Authentication";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
       {
         path: "auth/:page",
         element: <Authentication />,
+        action: authAction,
       },
       {
         path: "dashboard",

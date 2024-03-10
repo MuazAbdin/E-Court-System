@@ -1,4 +1,4 @@
-import { Form, useNavigation } from "react-router-dom";
+import { Form, useActionData, useNavigation } from "react-router-dom";
 import Input from "./Input";
 import { useRef, useState } from "react";
 import { IconButton } from "@mui/material";
@@ -13,11 +13,16 @@ function AuthForm({
   method,
   buttonText,
   fields,
+  values,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const insertedPassword = useRef(null);
+
+  const actionData = useActionData();
+  // console.log(actionData);
+  // const invalidCredentials = actionData?.msg === "invalid credentials";
+  // console.log(invalidCredentials);
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -33,7 +38,7 @@ function AuthForm({
   };
 
   const handleFieldIcon = (field) => {
-    if (["password", "_password"].includes(field.id)) {
+    if (field.id === "password") {
       return (
         <IconButton
           className="eye-icon"
@@ -67,21 +72,25 @@ function AuthForm({
             : f.validator;
 
         let severErrorMsg = "";
+        if (actionData && actionData.data) {
+          const inputItem = actionData.data.find((item) => item.name === f.id);
+          if (inputItem) severErrorMsg = inputItem.message;
+        }
 
         return (
           <Input
-            key={f.id}
+            key={`${formID}-${f.id}`}
             label={f.label}
             type={handleFieldType(f)}
-            id={f.id}
+            id={`${formID}-${f.id}`}
             icon={handleFieldIcon(f)}
             ref={f.id === "password" ? insertedPassword : null}
             autoComplete={f.autoComplete ?? "off"}
             validator={validator}
             required={f.required}
             severErrorMsg={severErrorMsg}
-            prevValue={""}
-            isSubmitted={false}
+            prevValue={values?.[f.id] || ""}
+            isSubmitted={actionData?.msg === "Invalid inputs"}
           />
         );
       })}

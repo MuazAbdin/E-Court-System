@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Wrapper from "../assets/stylingWrappers/Authentication";
 import {
   StyledRegisterForm,
@@ -7,6 +6,7 @@ import {
 import { LOGIN_FIELDS, REGISTER_FIELDS } from "../utils/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import { action as submitAction } from "../utils/submitAction";
 
 function Authentication() {
   const { page } = useParams();
@@ -23,6 +23,7 @@ function Authentication() {
           }`}
         >
           <StyledRegisterForm
+            key="register-form"
             className={`flip-card-front ${!isFlipped ? "active" : ""}`}
             formID="register-form"
             title="sign up"
@@ -44,6 +45,7 @@ function Authentication() {
           </StyledRegisterForm>
 
           <StyledLoginForm
+            key="login-form"
             className={`flip-card-back ${isFlipped ? "active" : ""}`}
             formID="login-form"
             title="sign in"
@@ -70,3 +72,7 @@ function Authentication() {
 }
 
 export default Authentication;
+
+export async function action({ params, request }) {
+  return submitAction({ params, request });
+}
