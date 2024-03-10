@@ -1,7 +1,8 @@
 import Document from "../models/document.model.js"
-import { DocumentDoesNotExistError } from "../errors/document.error.js";
+import { DocumentDoesNotExistError, NoDocumentsFoundError } from "../errors/document.error.js";
 import errorHandler from "../errors/errorHandler.js";
 import DocumentsValidator from "../validators/documents.validate.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class DocumentsController {
 	createDocument(req, res) {}
@@ -10,8 +11,18 @@ class DocumentsController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	getDocumentByPartyId(req, res) {
-		res.status(404).send("Work In Progress!");
+	async getDocumentByPartyId(req, res) {
+			const { partyId } = req.params;
+		try {
+			GenericValidator.validateObjectId(partyId)
+			const document = await Document.find({ party: partyId });               
+			if( document.length === 0){
+				throw new NoDocumentsFoundError()
+			}
+			res.json(document);
+		} catch(error) {
+			return errorHandler.handleError(res, error)
+		}
 	}
 
 	getDocumentByCaseId(req, res) {
