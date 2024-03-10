@@ -6,10 +6,10 @@ import GenericValidator from "../validators/generic.validate.js";
 
 class DocumentsController {
     async createDocument(req, res) {
-		const { caseId, party, title, uploadedBy } = req.body
+		const { caseId, party, title, uploadedBy, fileLocation, fileName } = req.body
 	try {
 			DocumentsValidator.validateDocumentData(req.body);
-			const document = await Document.create({ case: caseId, party, title, uploadedBy , fileLocation: "test", fileName: "test" });
+			const document = await Document.create({ case: caseId, party, title, uploadedBy , fileLocation, fileName });
 			res.json(document);
 		}
 		catch(error) {
