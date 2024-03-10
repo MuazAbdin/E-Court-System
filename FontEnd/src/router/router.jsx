@@ -15,6 +15,9 @@ import EventForm from "../pages/EventForm";
 import PartyForm from "../pages/PartyForm";
 import StakeholderForm from "../pages/StakeholderForm";
 // import { action as searchAction } from "../components/Search";
+
+import { action as authAction } from "../pages/Authentication";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +30,7 @@ const router = createBrowserRouter([
       {
         path: "auth/:page",
         element: <Authentication />,
+        action: authAction,
       },
       {
         path: "dashboard",

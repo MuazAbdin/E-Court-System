@@ -107,8 +107,8 @@ export default function Register({ className, ...props }) {
     });
   };
 
-  const USER_TYPES = ["judge", "lawyer", "visitor"];
-  const [userType, setUserType] = useState("judge");
+  const USER_TYPES = ["Judge", "Lawyer", "Client"];
+  const [userType, setUserType] = useState("Judge");
 
   return (
     <Wrapper>

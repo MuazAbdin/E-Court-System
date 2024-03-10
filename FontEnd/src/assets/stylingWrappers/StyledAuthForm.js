@@ -8,6 +8,8 @@ export const StyledRegisterForm = styled(AuthForm)`
   gap: 1rem;
   border-radius: 1rem;
   padding: 2rem;
+  background-color: var(--background-color-transparent);
+  box-shadow: 0 0 10px var(--text-color);
   font-family: var(--main-font);
   font-size: 1.65rem;
   line-height: 1.2;

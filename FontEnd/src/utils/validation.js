@@ -63,7 +63,8 @@ export const isEmailValid = function (email) {
 export const isMobileValid = function (mobile) {
   if (mobile.length === 0) return { result: false, message: "required" };
   const result = /05\d{8}/.test(mobile);
-  if (!result) return { result: false, message: "invalid" };
+  if (!result)
+    return { result: false, message: "insert a valid israeli mobile nmber" };
   return { result: true, message: "valid" };
 };
 
@@ -77,7 +78,11 @@ export function validateAllFields(fields) {
       f.id === "passwordConfirm"
         ? (value) => f.validator(fields.password || "", value)
         : f.validator;
-    return { name: f.id, value: fields[f.id], ...validator(fields[f.id]) };
+    return {
+      name: f.id,
+      value: fields[f.id],
+      ...validator(fields[f.id]),
+    };
   });
   const data = results
     .filter((r) => !r.result)

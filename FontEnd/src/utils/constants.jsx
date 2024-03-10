@@ -103,12 +103,12 @@ export const LOGIN_FIELDS = [
   {
     type: "number",
     label: "ID Card",
-    id: "_IDcard",
+    id: "IDcard",
     required: true,
   },
   {
     label: "Password",
-    id: "_password",
+    id: "password",
     type: "password",
     required: true,
   },
