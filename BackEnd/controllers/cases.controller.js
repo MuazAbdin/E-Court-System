@@ -1,12 +1,36 @@
+import { InvalidCaseStatusError } from "../errors/case.error.js";
+import Case from "../models/case.model.js";
 import CaseValidator from "../validators/cases.validate.js";
 
 class CasesController {
 	createCase(req, res) {
-		const { courtName, city, street, phoneNumber, email } = req.body;
+		const { title, description, status, court, judge, parties } = req.body;
 		try {
-			CaseValidator.validateCaseData({ courtName, city, street, phoneNumber, email });
+			CaseValidator.validateCaseData({ title, description, status, court, judge, parties });
+
+			// create case
+			const newCase = Case.create(title, description, status, court, judge);
+			// create parties
+			const newParties = [];
+			for(const party of parties) {
+				// validate party
+			}
+			// add parties to case & create case
+			newCase.parties = parties;
+			newCase.save();
+			// create parties
+			for(const party of newParties) {
+				party.save();
+			}
+
+			res.json(newCase);
 		}
 		catch(error) {
+			if(error instanceof mongoose.Error.ValidationError) {
+				if(error.errors.status) {
+					return errorHandler.handleError(res, new InvalidCaseStatusError());
+				}
+			}
 			errorHandler.handleError(res, error);
 		}
 	}
