@@ -1,7 +1,7 @@
 import { Form, useNavigation } from "react-router-dom";
 import Input from "./Input";
 import { useRef, useState } from "react";
-import { IconButton } from "@mui/material";
+import { IconButton, useThemeProps } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -82,7 +82,9 @@ function AuthForm({
             severErrorMsg={severErrorMsg}
             prevValue={""}
             isSubmitted={false}
-          />
+            multiline={f.multiline ?? false}
+            rows={f.rows ?? undefined}
+            />
         );
       })}
       <button name="submit" className="btn" disabled={isSubmitting}>

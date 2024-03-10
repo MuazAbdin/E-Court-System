@@ -41,10 +41,15 @@ const Wrapper = styled.main`
 }
 .link-btn{
     text-decoration: underline;
+    color: var(--primary-600);
+
 }
-.MuiCardActions-root,
-.MuiButtonBase-root{
+.link-btn .MuiCardActions-root,
+.link-btn .MuiButtonBase-root{
     font-family: var(--main-font);
+    color: var(--primary-600);
+}
+.MuiCardActions-root{
 
 }
 `

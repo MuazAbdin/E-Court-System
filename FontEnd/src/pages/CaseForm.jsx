@@ -15,6 +15,8 @@ import toast, { Toaster } from "react-hot-toast";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import Person3Icon from "@mui/icons-material/Person3";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
+import { CASE_FIELDS } from "../utils/constants";
 
 export default function CaseForm() {
   const [caseTitle, setCaseTitle] = useState("");
@@ -46,7 +48,8 @@ export default function CaseForm() {
       }
     }
   };
-  const addParty = () => {
+  const addParty = (e) => {
+    e.preventDefault();
     if (newParty.trim() !== "") {
       setParties((parties) => [...parties, newParty]);
       setNewParty("");
@@ -54,162 +57,170 @@ export default function CaseForm() {
   };
 
   return (
-    <Wrapper>
-      <form>
-        <h2>Legal Case Information Form</h2>
-        <TextField
-          label="Case Title"
-          variant="outlined"
-          title="case title"
-          value={caseTitle}
-          onChange={(e) => setCaseTitle(e.target.value)}
-          //   InputProps={{
-          //     endAdornment: (
-          //       <InputAdornment position="end">
-          //         <TitleIcon />
-          //       </InputAdornment>
-          //     ),
-          //   }}
-        />
-        <div className="description">
-          <TextField
-            label="Description"
-            variant="outlined"
-            title="case description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            multiline
-            rows={4}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <EditNoteIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        {/* <TextField
-          label="Status"
-          variant="outlined"
-          title="case status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <DescriptionIcon />
-              </InputAdornment>
-            ),
-          }}
-        /> */}
-        <br></br>
-        <div className="status">
-          <FormLabel title="case status" id="demo-error-radios">
-            Status
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-error-radios"
-            name="status"
-            value={value}
-            onChange={handleRadioChange}
-          >
-            <FormControlLabel value="open" control={<Radio />} label="Open" />
-            <FormControlLabel
-              value="pending"
-              control={<Radio />}
-              label="Pending"
-            />
-            <FormControlLabel
-              value="closed"
-              control={<Radio />}
-              label="Closed"
-            />
-          </RadioGroup>
-        </div>
-        <div className="court-container">
-          <TextField
-            label="Judge"
-            variant="outlined"
-            title="the judge in the case"
-            value={judge}
-            onChange={(e) => setJudge(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Person3Icon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            label="Court"
-            variant="outlined"
-            title="The court that is handling the case"
-            value={court}
-            onChange={(e) => setCourt(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <AccountBalanceIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        {/* <TextField
-          label="Parties"
-          variant="outlined"
-          title="the parties to the case"
-          value={parties}
-          onChange={(e) => setParties(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="start">
-                  <GroupIcon style={{ backgroundColor: "transparent" }} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        /> */}
-        <div className="add-party-container">
-          <TextField
-          id="party"
-            label="Parties"
-            variant="outlined"
-            title="the parties to the case"
-            value={newParty}
-            onChange={(e) => setNewParty(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="start">
-                    <GroupIcon style={{ backgroundColor: "transparent" }} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <div className="add-btn">
-          <button onClick={addParty}>
-            +
-          </button>
-        </div>
-        </div>
-        {parties.map((party, index) => (
-          <TextField
-            key={index}
-            label={`Party ${index + 1}`}
-            variant="standard"
-            value={party}
-            disabled
-          />
-        ))}
+    // <Wrapper>
+    //   <form>
+    //     <h2>Legal Case Information Form</h2>
+    //     <TextField
+    //       label="Case Title"
+    //       variant="outlined"
+    //       title="case title"
+    //       value={caseTitle}
+    //       onChange={(e) => setCaseTitle(e.target.value)}
+    //       //   InputProps={{
+    //       //     endAdornment: (
+    //       //       <InputAdornment position="end">
+    //       //         <TitleIcon />
+    //       //       </InputAdornment>
+    //       //     ),
+    //       //   }}
+    //     />
+    //     <div className="description">
+    //       <TextField
+    //         label="Description"
+    //         variant="outlined"
+    //         title="case description"
+    //         value={description}
+    //         onChange={(e) => setDescription(e.target.value)}
+    //         multiline
+    //         rows={4}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <EditNoteIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //     </div>
+    //     {/* <TextField
+    //       label="Status"
+    //       variant="outlined"
+    //       title="case status"
+    //       value={status}
+    //       onChange={(e) => setStatus(e.target.value)}
+    //       InputProps={{
+    //         endAdornment: (
+    //           <InputAdornment position="end">
+    //             <DescriptionIcon />
+    //           </InputAdornment>
+    //         ),
+    //       }}
+    //     /> */}
+    //     <br></br>
+    //     <div className="status">
+    //       <FormLabel title="case status" id="demo-error-radios">
+    //         Status
+    //       </FormLabel>
+    //       <RadioGroup
+    //         aria-labelledby="demo-error-radios"
+    //         name="status"
+    //         value={value}
+    //         onChange={handleRadioChange}
+    //       >
+    //         <FormControlLabel value="open" control={<Radio />} label="Open" />
+    //         <FormControlLabel
+    //           value="pending"
+    //           control={<Radio />}
+    //           label="Pending"
+    //         />
+    //         <FormControlLabel
+    //           value="closed"
+    //           control={<Radio />}
+    //           label="Closed"
+    //         />
+    //       </RadioGroup>
+    //     </div>
+    //     <div className="court-container">
+    //       <TextField
+    //         label="Judge"
+    //         variant="outlined"
+    //         title="the judge in the case"
+    //         value={judge}
+    //         onChange={(e) => setJudge(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <Person3Icon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //       <TextField
+    //         label="Court"
+    //         variant="outlined"
+    //         title="The court that is handling the case"
+    //         value={court}
+    //         onChange={(e) => setCourt(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <AccountBalanceIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //     </div>
+    //     {/* <TextField
+    //       label="Parties"
+    //       variant="outlined"
+    //       title="the parties to the case"
+    //       value={parties}
+    //       onChange={(e) => setParties(e.target.value)}
+    //       InputProps={{
+    //         endAdornment: (
+    //           <InputAdornment position="end">
+    //             <IconButton edge="start">
+    //               <GroupIcon style={{ backgroundColor: "transparent" }} />
+    //             </IconButton>
+    //           </InputAdornment>
+    //         ),
+    //       }}
+    //     /> */}
+    //     <div className="add-party-container">
+    //       <TextField
+    //       id="party"
+    //         label="Parties"
+    //         variant="outlined"
+    //         title="the parties to the case"
+    //         value={newParty}
+    //         onChange={(e) => setNewParty(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <IconButton edge="start">
+    //                 <GroupIcon style={{ backgroundColor: "transparent" }} />
+    //               </IconButton>
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //       <div className="add-btn">
+    //       <button onClick={addParty}>
+    //         +
+    //       </button>
+    //     </div>
+    //     </div>
+    //     {parties.map((party, index) => (
+    //       <TextField
+    //         key={index}
+    //         label={`Party ${index + 1}`}
+    //         variant="standard"
+    //         value={party}
+    //         disabled
+    //       />
+    //     ))}
 
-        <button onClick={handleSubmit}>SUBMIT</button>
-        <Toaster position="bottom-center" />
-      </form>
-    </Wrapper>
+    //     <button onClick={handleSubmit}>SUBMIT</button>
+    //     <Toaster position="bottom-center" />
+    //   </form>
+    // </Wrapper>
+    <StyledRegisterForm
+      className={"case-form"}
+      formID="case-form"
+      title="Legal Case Information Form"
+      method="POST"
+      buttonText="SUBMIT"
+      fields={CASE_FIELDS}
+    />
   );
 }

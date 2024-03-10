@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Wrapper from "../assets/stylingWrappers/PartyForm";
 import toast, { Toaster } from "react-hot-toast";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
+import { LEGAL_PARTY_FIELDS } from "../utils/constants";
 
 export default function PartyForm() {
   const [partyName, setPartyName] = useState("");
@@ -34,55 +36,64 @@ export default function PartyForm() {
     }
   };
   return (
-    <Wrapper>
-      <form>
-        <h2>Legal Party Details Form</h2>
-        <TextField
-          label="Party Name"
-          variant="outlined"
-          value={partyName}
-          onChange={(e) => setPartyName(e.target.value)}
-        />
-        <div className="case-lawyer">
-          <TextField
-            label="Case ID"
-            variant="outlined"
-            value={caseId}
-            onChange={(e) => setCaseId(e.target.value)}
-          />
-        <TextField
-          label="Lawyer"
-          variant="outlined"
-          value={lawyer}
-          onChange={(e) => setLawyer(e.target.value)}
-        />
-        </div>
-        <TextField
-          label="Stakeholder"
-          variant="outlined"
-          value={newStakeholder}
-          onChange={(e) => setNewStakeholder(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton className="plus" title="add stakeholder" onClick={handleAddStakeholder}>+</IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        {stakeholders.map((stakeholder, index) => (
-          <TextField
-            key={index}
-            label={`Party ${index + 1}`}
-            variant="standard"
-            value={stakeholder}
-            disabled
-          />
-        ))}
-        <button onClick={handleSubmit}>SUBMIT</button>
+    // <Wrapper>
+    //   <form>
+    //     <h2>Legal Party Details Form</h2>
+    //     <TextField
+    //       label="Party Name"
+    //       variant="outlined"
+    //       value={partyName}
+    //       onChange={(e) => setPartyName(e.target.value)}
+    //     />
+    //     <div className="case-lawyer">
+    //       <TextField
+    //         label="Case ID"
+    //         variant="outlined"
+    //         value={caseId}
+    //         onChange={(e) => setCaseId(e.target.value)}
+    //       />
+    //     <TextField
+    //       label="Lawyer"
+    //       variant="outlined"
+    //       value={lawyer}
+    //       onChange={(e) => setLawyer(e.target.value)}
+    //     />
+    //     </div>
+    //     <TextField
+    //       label="Stakeholder"
+    //       variant="outlined"
+    //       value={newStakeholder}
+    //       onChange={(e) => setNewStakeholder(e.target.value)}
+    //       InputProps={{
+    //         endAdornment: (
+    //           <InputAdornment position="end">
+    //             <IconButton className="plus" title="add stakeholder" onClick={handleAddStakeholder}>+</IconButton>
+    //           </InputAdornment>
+    //         ),
+    //       }}
+    //     />
+    //     {stakeholders.map((stakeholder, index) => (
+    //       <TextField
+    //         key={index}
+    //         label={`Stakeholder ${index + 1}`}
+    //         variant="standard"
+    //         value={stakeholder}
+    //         disabled
+    //       />
+    //     ))}
+    //     <button onClick={handleSubmit}>SUBMIT</button>
 
-        <Toaster position="bottom-center" />
-      </form>
-    </Wrapper>
+    //     <Toaster position="bottom-center" />
+    //   </form>
+    // </Wrapper>
+
+    <StyledRegisterForm
+      className={"party-form"}
+      formID="party-form"
+      title="Legal Party Details Form"
+      method="POST"
+      buttonText="SUBMIT"
+      fields={LEGAL_PARTY_FIELDS}
+    />
   );
 }

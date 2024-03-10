@@ -1,24 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Wrapper from "../assets/stylingWrappers/Search";
-import { FormControlLabel, InputAdornment, Menu, Radio, RadioGroup, TextField } from "@mui/material";
+import {
+  FormControlLabel,
+  InputAdornment,
+  Menu,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CaseCard from "./CaseCard";
+import axios from "axios";
 
 export default function Search() {
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-
+  const [search, setSearch] = useState("");
+  const [cases, setCases] = useState([]);
   const handleToggleFilter = () => {
     setFilterVisible(!isFilterVisible);
-    setSelectedStatus(""); 
+    setSelectedStatus("");
   };
 
   const handleFilterOptionSelect = (option) => {
     setSelectedOption(option);
     setFilterVisible(true);
   };
+  const handleSearChange = (event) => {
+    setSearch(event.target.value.toLowerCase());
+  };
+
+  const getCases = async () => {
+    try {
+      // .get(`http://localhost:4000/cases/?query=${search}&caseTitle=${title}&creationDate=${date}`)
+      const response = await axios.get(
+        `http://localhost:4000/cases/?query=${search}`
+      );
+      setCases(response.data);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+     getCases();
+  }, [search, selectedOption])
 
   return (
     <Wrapper>
@@ -28,6 +56,7 @@ export default function Search() {
             id="outlined-search"
             label="Search"
             type="search"
+            onChange={handleSearChange}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -58,7 +87,8 @@ export default function Search() {
                 onClick={() => handleFilterOptionSelect("type")}
               >
                 Type
-              </p><hr></hr>
+              </p>
+              <hr></hr>
               <p
                 className="options"
                 onClick={() => handleFilterOptionSelect("status")}
@@ -101,14 +131,29 @@ export default function Search() {
                 onClick={() => handleFilterOptionSelect("hearingDates")}
               >
                 Hearing Dates
-              </p><hr></hr>
+              </p>
+              <hr></hr>
             </div>
           )}
         </div>
 
         <p className="text-case">Cases |</p>
-        <CaseCard/>
+        <CaseCard cases={cases} />
+        {/* {cases.map((caseItem) => (
+          <CaseCard key={caseItem.id} caseItem={caseItem} />
+        ))} */}
       </div>
     </Wrapper>
   );
 }
+
+// export async function action({request}) {
+//   const fd = await request.formData();
+
+//   // try {
+//   //   const { data } = await axios.get(`http://localhost:4000/?query=${search}`);
+//   //   return data;
+//   // } catch (error) {
+//   //   console.error("Error fetching data: ", error);
+//   // }
+// }

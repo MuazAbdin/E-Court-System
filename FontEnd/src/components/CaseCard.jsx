@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
 export default function CaseCard() {
   const dummyCases = [
     {
@@ -137,7 +136,7 @@ export default function CaseCard() {
                   component={Link}
                   to={`/dashboard/document/${caseItem.id}`}
                 >
-                  Document Form
+                  Create Document
                 </Button>
               </CardActions>
             </div>
@@ -148,7 +147,7 @@ export default function CaseCard() {
                   component={Link}
                   to={`/dashboard/event/${caseItem.id}`}
                 >
-                  Event Form
+                  Add Event
                 </Button>
               </CardActions>
             </div>

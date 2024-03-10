@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import dbUtils from '../utils/db.utils.js';
 
 const caseSchema = new Schema({
-    caseNumber: { type: Number, required: true, unique: true, default: getCaseNumber },
+    caseNumber: { type: String, required: true, unique: true, set: getCaseNumber },
     status: { type: String, required: true,
          enum: ["Created", "Closed"] },
     title: { type: String, required: true },
@@ -30,7 +30,7 @@ const Case = model("Case", caseSchema, "Case");
 dbUtils.setFieldCounter(Case, "caseNumber", "caseNumberCounter", 1);
 
 function getCaseNumber() {
-    return dbUtils.getCounterAndIncrement(Case, "caseNumberCounter");
+    return dbUtils.getCounterAndIncrement(Case, "caseNumberCounter") + "";
 }
 
 export default Case;

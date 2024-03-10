@@ -14,7 +14,7 @@ import CourtForm from "../pages/CourtForm";
 import EventForm from "../pages/EventForm";
 import PartyForm from "../pages/PartyForm";
 import StakeholderForm from "../pages/StakeholderForm";
-
+// import { action as searchAction } from "../components/Search";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +47,7 @@ const router = createBrowserRouter([
           {
             path: "browse",
             element: <Search />,
+            // action: searchAction,
           },
           {
             path: "event/:caseId",

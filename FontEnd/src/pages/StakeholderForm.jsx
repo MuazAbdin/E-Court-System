@@ -6,6 +6,8 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import MailIcon from "@mui/icons-material/Mail";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
+import { STAKEHOLDER_FIELDS } from "../utils/constants";
 
 export default function StakeholderForm() {
   const [idNumber, setIdNumber] = useState();
@@ -53,91 +55,99 @@ export default function StakeholderForm() {
   };
 
   return (
-    <Wrapper>
-      <form>
-        <h2>Stakeholder Details Form</h2>
-        <TextField
-          label="ID Number"
-          variant="outlined"
-          title="id number"
-          onChange={(e) => setIdNumber(e.target.value)}
-        />
-        <div className="full-name">
-          <TextField
-            label="First Name"
-            variant="outlined"
-            title="first name"
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <TextField
-            label="Last Name"
-            variant="outlined"
-            title="last name"
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
+    // <Wrapper>
+    //   <form>
+    //     <h2>Stakeholder Details Form</h2>
+    //     <TextField
+    //       label="ID Number"
+    //       variant="outlined"
+    //       title="id number"
+    //       onChange={(e) => setIdNumber(e.target.value)}
+    //     />
+    //     <div className="full-name">
+    //       <TextField
+    //         label="First Name"
+    //         variant="outlined"
+    //         title="first name"
+    //         onChange={(e) => setFirstName(e.target.value)}
+    //       />
+    //       <TextField
+    //         label="Last Name"
+    //         variant="outlined"
+    //         title="last name"
+    //         onChange={(e) => setLastName(e.target.value)}
+    //       />
+    //     </div>
 
-        <div className="contact-container">
-          <TextField
-            label="Email"
-            variant="outlined"
-            title="email address"
-            onChange={(e) => setEmail(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <MailIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            label="Phone"
-            variant="outlined"
-            title="phone number"
-            onChange={(e) => setPhone(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <PhoneIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
+    //     <div className="contact-container">
+    //       <TextField
+    //         label="Email"
+    //         variant="outlined"
+    //         title="email address"
+    //         onChange={(e) => setEmail(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <MailIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //       <TextField
+    //         label="Phone"
+    //         variant="outlined"
+    //         title="phone number"
+    //         onChange={(e) => setPhone(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <PhoneIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //     </div>
 
-        <div className="address-container">
-          <TextField
-            label="City"
-            variant="outlined"
-            title="city"
-            onChange={(e) => setCity(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <LocationCityIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            label="Street Address"
-            variant="outlined"
-            title="street address"
-            onChange={(e) => setStreetAddress(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <LocationOnIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <button onClick={handleSubmit}>SUBMIT</button>
+    //     <div className="address-container">
+    //       <TextField
+    //         label="City"
+    //         variant="outlined"
+    //         title="city"
+    //         onChange={(e) => setCity(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <LocationCityIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //       <TextField
+    //         label="Street Address"
+    //         variant="outlined"
+    //         title="street address"
+    //         onChange={(e) => setStreetAddress(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <LocationOnIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
+    //     </div>
+    //     <button onClick={handleSubmit}>SUBMIT</button>
 
-        <Toaster position="bottom-center" />
-      </form>
-    </Wrapper>
+    //     <Toaster position="bottom-center" />
+    //   </form>
+    // </Wrapper>
+    <StyledRegisterForm
+    className={"stakeholder-form"}
+    formID="stakeholder-form"
+    title="Stakeholder Details Form"
+    method="POST"
+    buttonText="SUBMIT"
+    fields={STAKEHOLDER_FIELDS}
+  />
   );
 }
