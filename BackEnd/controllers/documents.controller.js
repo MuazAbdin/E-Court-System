@@ -1,14 +1,11 @@
-import DocumentValidator from "../validators/document.validate";
+import Document from "../models/document.model.js"
+import { DocumentDoesNotExistError } from "../errors/document.error.js";
+import errorHandler from "../errors/errorHandler.js";
+import DocumentsValidator from "../validators/documents.validate.js";
 
 class DocumentsController {
 	createDocument(req, res) {
-		const { caseId, title, uploadedBy } = req.body;
-		try {
-			DocumentValidator.validateDocumentData({ caseId, title, uploadedBy })
-		}
-		catch(error) {
-			errorHandler.handleError(res, error);
-		}
+		res.status(404).send("Work In Progress!");
 	}
 
 	getDocumentById(req, res) {
@@ -27,8 +24,19 @@ class DocumentsController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	updateDocumentTitle(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateDocumentTitle(req, res) {
+		const { id, title } = req.body;
+		try {
+			DocumentsValidator.validateDocumentData({ id, title });
+			const updatedDocument = await Document.findByIdAndUpdate(id, {$set: { title }});
+			if(updatedDocument === null) {
+				throw new DocumentDoesNotExistError();
+			}
+			res.json(updatedDocument);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 

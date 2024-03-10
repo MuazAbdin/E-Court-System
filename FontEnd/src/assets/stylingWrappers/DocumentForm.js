@@ -9,11 +9,11 @@ display: flex;
    
 form{
     background-color: var(--background-color-transparent);
-    height: 85%;
-    width: 40%;
+    height: 90%;
+    width: 70%;
     padding: 2%;
-    margin-top: 2%;
-    margin-bottom: 2%;
+    margin-top: 7%;
+    margin-bottom: 5%;
     border-radius: 16px;
     padding-left: 4vw;
     transition: transform 0.6s;
@@ -29,9 +29,9 @@ button{
     width: 40%;
     font-family: var(--subtitle-font);
     font-size: 20px;
-    background-color: #f2eee3;
+    background-color: var(--primary-300);
     border-radius: 18px;
-    margin-top: 5%;
+    margin-bottom: 4%;
 }
 h2{
     font-family: var(--title-font);
@@ -93,10 +93,10 @@ h2{
 }
 .submit-btn{
     /* display: flex; */
-    margin-left: 22lvw;
+    margin-left: 21lvw;
     width: 10vw;
     margin-top: 8%;
-    margin-bottom: 2%;
+    /* margin-bottom: 1%; */
 }
 `
 export default Wrapper

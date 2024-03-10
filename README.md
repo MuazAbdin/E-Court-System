@@ -54,7 +54,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Case | /cases/ | POST | title, decription, status, court, judge? | Case |
-| Get All Cases | /cases/?caseTitle&status&courtName&judgeName&lawyerName | GET | | [ Case ] |
+| Get All Cases | /cases/?query | GET | | [ Case ] |
 | Get Case | /cases/:id | GET | | CASE
 | Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | Case |
 | Update Case Status | /cases/status/ | PATCH | _id, status | CASE |
@@ -74,7 +74,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Get Document | /documents/:id | GET | | Document |
 | Get Party Documents | /documents/:partyId | GET | | Document |
 | Get Case Documents | /documents/:caseId | GET | | Document |
-| Update Document Title | /documents/ | PATCH | title | | Document |
+| Update Document Title | /documents/ | PATCH | id, title | Document |
 
 ### Event Routes
 | Title | Route | Type | Request | Response |

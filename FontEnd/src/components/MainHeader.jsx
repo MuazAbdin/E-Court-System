@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/MainHeader.js";
-import { FaBriefcase, FaCapsules, FaEnvelope, FaFile, FaHouse, FaHouseMedical, FaScaleBalanced } from "react-icons/fa6";
+import {
+  FaBriefcase,
+  FaCapsules,
+  FaEnvelope,
+  FaFile,
+  FaHouse,
+  FaHouseMedical,
+  FaScaleBalanced,
+} from "react-icons/fa6";
 import Logo from "./Logo.jsx";
 import ToggleTheme from "./ToggleTheme.jsx";
 
@@ -16,13 +24,13 @@ function MainHeader({ isDark, themeToggle }) {
             <FaHouse/>
             <Link to="/">Home</Link>
           </li>
-          <li>
+          {/* <li>
             <FaFile />
-            <Link to="/cases">Cases</Link>
-          </li>
+            <Link to="dashboard/cases">Cases</Link>
+          </li> */}
           <li>
             <FaScaleBalanced />
-            <Link to="/">Services</Link>
+            <Link to="dashboard">Services</Link>
           </li>
           <li>
             <FaEnvelope />
