@@ -48,7 +48,7 @@ const Input = forwardRef(function Input(
         error={showMessage && hasError}
         helperText={showMessage && hasError ? errorMessage : ""}
         {...props}
-        ref={ref}
+        inputRef={ref}
         // color="success"
       />
     </Wrapper>

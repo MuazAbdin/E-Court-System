@@ -1,7 +1,16 @@
 import { FaRightFromBracket } from "react-icons/fa6";
+import { fetcher } from "../utils/fetcher";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function PageHeader({ name }) {
-  function handleLogout() {}
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await fetcher("/auth/logout", { method: "POST" });
+    toast.success("Logged out successfully");
+    return navigate("/auth/login");
+  }
 
   return (
     <header>
