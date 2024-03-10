@@ -10,12 +10,7 @@ class CasesController {
 	async getCases(req, res) {
 		const { query } = req.query;
 		try {
-			const cases = await Case.find({
-				$or: [
-					{ caseNumber: { $regex: query, $options: "i"} },
-					{ title: { $regex: query, $options: "i"} },
-				  ],
-			})
+			const cases = await Case.query(query);
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}

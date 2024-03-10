@@ -25,6 +25,19 @@ const caseSchema = new Schema({
 })
 
 caseSchema.statics.caseNumberCounter = 1;
+caseSchema.statics.query = function(query) {
+    if(query) {
+        return Case.find({
+        $or: [
+                { caseNumber: { $regex: query, $options: "i"} },
+                { title: { $regex: query, $options: "i"} },
+              ],
+        })
+    }
+    else {
+        return Case.find({});
+    }
+}
 
 const Case = model("Case", caseSchema, "Case");
 dbUtils.setFieldCounter(Case, "caseNumber", "caseNumberCounter", 1);
