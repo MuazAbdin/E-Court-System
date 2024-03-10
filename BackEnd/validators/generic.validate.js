@@ -18,7 +18,7 @@ export default class GenericValidator {
     }
 
     static validatePhoneNumber(phoneNumber) {
-        if(phoneNumber.length !== 10 || !validator.isNumeric(phoneNumber)) {
+        if(phoneNumber.length !== 10 || phoneNumber.slice(0, 2) === "05" || !validator.isNumeric(phoneNumber)) {
             throw new InvalidPhoneNumberError();
         }
     }
