@@ -1,5 +1,8 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 
 import { router as usersRoutes } from "./routes/users.route.js";
 import { router as authRoutes } from "./routes/auth.route.js";
@@ -12,9 +15,19 @@ import { router as stakeholdersRoutes } from "./routes/stakeholders.route.js";
 
 const app = express();
 
-app.use(cors());
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+app.use(
+  cors({
+    credentials: true, // important part here
+    origin: "http://localhost:5173",
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);

@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 import { NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, UserTypeNotFoundError } from '../errors/user.error.js';
 import errorHandler from '../errors/errorHandler.js'; 
 import User from '../models/user.model.js'; 
 import { dbConfig } from "../config.js";
+=======
+import UserValidator from "../validators/user.validate.js";
+import User from "../models/user.model.js"
+import { UserDoesNotExistError } from "../errors/user.error.js";
+import GenericValidator from "../validators/generic.validate.js";
+import errorHandler from "../errors/errorHandler.js";
+>>>>>>> 6c3c035d4935c4f1b8874b50bf4bd48813fac906
 
 class UserController {
     async getJudges(req, res) {
@@ -52,8 +60,20 @@ class UserController {
         res.status(404).send("Work In Progress!");
     }
 
-    updateUser(req, res) {
-        res.status(404).send("Work In Progress!");
+   async updateUser(req, res) {
+       const { _id, phoneNumber, city, street } = req.body
+		try {
+            GenericValidator.validateObjectId(_id);
+			UserValidator.validateUserData({ phoneNumber, city, street });
+			const updatedUser = await User.findByIdAndUpdate(_id, {$set: { phoneNumber, city, street }}, { new: true });
+			if(updatedUser === null) {
+				throw new UserDoesNotExistError();
+			}
+			res.json(updatedUser);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
     }
 }
 

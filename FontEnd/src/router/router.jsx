@@ -4,14 +4,15 @@ import {
   Landing,
   DashboardLayout,
   Overview,
-  AuthForm,
   DocumentForm,
+  Authentication,
 } from "../pages";
 
 import Search from "../components/Search";
 import CaseForm from "../pages/CaseForm";
 import CourtForm from "../pages/CourtForm";
 
+import { action as authAction } from "../pages/Authentication";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,8 @@ const router = createBrowserRouter([
       },
       {
         path: "auth/:page",
-        element: <AuthForm />,
+        element: <Authentication />,
+        action: authAction,
       },
       {
         path: "dashboard",
@@ -50,7 +52,6 @@ const router = createBrowserRouter([
             path: "court",
             element: <CourtForm />,
           },
-
         ],
       },
     ],

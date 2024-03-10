@@ -9,6 +9,5 @@ export default class Config {
 export class dbConfig {
     static USER_TYPES = ['Judge', 'Lawyer', 'Admin', 'Secretary'];
     static CASE_STATUS_TYPES = ['Created', 'Closed'];
-    static EVENT_TYPES = ['General'];
- 
+    static EVENT_TYPES = ['General', 'Trial', 'Appeal', 'Hearing'];
 }

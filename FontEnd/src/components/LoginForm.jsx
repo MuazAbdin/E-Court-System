@@ -1,5 +1,5 @@
 import { FaFacebookF, FaGooglePlusG } from "react-icons/fa6";
-import Wrapper from "../assets/stylingWrappers/Login";
+import Wrapper from "../assets/stylingWrappers/LoginForm";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ export default function Login(props) {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handlePassword = () => {
@@ -133,7 +133,6 @@ export default function Login(props) {
         <p>
           Don't have an account?
           <span className="signUpLink" onClick={props.flip}>
-            {" "}
             Sign Up
           </span>
         </p>
