@@ -18,6 +18,9 @@ import StakeholderForm from "../pages/StakeholderForm";
 
 import { action as authAction } from "../pages/Authentication";
 import { action as caseAction } from "../pages/CaseForm";
+
+import { loader as dashboardLoader } from "../pages/DashboardLayout";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,6 +38,7 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardLayout />,
+        loader: dashboardLoader,
         children: [
           {
             index: true,
