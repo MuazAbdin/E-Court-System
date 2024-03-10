@@ -61,9 +61,13 @@ function AuthForm({
     return field.icon;
   };
 
+  const USER_TYPES = ["Lawyer", "Judge"];
+  const [userType, setUserType] = useState("Lawyer");
+
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
+      {children.filter((c) => c.type === "fieldset")}
       {fields.map((f) => {
         const validator =
           f.id === "passwordConfirm"
@@ -97,7 +101,7 @@ function AuthForm({
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
-      {children}
+      {children.filter((c) => c.type !== "fieldset")}
     </Form>
   );
 }

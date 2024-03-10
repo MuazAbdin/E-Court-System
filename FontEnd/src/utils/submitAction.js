@@ -20,10 +20,10 @@ export async function action({ request }) {
   try {
     const response = await fetcher(url, {
       method: request.method,
-      body: JSON.stringify({ ...data, userType: "Lawyer" }),
+      body: JSON.stringify(data),
     });
 
-    console.log(response);
+    // console.log(response);
     if (!response.ok) {
       const data = await response.text();
       console.log(data);
