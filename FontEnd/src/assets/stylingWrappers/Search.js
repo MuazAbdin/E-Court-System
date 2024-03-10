@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.main`
 /* display: flex; */
+z-index: 2;
 justify-content: space-between;
 .browse{
     margin-top: 3%;
