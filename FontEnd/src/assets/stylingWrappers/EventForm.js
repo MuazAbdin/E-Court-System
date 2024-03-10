@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.main`
-flex-grow: 1;
-display: flex;
+    flex-grow: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
     justify-items: center;
@@ -47,15 +47,10 @@ h2{
     margin-right: 5vh;
     width: 18vw;
 }
-.contact-container,
-.address-container{
-    display: flex;
-    column-gap: 10%;
-    padding-right: 10%;
+.description .MuiInputBase-root{
+    width: 25vw;
 }
-.contact-container .MuiInputBase-root,
-.address-container .MuiInputBase-root  {
-    width: 15vw;
-}
+
 `
+
 export default Wrapper

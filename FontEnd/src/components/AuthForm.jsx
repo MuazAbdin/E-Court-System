@@ -1,7 +1,7 @@
 import { Form, useActionData, useNavigation } from "react-router-dom";
 import Input from "./Input";
 import { useRef, useState } from "react";
-import { IconButton } from "@mui/material";
+import { IconButton, useThemeProps } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -93,6 +93,9 @@ function AuthForm({
             validator={validator}
             required={f.required}
             severErrorMsg={severErrorMsg}
+            multiline={f.multiline ?? false}
+            rows={f.rows ?? undefined}
+           
             prevValue={values?.[f.id] || ""}
             isSubmitted={actionData?.msg === "Invalid inputs"}
           />
