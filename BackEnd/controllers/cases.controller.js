@@ -1,6 +1,6 @@
 import errorHandler from "../errors/errorHandler.js";
 import Case from "../models/case.model.js";
-import { NoCasesFoundError } from "../errors/case.error.js";
+import { InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
 import CaseValidator from "../validators/case.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
 
@@ -36,11 +36,11 @@ class CasesController {
 		try{
 			GenericValidator.validateObjectId(_id);
 			CaseValidator.validateCaseData({ status });
-			const updatedCase = await Case.findByIdAndUpdate(_id, {$set: { title, description, status, court, judge }}, { new: true });
-			if(updatedCase === null) {
+			const updatedCaseStatus = await Case.findByIdAndUpdate(_id, {$set: { status }}, { new: true });
+			if(updatedCaseStatus === null) {
 				throw new CaseDoesNotExistError();
 			}
-			res.json(updatedCase);
+			res.json(updatedCaseStatus);
 		} catch(error) {
 			if(error instanceof mongoose.Error.ValidationError) {
 				if(error.errors.status) {
