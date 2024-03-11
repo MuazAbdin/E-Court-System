@@ -33,11 +33,7 @@ class EventsController {
   
 	getEventTypes(req, res) {
         try {
-            const eventTypes = dbConfig.EVENT_TYPES;
-            if (!eventTypes || eventTypes.length === 0) {
-                throw new NoEventTypesFoundError(); 
-            }
-            res.json(eventTypes);
+            res.json(dbConfig.EVENT_TYPES);
 		} catch (error) {
             errorHandler.handleError(res, error); 
         }

@@ -37,11 +37,7 @@ class CasesController {
 
 	getCaseStatusTypes(req, res) {
         try {
-            const caseStatusTypes = dbConfig.CASE_STATUS_TYPES;
-            if (!caseStatusTypes || caseStatusTypes.length === 0) {
-                throw new NoCaseStatusFoundError();
-            }
-            res.json(caseStatusTypes);
+            res.json(dbConfig.CASE_STATUS_TYPES);
         } catch (error) {
             errorHandler.handleError(res, error);
         }
