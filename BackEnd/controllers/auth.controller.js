@@ -47,7 +47,6 @@ class AuthController {
         userData.licenseNumber = licenseNumber;
       }
 
-      console.log(userData);
 
       AuthDataValidator.validateRegisterData(userData);
 
