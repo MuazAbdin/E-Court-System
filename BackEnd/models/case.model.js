@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 import dbUtils from '../utils/db.utils.js';
 
 const caseSchema = new Schema({
-    caseNumber: { type: String, required: true, unique: true, set: getCaseNumber },
+    caseNumber: { type: String, unique: true, default: getCaseNumber },
     status: { type: String, required: true,
          enum: ["Created", "Closed"] },
     title: { type: String, required: true },
@@ -13,7 +13,7 @@ const caseSchema = new Schema({
         default: []
     },
     creationDate: { type: Date, required: true, default: Date.now },
-    lastUpdateDate: { type: Date, required: true, default: null },
+    lastUpdateDate: { type: Date, default: null },
     events: {
         type: [{ type: Schema.Types.ObjectId, ref: "Event" }],
         default: []

@@ -15,4 +15,10 @@ export default class PartyValidator {
             GenericValidator.validateNotEmpty(data[key]));
         StackholderValidator.validateStackholderData(client);      
     }
+
+    static validateCaseCreatePartyData(data) {
+        GenericValidator.validateObjectId(data.lawyer);
+        Object.keys(data).forEach(key => 
+            GenericValidator.validateNotEmpty(data[key]));
+    }
 }

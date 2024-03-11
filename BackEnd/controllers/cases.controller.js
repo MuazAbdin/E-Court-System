@@ -5,39 +5,46 @@ import Case from "../models/case.model.js";
 import PartyValidator from "../validators/parties.validate.js";
 import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
+import mongoose from "mongoose";
+import { DBConfig } from "../config.js";
+import dbUtils from "../utils/db.utils.js";
 
 class CasesController {
-	createCase(req, res) {
+	async createCase(req, res) {
 		const { title, description, status, court, judge, parties } = req.body;
+		// Saves created Documents to delete them on faliure/error
+		const savedDocs = [];
 		try {
 			// Validate parties!
 			CaseValidator.validateCaseData({ title, description, status, court, judge, parties });
 			for(const party of parties) {
-				PartyValidator.validatePartyData(party);
+			 	PartyValidator.validateCaseCreatePartyData(party);
 			}
 
-			const newCase = new Case(title, description, status, court, judge);
+			const newCase = new Case({title, description, status, court, judge});
 			const newParties = [];
 			for(const index in parties) {
-				const { lawyer, client, newCase } = parties[index];
+				const { lawyer, client } = parties[index];
 				const newParty = new Party({ lawyer, case: newCase, name: DBConfig.PARTY_NAMES[index], stakeholders: [] });
-				const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
-				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
-				newClient.save();
-				newParties.client = newClient;
+				const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
+				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty, idNumber, firstName, lastName, email, phoneNumber, city, street });
+				await newClient.save();
+				savedDocs.push(newClient);
+				newParty.client = newClient;
 				newParties.push(newParty)
 			}
-
-			// add parties to case & create case
-			newCase.parties = parties;
-			newCase.save();
-			// create parties
+			
+			newCase.parties = newParties.map(party => party._id);
+			await newCase.save();
+			savedDocs.push(newCase);
 			for(const party of newParties) {
-				party.save();
+				await party.save();
+				savedDocs.push(party);
 			}
 			res.json(newCase);
 		}
 		catch(error) {
+			dbUtils.deleteDocuments(savedDocs);
 			if(error instanceof mongoose.Error.ValidationError) {
 				if(error.errors.status) {
 					return errorHandler.handleError(res, new InvalidCaseStatusError());

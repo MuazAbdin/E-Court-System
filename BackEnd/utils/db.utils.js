@@ -1,10 +1,12 @@
 class DBUtils {
     async setFieldCounter(Model, fieldName, counterKeyName, defaultValue = 1) {
-        const document = await Model.findOne({}, {}, { sort: { fieldName : -1 } });
-        Model[counterKeyName] = document ? document[fieldName] + 1 : defaultValue;
+        const query = {}
+        query[fieldName] = -1;
+        const document = await Model.findOne({}, {}, { sort: query }).collation({locale: "en_US", numericOrdering: true});
+        Model[counterKeyName] = document ? parseInt(document[fieldName]) + 1 : defaultValue;
     }
     
-    async getCounterAndIncrement(Model, counterKeyName) {   
+    getCounterAndIncrement(Model, counterKeyName) {
         return Model[counterKeyName]++;
     }
 
@@ -33,6 +35,13 @@ class DBUtils {
             return deletedRecord;
         }
         return null;
+    }
+
+    deleteDocuments(documents) {
+        console.log(documents);
+        for(const doc of documents) {
+            doc.constructor.findByIdAndDelete(doc._id).exec();
+        }
     }
 }
 

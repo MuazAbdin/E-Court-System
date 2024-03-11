@@ -3,17 +3,18 @@ import GenericValidator from "./generic.validate.js";
 
 export default class CaseValidator {
     static validateCaseData(data) {
-        GenericValidator.validateObjectId(data.judge);
-        GenericValidator.validateObjectId(data.court);
-        Object.keys(data).forEach(key => 
-            GenericValidator.validateNotEmpty(data[key]));
-        GenericValidator.validateEmail(data.email);
-        GenericValidator.validatePhoneNumber(data.phoneNumber);
+        if(!Array.isArray(data.parties)) {
+            throw new PartiesMustBeAnArrayError();
+        };
         if(data.parties.length === 0) {
             throw new NoPartiesProvidedError();
         }
         else if(data.parties.length > 2) {
             throw new TooManyPartiesProvidedError();
         }
+        GenericValidator.validateObjectId(data.judge);
+        GenericValidator.validateObjectId(data.court);
+        Object.keys(data).forEach(key => 
+            GenericValidator.validateNotEmpty(data[key]));
     }
 }

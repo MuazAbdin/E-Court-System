@@ -16,31 +16,15 @@ class AuthController {
   async register(req, res) {
     console.log(req.body);
     const {
-      password,
-      passwordConfirm: confirmPassword,
-      IDcard: idNumber,
-      firstName,
-      lastName,
-      userType,
-      email,
-      mobile: phoneNumber,
-      city,
-      street,
-      licenseNumber,
+      password, passwordConfirm: confirmPassword, IDcard: idNumber, 
+      firstName, lastName, userType, email, mobile: phoneNumber, 
+      city, street, licenseNumber 
     } = req.body;
 
     try {
-      const userData = {
-        password,
-        confirmPassword,
-        idNumber,
-        firstName,
-        lastName,
-        userType,
-        email,
-        phoneNumber,
-        city,
-        street,
+      const userData = { password, confirmPassword,
+        idNumber, firstName, lastName, userType, email, 
+        phoneNumber, city, street
       };
       // TODO add check for userType instead of licenseNumber value
       if (licenseNumber) {
