@@ -1,9 +1,11 @@
 import errorHandler from "../errors/errorHandler.js";
-import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../errors/stakeholders.error.js";
+import { InvalidStakeholderTypeError, NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../errors/stakeholders.error.js";
 import Stakeholder from "../models/stakeholder.model.js";
 import StakeholderValidator from "../validators/stakeholders.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
 import mongoose from "mongoose";
+import { DBConfig } from "../config.js";
+import Party from "../models/party.model.js";
 
 
 class StakeholdersController {
@@ -12,13 +14,17 @@ class StakeholdersController {
 		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
 		try {
 			StakeholderValidator.validateStakeholderData(req.body);
-			const stackholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
-			res.json(stackholder);
+			if(stakeholderType === DBConfig.STAKEHOLDER_TYPES[0]) {
+				throw new InvalidStakeholderTypeError
+			}
+			const stakeholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } })
+			res.json(stakeholder);
 		}
 		catch(error) {
 			if(error instanceof mongoose.Error.ValidationError) {
 				if(error.errors.type) {
-					return errorHandler.handleError(res, new InvalidStakeholderStatusError());
+					return errorHandler.handleError(res, new InvalidStakeholderTypeError());
 				}
 			}
 			errorHandler.handleError(res, error);
@@ -29,11 +35,11 @@ class StakeholdersController {
 		const { id } = req.params;
 		try {
 			GenericValidator.validateObjectId(id)
-			const stackholdler = await Stakeholder.findById(id);
-			if(stackholdler === null){
+			const stakeholder = await Stakeholder.findById(id);
+			if(stakeholder === null){
 				throw new StakeholderDoesNotExistError()
 			}
-			res.json(stackholdler);
+			res.json(stakeholder);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
@@ -43,11 +49,11 @@ class StakeholdersController {
 		const { partyId } = req.params;
 		try {
 			GenericValidator.validateObjectId(partyId)
-			const stackholdlers = await Stakeholder.find({ party: partyId });               
-			if( stackholdlers.length === 0){
+			const stakeholders = await Stakeholder.find({ party: partyId });               
+			if( stakeholders.length === 0){
 				throw new NoStakeholdersFoundError()
 			}
-			res.json(stackholdlers);
+			res.json(stakeholders);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}
@@ -58,11 +64,11 @@ class StakeholdersController {
 		try {
 			GenericValidator.validateObjectId(_id);
 			StakeholderValidator.validateStakeholderData({ idNumber, firstName, lastName, email, phoneNumber, city, street  });
-			const updatedStackholder = await Stakeholder.findByIdAndUpdate(_id, {$set: { idNumber, firstName, lastName, email, phoneNumber, city, street  }}, { new: true });
-			if(updatedStackholder === null) {
+			const updatedStakeholder = await Stakeholder.findByIdAndUpdate(_id, {$set: { idNumber, firstName, lastName, email, phoneNumber, city, street  }}, { new: true });
+			if(updatedStakeholder === null) {
 				throw new StakeholderDoesNotExistError();
 			}
-			res.json(updatedStackholder);
+			res.json(updatedStakeholder);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
