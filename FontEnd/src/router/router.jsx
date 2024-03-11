@@ -6,6 +6,8 @@ import {
   Overview,
   DocumentForm,
   Authentication,
+  EditUserDetails,
+  ChangeUserPassword,
 } from "../pages";
 
 import Search from "../components/Search";
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Overview />,
+          },
+          {
+            path: "edit-details",
+            element: <EditUserDetails />,
+          },
+          {
+            path: "change-password",
+            element: <ChangeUserPassword />,
           },
           {
             path: "document/:caseId",
