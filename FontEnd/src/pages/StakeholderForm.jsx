@@ -8,6 +8,8 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { STAKEHOLDER_FIELDS } from "../utils/constants";
+import { fetcher } from "../utils/fetcher";
+import { redirect } from "react-router-dom";
 
 export default function StakeholderForm() {
   const [idNumber, setIdNumber] = useState();
@@ -150,4 +152,33 @@ export default function StakeholderForm() {
     fields={STAKEHOLDER_FIELDS}
   />
   );
+}
+export async function action ({request}){
+  const fd = await request.formData()
+  const data = Object.fromEntries(
+    [...fd.entries()]
+      .filter((entry) => entry[0] !== "submit")
+      .map((entry) => [entry[0].split("-")[2], entry[1]])
+  );
+  console.log(data);
+  
+  try {
+    const response = await fetcher('/stakeholder/', {
+      method: request.method,
+      body: JSON.stringify(data),
+    });
+
+    console.log(response);
+    if (!response.ok) {
+      const data = await response.text();
+      console.log(data);
+      throw new Error(data);
+    }
+
+    toast.success("Created Successfully!");
+    return redirect('');
+  } catch (error) {
+    toast.error(error.message);
+    return error;
+  }
 }

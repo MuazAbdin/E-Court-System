@@ -20,6 +20,13 @@ import StakeholderForm from "../pages/StakeholderForm";
 
 import { action as authAction } from "../pages/Authentication";
 import { action as caseAction } from "../pages/CaseForm";
+import { action as courtAction } from "../pages/CourtForm";
+import { action as documentCreation } from "../pages/DocumentForm";
+import { action as partyCreation } from "../pages/PartyForm";
+import { action as stakeholderCreation } from "../pages/StakeholderForm";
+
+import { loader as dashboardLoader } from "../pages/DashboardLayout";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +44,7 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardLayout />,
+        loader: dashboardLoader,
         children: [
           {
             index: true,
@@ -53,6 +61,7 @@ const router = createBrowserRouter([
           {
             path: "document/:caseId",
             element: <DocumentForm />,
+            action: documentCreation
           },
           {
             path: "case",
@@ -70,14 +79,17 @@ const router = createBrowserRouter([
           {
             path: "court",
             element: <CourtForm />,
+            action: courtAction,
           },
           {
             path: "party",
             element: <PartyForm />,
+            action: partyCreation
           },
           {
             path: "stakeholder",
             element: <StakeholderForm />,
+            action: stakeholderCreation
           },
         ],
       },
