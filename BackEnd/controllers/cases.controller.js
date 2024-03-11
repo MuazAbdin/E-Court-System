@@ -1,6 +1,8 @@
 import errorHandler from "../errors/errorHandler.js";
 import Case from "../models/case.model.js";
 import { NoCasesFoundError } from "../errors/case.error.js";
+import CaseValidator from "../validators/case.validate.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class CasesController {
 	createCase(req, res) {
@@ -29,8 +31,24 @@ class CasesController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	updateCaseStatus(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateCaseStatus(req, res) {
+			const { _id, status } = req.body
+		try{
+			GenericValidator.validateObjectId(_id);
+			CaseValidator.validateCaseData({ status });
+			const updatedCase = await Case.findByIdAndUpdate(_id, {$set: { title, description, status, court, judge }}, { new: true });
+			if(updatedCase === null) {
+				throw new CaseDoesNotExistError();
+			}
+			res.json(updatedCase);
+		} catch(error) {
+			if(error instanceof mongoose.Error.ValidationError) {
+				if(error.errors.status) {
+					return errorHandler.handleError(res, new InvalidCaseStatusError());
+				}
+			}
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 
