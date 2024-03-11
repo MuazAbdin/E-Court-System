@@ -38,7 +38,6 @@ class DBUtils {
     }
 
     deleteDocuments(documents) {
-        console.log(documents);
         for(const doc of documents) {
             doc.constructor.findByIdAndDelete(doc._id).exec();
         }

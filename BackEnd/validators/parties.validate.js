@@ -1,7 +1,7 @@
 import { TooManyPartiesProvidedError } from "../errors/case.error.js";
 import Case from "../models/case.model.js";
 import GenericValidator from "./generic.validate.js";
-import StackholderValidator from "./stackholders.validate.js";
+import StakeholderValidator from "./stakeholders.validate.js";
 
 export default class PartyValidator {
     static async validatePartyData(data) {
@@ -13,12 +13,13 @@ export default class PartyValidator {
         GenericValidator.validateObjectId(data.lawyer);
         Object.keys(data).forEach(key => 
             GenericValidator.validateNotEmpty(data[key]));
-        StackholderValidator.validateStackholderData(client);      
+        StakeholderValidator.validateStakeholderDataNoPartyId(data.client);      
     }
 
     static validateCaseCreatePartyData(data) {
         GenericValidator.validateObjectId(data.lawyer);
         Object.keys(data).forEach(key => 
             GenericValidator.validateNotEmpty(data[key]));
+        StakeholderValidator.validateStakeholderDataNoPartyId(data.client);      
     }
 }

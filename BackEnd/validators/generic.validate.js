@@ -18,13 +18,13 @@ export default class GenericValidator {
     }
 
     static validatePhoneNumber(phoneNumber) {
-        if (!/05\d{8}/.test(phoneNumber)) {
+        if (!/05\d{8}/.test(phoneNumber + "")) {
             throw new InvalidPhoneNumberError();
         }
     }
 
     static validateIdNumber(idNumber) {
-        if (!validator.isNumeric(idNumber)) {
+        if (!validator.isNumeric(idNumber + "")) {
             throw new InvalidIdNumberError();
         }
     }
@@ -36,7 +36,7 @@ export default class GenericValidator {
     }
 
     static validateDate(date) {
-        if(!validator.isDate(date)) {
+        if(!validator.isDate(date + "")) {
             throw new InvalidDateError();
         }
     }

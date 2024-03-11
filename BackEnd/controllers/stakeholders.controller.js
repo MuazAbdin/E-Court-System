@@ -1,7 +1,7 @@
 import errorHandler from "../errors/errorHandler.js";
 import { NoStakeholdersFoundError, StakeholderDoesNotExistError } from "../errors/stakeholders.error.js";
 import Stakeholder from "../models/stakeholder.model.js";
-import StackholderValidator from "../validators/stackholders.validate.js";
+import StakeholderValidator from "../validators/stakeholders.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
 import mongoose from "mongoose";
 
@@ -11,7 +11,7 @@ class StakeholdersController {
 	async createStakeholder(req, res) {
 		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
 		try {
-			StackholderValidator.validateStackholderData(req.body);
+			StakeholderValidator.validateStakeholderData(req.body);
 			const stackholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			res.json(stackholder);
 		}
@@ -57,7 +57,7 @@ class StakeholdersController {
 		const { _id, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body
 		try {
 			GenericValidator.validateObjectId(_id);
-			StackholderValidator.validateStackholderData({ idNumber, firstName, lastName, email, phoneNumber, city, street  });
+			StakeholderValidator.validateStakeholderData({ idNumber, firstName, lastName, email, phoneNumber, city, street  });
 			const updatedStackholder = await Stakeholder.findByIdAndUpdate(_id, {$set: { idNumber, firstName, lastName, email, phoneNumber, city, street  }}, { new: true });
 			if(updatedStackholder === null) {
 				throw new StakeholderDoesNotExistError();

@@ -1,45 +1,58 @@
 import { DBConfig } from "../config.js";
 import errorHandler from "../errors/errorHandler.js";
 import { NoPartiesFoundError, PartyDoesNotExistError } from "../errors/party.error.js";
+import Case from "../models/case.model.js";
 import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
+import dbUtils from "../utils/db.utils.js";
 import GenericValidator from "../validators/generic.validate.js";
 import PartyValidator from "../validators/parties.validate.js";
-import StackholderValidator from "../validators/stackholders.validate.js";
+import StakeholderValidator from "../validators/stakeholders.validate.js";
 
 class PartiesController {
 	async createParty(req, res) {
-		// TODO - possibly delete saved Documents if an error happens!
 		const { lawyer, client, caseId, stakeholders } = req.body;
+		// Saves created Documents to delete them on faliure/error
+		const savedDocs = [];
 		try {
-			PartyValidator.validatePartyData({ client, lawyer, caseId })
-			for(const stakeholder of stakeholders) {
-				StackholderValidator.validateStackholderData(stakeholder);
+			await PartyValidator.validatePartyData({ client, lawyer, caseId })
+			if(stakeholders) {
+				for(const stakeholder of stakeholders) {
+					StakeholderValidator.validateStakeholderData(stakeholder);
+				}
 			}
 
 			const newParty = new Party({ lawyer, case: caseId, name: DBConfig.PARTY_NAMES[1] });
 
 			const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
-			const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], newParty, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber, city, street });
 
 			const newStakeholders = [];
-			for(const stakeholder of stakeholders) {
-				const { stakeholderType, newParty, idNumber, firstName, lastName, email, phoneNumber, city, street } = stakeholder;
-				newStakeholders.push(
-					new Stakeholder({ type: stakeholderType, party: newParty, idNumber, firstName, lastName, email, phoneNumber, city, street }));
+			if(stakeholders) {
+				for(const stakeholder of stakeholders) {
+					const { stakeholderType, newParty, idNumber, firstName, lastName, email, phoneNumber, city, street } = stakeholder;
+					newStakeholders.push(
+						new Stakeholder({ type: stakeholderType, party: newParty, idNumber, firstName, lastName, email, phoneNumber, city, street }));
+				}
 			}
 
 			newParty.client = newClient;
 			newParty.stakeholders = newStakeholders;
 			newParty.save();
+			savedDocs.push(newParty);
 			newClient.save();
-			for(const stakeholder of stakeholders) {
+			savedDocs.push(newClient);
+			for(const stakeholder of newStakeholders) {
 				stakeholder.save();
+				savedDocs.push(stakeholder);
 			}
+
+			await Case.findByIdAndUpdate(caseId, {$push: { parties: newParty }})
 
 			res.send(newParty);
 		}
 		catch(error) {
+			dbUtils.deleteDocuments(savedDocs);
 			errorHandler.handleError(res, error);
 		}
 	}
