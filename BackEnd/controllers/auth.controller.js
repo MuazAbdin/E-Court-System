@@ -51,15 +51,18 @@ class AuthController {
 
       AuthDataValidator.validateRegisterData(userData);
 
-      const foundUser = await User.findOne({
-        $or: [{ email: email }, { idNumber: idNumber }],
-      });
-      if (foundUser && foundUser.email === email) {
-        throw new EmailAlreadyUsedError();
-      }
-      if (foundUser && foundUser.idNumber === idNumber) {
-        throw new IdNumberAlreadyUsedError();
-      }
+      // const foundUser = await User.findOne({
+      //   $or: [{ email: email }, { idNumber: idNumber }],
+      // });
+      // if (foundUser && foundUser.email === email) {
+      //   throw new EmailAlreadyUsedError();
+      // }
+      // if (foundUser && foundUser.idNumber === idNumber) {
+      //   throw new IdNumberAlreadyUsedError();
+      // }
+
+      const foundUser = await User.findOne({ idNumber });
+      if (foundUser) throw new IdNumberAlreadyUsedError();
 
       const user = new User(userData);
       const userAuth = new UserAuth({ user, hashedPassword: password });

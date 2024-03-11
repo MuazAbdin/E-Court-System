@@ -33,7 +33,7 @@ export const StyledRegisterForm = styled(AuthForm)`
     }
   }
 
-  fieldset:nth-of-type(2) {
+  fieldset:nth-of-type(3) {
     grid-column: 1;
   }
 
@@ -72,9 +72,9 @@ export const StyledRegisterForm = styled(AuthForm)`
     border-style: solid;
     border-image: linear-gradient(
         to right,
-        var(--text-color) 0 43%,
-        transparent 43% 57%,
-        var(--text-color) 57%
+        var(--text-color) 0 33%,
+        transparent 33% 67%,
+        var(--text-color) 67%
       )
       1;
     border-left: 0;

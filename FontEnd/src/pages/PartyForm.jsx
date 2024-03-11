@@ -101,14 +101,20 @@ export default function PartyForm() {
     </>
   );
 }
+<<<<<<< HEAD
 export async function action({ request }) {
   const fd = await request.formData();
+=======
+export async function action ({request}){
+  const fd = await request.formData()
+>>>>>>> main
   const data = Object.fromEntries(
     [...fd.entries()]
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
   console.log(data);
+<<<<<<< HEAD
   for (const key in data) {
     if (!data[key]) {
       toast.error(`${key} cannot be empty!`);
@@ -117,6 +123,11 @@ export async function action({ request }) {
   }
   try {
     const response = await fetcher("/party/", {
+=======
+  
+  try {
+    const response = await fetcher('/party/', {
+>>>>>>> main
       method: request.method,
       body: JSON.stringify(data),
     });
@@ -129,7 +140,11 @@ export async function action({ request }) {
     }
 
     toast.success("Created Successfully!");
+<<<<<<< HEAD
     return redirect("");
+=======
+    return redirect('');
+>>>>>>> main
   } catch (error) {
     toast.error(error.message);
     return error;

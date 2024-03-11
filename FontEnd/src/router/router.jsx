@@ -22,7 +22,12 @@ import { action as courtAction } from "../pages/CourtForm";
 import { action as documentCreation } from "../pages/DocumentForm";
 import { action as partyCreation } from "../pages/PartyForm";
 import { action as stakeholderCreation } from "../pages/StakeholderForm";
+<<<<<<< HEAD
 import { action as eventCreation } from "../pages/EventForm";
+=======
+
+import { loader as dashboardLoader } from "../pages/DashboardLayout";
+>>>>>>> main
 
 const router = createBrowserRouter([
   {
@@ -41,6 +46,7 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardLayout />,
+        loader: dashboardLoader,
         children: [
           {
             index: true,

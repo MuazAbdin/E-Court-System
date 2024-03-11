@@ -278,7 +278,11 @@ export async function action({ request }) {
     }
 
     toast.success("Created Successfully!");
+<<<<<<< HEAD
     return redirect("");
+=======
+    return redirect('');
+>>>>>>> main
   } catch (error) {
     toast.error(error.message);
     return error;
