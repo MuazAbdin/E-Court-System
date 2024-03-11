@@ -57,31 +57,50 @@ export default function CaseForm() {
   //     setNewParty("");
   //   }
   // };
-
   return (
-    
-    <StyledRegisterForm
-      className={"case-form"}
-      formID="case-form"
-      title="Legal Case Information Form"
-      method="POST"
-      buttonText="SUBMIT"
-      fields={CASE_FIELDS}
-    />
+    <>
+      <StyledRegisterForm
+        className={"case-form"}
+        formID="case-form"
+        title="Legal Case Information Form"
+        method="POST"
+        buttonText="SUBMIT"
+        fields={CASE_FIELDS}
+      >
+        <div>dropdown</div>
+      </StyledRegisterForm>
+      <Toaster position="bottom-center" />
+    </>
   );
 }
 
-export async function action ({request}){
-  const fd = await request.formData()
+export async function action({ request }) {
+  const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
   console.log(data);
-  
+
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
+
   try {
-    const response = await fetcher('/cases/', {
+    if ("court" in data) {
+      const courtResponse = await fetcher("/courts");
+      if (!courtResponse.ok) {
+        const data = await response.text();
+        console.log(data);
+        throw new Error("Failed to fetch courts");
+      }
+    }
+
+    const response = await fetcher("/cases/", {
       method: request.method,
       body: JSON.stringify(data),
     });
@@ -94,7 +113,7 @@ export async function action ({request}){
     }
 
     toast.success("Created Successfully!");
-    return redirect('');
+    return redirect("");
   } catch (error) {
     toast.error(error.message);
     return error;

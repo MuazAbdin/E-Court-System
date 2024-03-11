@@ -161,17 +161,19 @@ export const EVENT_FIELDS = [
     label: "Event Type",
     id: "eventType",
     type: "text",
+    required: true,
   },
   {
     label: "Description",
-    id: "email",
+    id: "description",
     type: "text",
-    autoComplete: "email",
     icon: <MailIcon />,
+    required: true,
   },
   {
-    id: "email",
+    id: "date",
     type: "date",
+    required: true,
   },
 ];
 
@@ -180,18 +182,21 @@ export const DOCUMENT_FIELDS = [
     label: "Document Title",
     id: "documentTitle",
     type: "text",
+    required: true,
   },
   {
     label: "Honoring Party",
     id: "honoringParty",
     type: "text",
     icon: <GroupsIcon />,
+    required: true,
   },
   {
     label: "Subject",
     id: "subject",
     type: "text",
     icon: <SubjectIcon />,
+    required: true,
   },
   {
     label: "Requirement According to the Subject",
@@ -200,29 +205,34 @@ export const DOCUMENT_FIELDS = [
     multiline: true,
     rows: 4,
     icon: <ChecklistRtlIcon />,
+    required: true,
   },
   {
     label: "Under which law",
     id: "onWhichDocument",
     type: "text",
     icon: <GavelIcon />,
+    required: true,
   },
   {
     label: "Select Case",
     id: "caseNum",
     type: "select",
+    required: true,
   },
   {
     // label: "Date",
     id: "date",
     type: "date",
     variant: "standard",
+    required: true,
   },
   {
     // label: "Attach Document",
     id: "attachDocument",
     type: "file",
     icon: <AttachFileIcon />,
+    required: true,
   },
 ];
 export const LEGAL_PARTY_FIELDS = [
@@ -230,21 +240,25 @@ export const LEGAL_PARTY_FIELDS = [
     label: "Party Name",
     id: "partyName",
     type: "text",
+    required: true,
   },
   {
     label: "Case ID",
     id: "caseId",
     type: "text",
+    required: true,
   },
   {
     label: "Lawyer",
     id: "lawyer",
     type: "text",
+    required: true,
   },
   {
     label: "Stakeholder",
     id: "stakeholder",
     type: "text",
+    required: true,
   },
 ];
 
@@ -254,18 +268,23 @@ export const STAKEHOLDER_FIELDS = [
     id: "idNumber",
     type: "text",
     title: "id number",
+    required: true,
   },
   {
     label: "First Name",
     id: "firstName",
     type: "text",
     title: "first name",
+    required: true,
   },
   {
     label: "Last Name",
     id: "lastName",
     type: "text",
     title: "last name",
+    required: true,
+    validator: isLastNameValid,
+
   },
   {
     label: "Email",
@@ -273,6 +292,9 @@ export const STAKEHOLDER_FIELDS = [
     type: "text",
     title: "email address",
     icon: <MailIcon />,
+    required: true,
+    validator: isEmailValid,
+
   },
   {
     label: "Phone",
@@ -280,6 +302,7 @@ export const STAKEHOLDER_FIELDS = [
     type: "text",
     title: "phone number",
     icon: <PhoneIcon />,
+    required: true,
   },
   {
     label: "City",
@@ -287,6 +310,8 @@ export const STAKEHOLDER_FIELDS = [
     type: "text",
     title: "city",
     icon: <LocationCityIcon />,
+    required: true,
+    validator: isAddressValid,
   },
   {
     label: "Street Address",
@@ -294,6 +319,14 @@ export const STAKEHOLDER_FIELDS = [
     type: "text",
     title: "street address",
     icon: <LocationOnIcon />,
+    required: true,
+    validator: isAddressValid,
+  },{
+    label: "Stakeholder Type",
+    id: "stakeholdertype",
+    type: "text",
+    title: "street address",
+    required: true,
   },
 ];
 export const CASE_FIELDS = [
@@ -303,6 +336,7 @@ export const CASE_FIELDS = [
     type: "text",
     variant: "outlined",
     title: "case title",
+    required: true,
   },
   {
     label: "Description",
@@ -313,21 +347,17 @@ export const CASE_FIELDS = [
     multiline: true,
     rows: 4,
     icon: <EditNoteIcon />,
+    required: true,
   },
   {
     label: "Status",
     id: "status",
+    type: "text",
     variant: "standard",
     title: "case status",
+    required: true,
   },
-  {
-    label: "Judge",
-    id: "judge",
-    type: "text",
-    variant: "outlined",
-    title: "the judge in the case",
-   icon: <Person3Icon />
-  },
+  
   {
     label: "Court",
     id: "court",
@@ -335,6 +365,16 @@ export const CASE_FIELDS = [
     variant: "outlined",
     title: "The court that is handling the case",
     icon: <AccountBalanceIcon />,
+    required: true,
+  },
+  {
+    label: "Judge",
+    id: "judge",
+    type: "text",
+    variant: "outlined",
+    title: "the judge in the case",
+   icon: <Person3Icon />,
+   required: true,
   },
   {
     label: "Parties",
@@ -342,6 +382,7 @@ export const CASE_FIELDS = [
     type: "text",
     variant: "outlined",
     title: "the parties to the case",
-    icon: <GroupIcon style={{ backgroundColor: "transparent" }} />
+    icon: <GroupIcon style={{ backgroundColor: "transparent" }} />,
+    required: true,
   },
 ];

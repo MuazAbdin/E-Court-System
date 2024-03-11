@@ -121,6 +121,7 @@ export default function CourtForm() {
     //     <Toaster position="bottom-center" />
     //   </form>
     // </Wrapper>
+    <>
     <StyledRegisterForm className={'court-form'}
     formID="court-form"
     title="Court Details Form"
@@ -128,6 +129,8 @@ export default function CourtForm() {
     buttonText="ADD COURT"
     fields={COURT_FIELDS}
     />
+    <Toaster position="bottom-center" />
+    </>
   );
 }
 
@@ -139,7 +142,12 @@ export async function action ({request}){
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
   console.log(data);
-  
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
   try {
     const response = await fetcher('/court/', {
       method: request.method,

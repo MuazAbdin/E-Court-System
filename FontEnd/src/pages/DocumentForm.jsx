@@ -234,28 +234,38 @@ export default function DocumentForm() {
     //     <Toaster position="bottom-center" />
     //   </form>
     // </Wrapper>
-
-    <StyledRegisterForm
-      className={"document-form"}
-      formID="document-form"
-      title="Case Document"
-      method="POST"
-      buttonText="SUBMIT"
-      fields={DOCUMENT_FIELDS}
-    />
+    <>
+      <StyledRegisterForm
+        className={"document-form"}
+        formID="document-form"
+        title="Case Document"
+        method="POST"
+        buttonText="SUBMIT"
+        fields={DOCUMENT_FIELDS}
+      />
+      <Toaster position="bottom-center" />
+    </>
   );
 }
-export async function action ({request}){
-  const fd = await request.formData()
+export async function action({ request }) {
+  const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
+
   console.log(data);
+
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
   
   try {
-    const response = await fetcher('/cases/', {
+    const response = await fetcher("/cases/", {
       method: request.method,
       body: JSON.stringify(data),
     });
@@ -268,7 +278,7 @@ export async function action ({request}){
     }
 
     toast.success("Created Successfully!");
-    return redirect('');
+    return redirect("");
   } catch (error) {
     toast.error(error.message);
     return error;

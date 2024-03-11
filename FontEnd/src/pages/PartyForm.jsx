@@ -88,28 +88,35 @@ export default function PartyForm() {
     //     <Toaster position="bottom-center" />
     //   </form>
     // </Wrapper>
-
-    <StyledRegisterForm
-      className={"party-form"}
-      formID="party-form"
-      title="Legal Party Details Form"
-      method="POST"
-      buttonText="SUBMIT"
-      fields={LEGAL_PARTY_FIELDS}
-    />
+    <>
+      <StyledRegisterForm
+        className={"party-form"}
+        formID="party-form"
+        title="Legal Party Details Form"
+        method="POST"
+        buttonText="SUBMIT"
+        fields={LEGAL_PARTY_FIELDS}
+      />
+      <Toaster position="bottom-center" />
+    </>
   );
 }
-export async function action ({request}){
-  const fd = await request.formData()
+export async function action({ request }) {
+  const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
   console.log(data);
-  
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
   try {
-    const response = await fetcher('/party/', {
+    const response = await fetcher("/party/", {
       method: request.method,
       body: JSON.stringify(data),
     });
@@ -122,7 +129,7 @@ export async function action ({request}){
     }
 
     toast.success("Created Successfully!");
-    return redirect('');
+    return redirect("");
   } catch (error) {
     toast.error(error.message);
     return error;

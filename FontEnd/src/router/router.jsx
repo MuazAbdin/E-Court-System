@@ -22,6 +22,8 @@ import { action as courtAction } from "../pages/CourtForm";
 import { action as documentCreation } from "../pages/DocumentForm";
 import { action as partyCreation } from "../pages/PartyForm";
 import { action as stakeholderCreation } from "../pages/StakeholderForm";
+import { action as eventCreation } from "../pages/EventForm";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -61,6 +63,7 @@ const router = createBrowserRouter([
           {
             path: "event/:caseId",
             element: <EventForm />,
+            action: eventCreation
           },
           {
             path: "court",

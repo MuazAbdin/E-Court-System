@@ -6,27 +6,29 @@ import { MdEditDocument } from "react-icons/md";
 import toast, { Toaster } from "react-hot-toast";
 import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { EVENT_FIELDS } from "../utils/constants";
+import { redirect } from "react-router-dom";
+import { fetcher } from "../utils/fetcher";
 export default function EventForm() {
-  const [caseId, setCaseId] = useState("");
-  const [eventType, setEventType] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
+  // const [caseId, setCaseId] = useState("");
+  // const [eventType, setEventType] = useState("");
+  // const [date, setDate] = useState("");
+  // const [description, setDescription] = useState("");
 
-  const handleAddEvent = (e) => {
-    e.preventDefault();
-    const fields = [
-      { name: "Case ID", value: caseId },
-      { name: "Event Type", value: eventType },
-      { name: "Date", value: date },
-      { name: "Description", value: description },
-    ];
-    for (const field of fields) {
-      if (!field.value) {
-        toast.error(`${field.name} cannot be empty!`);
-        return;
-      }
-    }
-  };
+  // const handleAddEvent = (e) => {
+  //   e.preventDefault();
+  //   const fields = [
+  //     { name: "Case ID", value: caseId },
+  //     { name: "Event Type", value: eventType },
+  //     { name: "Date", value: date },
+  //     { name: "Description", value: description },
+  //   ];
+  //   for (const field of fields) {
+  //     if (!field.value) {
+  //       toast.error(`${field.name} cannot be empty!`);
+  //       return;
+  //     }
+  //   }
+  // };
 
   return (
     // <Wrapper>
@@ -72,7 +74,7 @@ export default function EventForm() {
     //     <Toaster position="bottom-center" />
     //   </form>
     // </Wrapper>
-
+<>
     <StyledRegisterForm
       className={"event-form"}
       formID="event-form"
@@ -81,5 +83,51 @@ export default function EventForm() {
       buttonText="ADD EVENT"
       fields={EVENT_FIELDS}
     />
+    <Toaster position="bottom-center" />
+    </>
   );
+}
+export async function action({ request }) {
+  const fd = await request.formData();
+  const data = Object.fromEntries(
+    [...fd.entries()]
+      .filter((entry) => entry[0] !== "submit")
+      .map((entry) => [entry[0].split("-")[2], entry[1]])
+  );
+  console.log(data);
+
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
+
+  try {
+    const response = await fetcher("/cases/", {
+      method: request.method,
+      body: JSON.stringify(data),
+    });
+
+    console.log(response);
+    
+    for (const key in data) {
+      if (!data[key]) {
+        toast.error(`${key} cannot be empty!`);
+        return null;
+      }
+    }
+
+    if (!response.ok) {
+      const data = await response.text();
+      console.log(data);
+      throw new Error(data);
+    }
+
+    toast.success("Created Successfully!");
+    return redirect("");
+  } catch (error) {
+    toast.error(error.message);
+    return error;
+  }
 }

@@ -64,7 +64,7 @@ export const isMobileValid = function (mobile) {
   if (mobile.length === 0) return { result: false, message: "required" };
   const result = /05\d{8}/.test(mobile);
   if (!result)
-    return { result: false, message: "insert a valid israeli mobile nmber" };
+    return { result: false, message: "insert a valid israeli mobile number" };
   return { result: true, message: "valid" };
 };
 
