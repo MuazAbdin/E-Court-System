@@ -3,8 +3,7 @@ import Wrapper from "../assets/stylingWrappers/Aside";
 import Accordion from "./Accordion";
 import { MdGavel } from "react-icons/md";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-
-
+import BalanceIcon from '@mui/icons-material/Balance';
 function Aside() {
   return (
     <Wrapper>
@@ -14,7 +13,7 @@ function Aside() {
             id="nav-profile"
             title="profile"
             Icon={FaRegCircleUser}
-            subsectoins={[]}
+            subsectoins={[{ name: "overview", to: "" }]}
           />
           <Accordion.Item
             id="nav-cases"
@@ -22,8 +21,9 @@ function Aside() {
             Icon={MdGavel}
             subsectoins={[
               { name: "browse", to: "browse" },
-              { name: "create new case", to: "case" },
-              { name: "create new document", to: "document" },
+              // { name: "create new case", to: "case" },
+              // { name: "create new document", to: "document" },
+              // { name: "event", to: "event" }
             ]}
           />
           <Accordion.Item
@@ -31,9 +31,17 @@ function Aside() {
             title="court"
             Icon={AccountBalanceIcon}
             subsectoins={[
-              { name: "create new court", to: "court" },
+              { name: "court form", to: "court" },
             ]}
-
+          />
+          <Accordion.Item
+            id="nav-legal-entity"
+            title="Legal Entity"
+            Icon={BalanceIcon}
+            subsectoins={[
+              { name: "Party", to: "party" },
+              { name: "Stakeholder", to: "stakeholder" },
+            ]}
           />
         </Accordion>
       </nav>

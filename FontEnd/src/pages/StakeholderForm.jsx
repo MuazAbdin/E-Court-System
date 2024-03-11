@@ -1,34 +1,37 @@
 import React, { useState } from "react";
-import Wrapper from "../assets/stylingWrappers/CourtForm";
-import { InputAdornment, TextField } from "@mui/material";
+import Wrapper from "../assets/stylingWrappers/StakeholderForm";
 import toast, { Toaster } from "react-hot-toast";
+import { InputAdornment, TextField } from "@mui/material";
 import PhoneIcon from "@mui/icons-material/Phone";
+import MailIcon from "@mui/icons-material/Mail";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import MailIcon from "@mui/icons-material/Mail";
 import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { COURT_FIELDS } from "../utils/constants";
-import { redirect } from "react-router-dom";
+import { STAKEHOLDER_FIELDS } from "../utils/constants";
 import { fetcher } from "../utils/fetcher";
-export default function CourtForm() {
-  // name, city, street, phoneNumber, email
-  const [name, setName] = useState("");
-  const [city, setCity] = useState("");
-  const [street, setStreet] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
+import { redirect } from "react-router-dom";
 
+export default function StakeholderForm() {
+  const [idNumber, setIdNumber] = useState();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState();
+  const [city, setCity] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const fields = [
-      { name: "Court Name", value: name },
-      { name: "City", value: city },
-      { name: "Street", value: street },
-      { name: "Phone Number", value: phoneNumber },
+      { name: "ID Number", value: idNumber },
+      { name: "First Name", value: firstName },
+      { name: "Last Name", value: lastName },
       { name: "Email", value: email },
+      { name: "Phone", value: phone },
+      { name: "City", value: city },
+      { name: "Street Address", value: streetAddress },
     ];
 
     for (const field of fields) {
@@ -41,39 +44,48 @@ export default function CourtForm() {
         toast.error("Invalid email format!");
         return;
       }
+
+      if (field.name === "Phone" && isNaN(field.value)) {
+        toast.error(`${field.name} must be a number!`);
+        return;
+      }
+      if (field.name === "City" && !field.value.match(/[a-zA-Z]/)) {
+        toast.error("City name must contain ONLY letters!");
+        return;
+      }
     }
   };
+
   return (
     // <Wrapper>
     //   <form>
-    //     <h2>Court Details Form</h2>
+    //     <h2>Stakeholder Details Form</h2>
     //     <TextField
-    //       label="Court Name"
+    //       label="ID Number"
     //       variant="outlined"
-    //       title="court name"
-    //       value={name}
-    //       onChange={(e) => setName(e.target.value)}
+    //       title="id number"
+    //       onChange={(e) => setIdNumber(e.target.value)}
     //     />
-    //     <div className="contact-container">
+    //     <div className="full-name">
     //       <TextField
-    //         label="Court Phone"
+    //         label="First Name"
     //         variant="outlined"
-    //         title="court contact number"
-    //         value={phoneNumber}
-    //         onChange={(e) => setPhoneNumber(e.target.value)}
-    //         InputProps={{
-    //           endAdornment: (
-    //             <InputAdornment position="end">
-    //               <PhoneIcon />
-    //             </InputAdornment>
-    //           ),
-    //         }}
+    //         title="first name"
+    //         onChange={(e) => setFirstName(e.target.value)}
     //       />
+    //       <TextField
+    //         label="Last Name"
+    //         variant="outlined"
+    //         title="last name"
+    //         onChange={(e) => setLastName(e.target.value)}
+    //       />
+    //     </div>
+
+    //     <div className="contact-container">
     //       <TextField
     //         label="Email"
     //         variant="outlined"
-    //         title="court contact email"
-    //         value={email}
+    //         title="email address"
     //         onChange={(e) => setEmail(e.target.value)}
     //         InputProps={{
     //           endAdornment: (
@@ -83,13 +95,26 @@ export default function CourtForm() {
     //           ),
     //         }}
     //       />
+    //       <TextField
+    //         label="Phone"
+    //         variant="outlined"
+    //         title="phone number"
+    //         onChange={(e) => setPhone(e.target.value)}
+    //         InputProps={{
+    //           endAdornment: (
+    //             <InputAdornment position="end">
+    //               <PhoneIcon />
+    //             </InputAdornment>
+    //           ),
+    //         }}
+    //       />
     //     </div>
+
     //     <div className="address-container">
     //       <TextField
     //         label="City"
     //         variant="outlined"
-    //         title="the venue of the court"
-    //         value={city}
+    //         title="city"
     //         onChange={(e) => setCity(e.target.value)}
     //         InputProps={{
     //           endAdornment: (
@@ -100,11 +125,10 @@ export default function CourtForm() {
     //         }}
     //       />
     //       <TextField
-    //         label="Street"
+    //         label="Street Address"
     //         variant="outlined"
-    //         title="court street address"
-    //         value={street}
-    //         onChange={(e) => setStreet(e.target.value)}
+    //         title="street address"
+    //         onChange={(e) => setStreetAddress(e.target.value)}
     //         InputProps={{
     //           endAdornment: (
     //             <InputAdornment position="end">
@@ -114,23 +138,21 @@ export default function CourtForm() {
     //         }}
     //       />
     //     </div>
+    //     <button onClick={handleSubmit}>SUBMIT</button>
 
-    //     <button className="submit-btn" onClick={handleSubmit}>
-    //       ADD COURT
-    //     </button>
     //     <Toaster position="bottom-center" />
     //   </form>
     // </Wrapper>
-    <StyledRegisterForm className={'court-form'}
-    formID="court-form"
-    title="Court Details Form"
+    <StyledRegisterForm
+    className={"stakeholder-form"}
+    formID="stakeholder-form"
+    title="Stakeholder Details Form"
     method="POST"
-    buttonText="ADD COURT"
-    fields={COURT_FIELDS}
-    />
+    buttonText="SUBMIT"
+    fields={STAKEHOLDER_FIELDS}
+  />
   );
 }
-
 export async function action ({request}){
   const fd = await request.formData()
   const data = Object.fromEntries(
@@ -141,7 +163,7 @@ export async function action ({request}){
   console.log(data);
   
   try {
-    const response = await fetcher('/court/', {
+    const response = await fetcher('/stakeholder/', {
       method: request.method,
       body: JSON.stringify(data),
     });
