@@ -54,6 +54,50 @@ const Wrapper = styled.main`
     font-family: var(--main-font);
     font-size: 1.5rem;
   }
+
+  .user-role {
+    grid-column: 1 / 3;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed;
+    border-top: 2px solid;
+
+    legend {
+      padding: 1rem;
+      /* text-align: justify; */
+      font-size: 1.5rem;
+    }
+
+    .d-selector {
+      flex-grow: 1;
+      width: 50%;
+      color: var(--primary-600);
+      padding: 0.5rem;
+      background-color: hsla(214, 32%, 91%, 0.75);
+      border-radius: var(--border-radius);
+
+      &:hover {
+        box-shadow: 0 0 5px var(--text-color);
+      }
+
+      &:has(> input:checked) {
+        color: var(--red-dark);
+        font-weight: 600;
+        box-shadow: 0 0 5px var(--text-color);
+      }
+
+      input {
+        display: none;
+      }
+
+      label {
+        text-transform: capitalize;
+        display: block;
+        width: 100%;
+        cursor: pointer;
+        font-size: 1.25rem;
+      }
+    }
+  }
 `;
 
 export default Wrapper;

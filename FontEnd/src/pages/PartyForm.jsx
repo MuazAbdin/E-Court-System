@@ -4,6 +4,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { LEGAL_PARTY_FIELDS } from "../utils/constants";
+import { redirect } from "react-router-dom";
+import { fetcher } from "../utils/fetcher";
 
 export default function PartyForm() {
   const [partyName, setPartyName] = useState("");
@@ -96,4 +98,33 @@ export default function PartyForm() {
       fields={LEGAL_PARTY_FIELDS}
     />
   );
+}
+export async function action ({request}){
+  const fd = await request.formData()
+  const data = Object.fromEntries(
+    [...fd.entries()]
+      .filter((entry) => entry[0] !== "submit")
+      .map((entry) => [entry[0].split("-")[2], entry[1]])
+  );
+  console.log(data);
+  
+  try {
+    const response = await fetcher('/party/', {
+      method: request.method,
+      body: JSON.stringify(data),
+    });
+
+    console.log(response);
+    if (!response.ok) {
+      const data = await response.text();
+      console.log(data);
+      throw new Error(data);
+    }
+
+    toast.success("Created Successfully!");
+    return redirect('');
+  } catch (error) {
+    toast.error(error.message);
+    return error;
+  }
 }
