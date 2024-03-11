@@ -1,11 +1,12 @@
 import { model, Schema } from 'mongoose';
+import { dbConfig } from '../config.js';
 
 const userSchema = new Schema({
     idNumber: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    userType: { type: String, required: true, 
-        enum: [ "Client", "Judge", "Lawyer" ]} ,
+    userType: { type: String, required: true,  enum: dbConfig.USER_TYPES },
+       
     email: { type: String, required: true, unique: true, lowercase: true},
     phoneNumber: { type: String, required: true },
     city: { type: String, required: true } ,
