@@ -12,7 +12,8 @@ const stakeholderSchema = new Schema({
     email: { type: String, required: true, lowercase: true },
     phoneNumber: { type: String, required: true },
     city: { type: String, required: true },
-    street: { type: String, required: true }
+    street: { type: String, required: true },
+    deleted: { type: Boolean }
 })
 
 stakeholderSchema.statics.softDelete = dbUtils.createSoftDeleteFunction(StakeholderDoesNotExistError);
