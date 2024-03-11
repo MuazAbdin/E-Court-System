@@ -7,5 +7,6 @@ export default class Config {
 }
 
 export class DBConfig {
-    static STAKEHOLDER_TYPES = ["Witness", "Client"];
+    static STAKEHOLDER_TYPES = [ "Client", "Witness" ];
+    static PARTY_NAMES = [ "PARTY1", "PARTY2" ]
 }

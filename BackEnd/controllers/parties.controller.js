@@ -1,35 +1,39 @@
+import { DBConfig } from "../config.js";
 import errorHandler from "../errors/errorHandler.js";
 import { NoPartiesFoundError, PartyDoesNotExistError } from "../errors/party.error.js";
 import Party from "../models/party.model.js";
+import Stakeholder from "../models/stakeholder.model.js";
 import GenericValidator from "../validators/generic.validate.js";
 import PartyValidator from "../validators/parties.validate.js";
+import StackholderValidator from "../validators/stackholders.validate.js";
 
 class PartiesController {
-	createParty(req, res) {
+	async createParty(req, res) {
+		// TODO - possibly delete saved Documents if an error happens!
 		const { lawyer, client, caseId, stakeholders } = req.body;
 		try {
-			// A case must have less then 2 parties inorder to be able to add another!!
-			PartyValidator.validatePartyData({ partyName, lawyer, caseId })
-			// validate client data
-			//validate stakeholders data
-
-			// create party
-			const newParty = new Party();
-
-			// create client
-			client = new Stakeholder();
-
-			// create stakeholders
-			const newStakeholders = [];
+			PartyValidator.validatePartyData({ lawyer, caseId })
+			StackholderValidator.validateStackholderData(client);
 			for(const stakeholder of stakeholders) {
-				
+				StackholderValidator.validateStackholderData(stakeholder);
 			}
 
-			// save all
-			newParty.client = client;
+			const newParty = new Party({ lawyer, case: caseId, name: DBConfig.PARTY_NAMES[1] });
+
+			const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
+			const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+
+			const newStakeholders = [];
+			for(const stakeholder of stakeholders) {
+				const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = stakeholder;
+				newStakeholders.push(
+					new Stakeholder({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }));
+			}
+
+			newParty.client = newClient;
 			newParty.stakeholders = newStakeholders;
 			newParty.save();
-			client.save();
+			newClient.save();
 			for(const stakeholder of stakeholders) {
 				stakeholder.save();
 			}
