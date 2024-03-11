@@ -73,17 +73,19 @@ export const isAddressValid = function (address) {
 };
 
 export function validateAllFields(fields) {
-  const results = REGISTER_FIELDS.map((f) => {
-    const validator =
-      f.id === "passwordConfirm"
-        ? (value) => f.validator(fields.password || "", value)
-        : f.validator;
-    return {
-      name: f.id,
-      value: fields[f.id],
-      ...validator(fields[f.id]),
-    };
-  });
+  const results = REGISTER_FIELDS.filter((f) => fields[f.id] !== undefined).map(
+    (f) => {
+      const validator =
+        f.id === "passwordConfirm"
+          ? (value) => f.validator(fields.password || "", value)
+          : f.validator;
+      return {
+        name: f.id,
+        value: fields[f.id],
+        ...validator(fields[f.id]),
+      };
+    }
+  );
   const data = results
     .filter((r) => !r.result)
     .map((r) => {
@@ -115,5 +117,6 @@ export function validateForm(fields) {
   ) {
     return validateLoginFields(fields);
   }
+  // if ()
   return validateAllFields(fields);
 }

@@ -117,7 +117,7 @@ export const LOGIN_FIELDS = [
 export const EDIT_USER_FIELDS = REGISTER_FIELDS.filter(
   (f) => f.id !== "password" && f.id !== "passwordConfirm"
 ).map((f) => {
-  if (f.id === "IDcard") return { ...f, disabled: true };
+  if (f.id === "IDcard") return { ...f, readOnly: true };
   return f;
 });
 

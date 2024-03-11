@@ -19,6 +19,7 @@ import StakeholderForm from "../pages/StakeholderForm";
 // import { action as searchAction } from "../components/Search";
 
 import { action as authAction } from "../pages/Authentication";
+import { action as editUserDetailsAction } from "../pages/EditUserDetails";
 import { action as caseAction } from "../pages/CaseForm";
 import { action as courtAction } from "../pages/CourtForm";
 import { action as documentCreation } from "../pages/DocumentForm";
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
           {
             path: "edit-details",
             element: <EditUserDetails />,
+            action: editUserDetailsAction,
           },
           {
             path: "change-password",
@@ -61,7 +63,7 @@ const router = createBrowserRouter([
           {
             path: "document/:caseId",
             element: <DocumentForm />,
-            action: documentCreation
+            action: documentCreation,
           },
           {
             path: "case",
@@ -84,12 +86,12 @@ const router = createBrowserRouter([
           {
             path: "party",
             element: <PartyForm />,
-            action: partyCreation
+            action: partyCreation,
           },
           {
             path: "stakeholder",
             element: <StakeholderForm />,
-            action: stakeholderCreation
+            action: stakeholderCreation,
           },
         ],
       },

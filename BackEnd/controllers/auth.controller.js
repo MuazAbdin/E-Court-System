@@ -14,7 +14,7 @@ import AuthDataValidator from "../validators/auth.validate.js";
 
 class AuthController {
   async register(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     const {
       password,
       passwordConfirm: confirmPassword,
@@ -47,7 +47,7 @@ class AuthController {
         userData.licenseNumber = licenseNumber;
       }
 
-      console.log(userData);
+      // console.log(userData);
 
       AuthDataValidator.validateRegisterData(userData);
 

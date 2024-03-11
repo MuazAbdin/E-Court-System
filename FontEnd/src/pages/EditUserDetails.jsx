@@ -1,22 +1,31 @@
 import { useOutletContext } from "react-router-dom";
-import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
+import { StyledEditDetailsForm } from "../assets/stylingWrappers/StyledAuthForm";
 
 import { EDIT_USER_FIELDS } from "../utils/constants";
 import { action as submitAction } from "../utils/submitAction";
 
 function EditUserDetails() {
-  const values = useOutletContext();
+  const { userData } = useOutletContext();
+  const { IDcard, firstName, lastName, email, mobile, city, street, ...rest } =
+    userData;
+  const user = {
+    IDcard,
+    firstName,
+    lastName,
+    email,
+    mobile,
+    city,
+    street,
+  };
   return (
-    <section className="content">
-      <StyledRegisterForm
-        formID="editDetails-form"
-        title="edit details"
-        method="PATCH"
-        buttonText="save"
-        values={values}
-        fields={EDIT_USER_FIELDS}
-      />
-    </section>
+    <StyledEditDetailsForm
+      formID="editDetails-form"
+      title="edit details"
+      method="PATCH"
+      buttonText="save"
+      values={user}
+      fields={EDIT_USER_FIELDS}
+    />
   );
 }
 
