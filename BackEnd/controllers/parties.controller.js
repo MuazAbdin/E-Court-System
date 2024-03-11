@@ -12,22 +12,21 @@ class PartiesController {
 		// TODO - possibly delete saved Documents if an error happens!
 		const { lawyer, client, caseId, stakeholders } = req.body;
 		try {
-			PartyValidator.validatePartyData({ lawyer, caseId })
-			StackholderValidator.validateStackholderData(client);
+			PartyValidator.validatePartyData({ client, lawyer, caseId })
 			for(const stakeholder of stakeholders) {
 				StackholderValidator.validateStackholderData(stakeholder);
 			}
 
 			const newParty = new Party({ lawyer, case: caseId, name: DBConfig.PARTY_NAMES[1] });
 
-			const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
-			const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
+			const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], newParty, idNumber, firstName, lastName, email, phoneNumber, city, street });
 
 			const newStakeholders = [];
 			for(const stakeholder of stakeholders) {
-				const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = stakeholder;
+				const { stakeholderType, newParty, idNumber, firstName, lastName, email, phoneNumber, city, street } = stakeholder;
 				newStakeholders.push(
-					new Stakeholder({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }));
+					new Stakeholder({ type: stakeholderType, party: newParty, idNumber, firstName, lastName, email, phoneNumber, city, street }));
 			}
 
 			newParty.client = newClient;
