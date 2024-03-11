@@ -1,11 +1,7 @@
 import { Form, useActionData, useNavigation } from "react-router-dom";
 import Input from "./Input";
 import { useRef, useState } from "react";
-<<<<<<< HEAD
-import { IconButton } from "@mui/material";
-=======
 import { IconButton, useThemeProps } from "@mui/material";
->>>>>>> main
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
