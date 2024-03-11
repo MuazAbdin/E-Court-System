@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-import { NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, UserTypeNotFoundError } from '../errors/user.error.js';
+import { UserDoesNotExistError, NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, InvalidUserTypeError } from '../errors/user.error.js';
 import errorHandler from '../errors/errorHandler.js'; 
-import User from '../models/user.model.js'; 
+import User from '../models/user.model.js';
 import { dbConfig } from "../config.js";
-=======
 import UserValidator from "../validators/user.validate.js";
-import User from "../models/user.model.js"
-import { UserDoesNotExistError } from "../errors/user.error.js";
 import GenericValidator from "../validators/generic.validate.js";
-import errorHandler from "../errors/errorHandler.js";
->>>>>>> 6c3c035d4935c4f1b8874b50bf4bd48813fac906
 
 class UserController {
     async getJudges(req, res) {

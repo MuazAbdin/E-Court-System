@@ -47,39 +47,21 @@ class AuthController {
         userData.licenseNumber = licenseNumber;
       }
 
-<<<<<<< HEAD
-			await user.save();
-			await userAuth.save();
-		
-			const payload = { userId: user._id };
-			const tokenCookie = authUtils.createTokenCookie(payload);
-			res.setHeader('Set-Cookie', tokenCookie);
-			res.json({ firstName: user.firstName, lastName: user.lastName });
-		}
-		catch(error) {
-			if(error instanceof mongoose.Error.ValidationError) {
-				if(error.errors.userType) {
-					return errorHandler.handleError(res, new InvalidUserTypeError());
-				}
-			}
-			errorHandler.handleError(res, error); 
-		}
-	}
-=======
-      console.log(userData);
->>>>>>> 6c3c035d4935c4f1b8874b50bf4bd48813fac906
 
       AuthDataValidator.validateRegisterData(userData);
 
-      const foundUser = await User.findOne({
-        $or: [{ email: email }, { idNumber: idNumber }],
-      });
-      if (foundUser && foundUser.email === email) {
-        throw new EmailAlreadyUsedError();
-      }
-      if (foundUser && foundUser.idNumber === idNumber) {
-        throw new IdNumberAlreadyUsedError();
-      }
+      // const foundUser = await User.findOne({
+      //   $or: [{ email: email }, { idNumber: idNumber }],
+      // });
+      // if (foundUser && foundUser.email === email) {
+      //   throw new EmailAlreadyUsedError();
+      // }
+      // if (foundUser && foundUser.idNumber === idNumber) {
+      //   throw new IdNumberAlreadyUsedError();
+      // }
+
+      const foundUser = await User.findOne({ idNumber });
+      if (foundUser) throw new IdNumberAlreadyUsedError();
 
       const user = new User(userData);
       const userAuth = new UserAuth({ user, hashedPassword: password });

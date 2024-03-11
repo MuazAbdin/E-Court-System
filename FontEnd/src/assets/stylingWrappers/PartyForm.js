@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.main`
-flex-grow: 1;
-display: flex;
+    flex-grow: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
     justify-items: center;
@@ -26,12 +26,13 @@ p{
 }
 button{
     height: 7lvh;
-    width: 40%;
+    width: 30%;
     font-family: var(--subtitle-font);
     font-size: 20px;
-    background-color: var(--primary-400);
+    background-color: var(--primary-300);
     border-radius: 18px;
     margin-top: 5%;
+    margin-left: 60%;
 }
 h2{
     font-family: var(--title-font);
@@ -39,68 +40,28 @@ h2{
     padding-top: 5%;
     font-size: 50px;
 }
-
-.document-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
-    width: 100%;
-}
 .MuiInputBase-root {
     border-radius: 5px;
     transition: border-color 0.3s;
-    margin-bottom: 3vh;
+    margin-bottom: 5vh;
     margin-right: 5vh;
     width: 18vw;
 }
-#demo-error-radios{
-    margin-right: 50%;
-    height: 10%;
-    margin-top: -50px;
-}
-.status{
-    margin-top: -2%;
-}
-.description .MuiInputBase-root{
-    width: 25vw;
-}
-.MuiFormGroup-root{
-    margin-left: 21%;
-    margin-bottom: 2%;
-    padding-left: 2%;
-}
-button{
-    height: 7lvh;
-    width: 30%;
-    font-family: var(--subtitle-font);
-    font-size: 20px;
-    background-color: var(--primary-300);
-    margin-left: 65%;
-}
 .MuiButtonBase-root{
-    background-color: transparent;
+    border-radius: 50%;
+    width: 100%;
 }
-.court-container{
+.MuiInputAdornment-root{
+    margin-right: 5%;
+}
+.case-lawyer{
     display: flex;
     column-gap: 10%;
     padding-right: 10%;
 }
-.court-container .MuiInputBase-root {
+.case-lawyer .MuiInputBase-root{
     width: 15vw;
 }
-.add-party-container{
-    display: flex;
-    column-gap: 10%;
-}
-.add-party-container .add-btn{
-    width: 100%;
-    height: 100%;
-    margin-right: 20%;
-}
-.add-party-container .MuiFormControl-root {
-    margin-left: 10%;
-}
 `
+
 export default Wrapper

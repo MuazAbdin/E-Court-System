@@ -1,7 +1,11 @@
 import { Form, useActionData, useNavigation } from "react-router-dom";
 import Input from "./Input";
 import { useRef, useState } from "react";
+<<<<<<< HEAD
 import { IconButton } from "@mui/material";
+=======
+import { IconButton, useThemeProps } from "@mui/material";
+>>>>>>> main
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -61,9 +65,13 @@ function AuthForm({
     return field.icon;
   };
 
+  const USER_TYPES = ["Lawyer", "Judge"];
+  const [userType, setUserType] = useState("Lawyer");
+
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
+      {children.filter((c) => c.type === "fieldset")}
       {fields.map((f) => {
         const validator =
           f.id === "passwordConfirm"
@@ -89,6 +97,9 @@ function AuthForm({
             validator={validator}
             required={f.required}
             severErrorMsg={severErrorMsg}
+            multiline={f.multiline ?? false}
+            rows={f.rows ?? undefined}
+           
             prevValue={values?.[f.id] || ""}
             isSubmitted={actionData?.msg === "Invalid inputs"}
           />
@@ -97,7 +108,7 @@ function AuthForm({
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
-      {children}
+      {children.filter((c) => c.type !== "fieldset")}
     </Form>
   );
 }

@@ -21,8 +21,16 @@ function MainHeader({ isDark, themeToggle }) {
       <nav>
         <menu>
           <li>
+            <FaHouse/>
+            <Link to="/">Home</Link>
+          </li>
+          {/* <li>
+            <FaFile />
+            <Link to="dashboard/cases">Cases</Link>
+          </li> */}
+          <li>
             <FaScaleBalanced />
-            <Link to="/">Services</Link>
+            <Link to="dashboard">Services</Link>
           </li>
           <li>
             <FaEnvelope />

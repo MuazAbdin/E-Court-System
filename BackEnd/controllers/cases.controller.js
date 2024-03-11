@@ -1,15 +1,26 @@
-import { NoCaseStatusFoundError, CaseDoesNotExistError } from '../errors/case.error.js';
-import Case from '../models/Case.model.js'; 
-import errorHandler from '../errors/errorHandler.js'; 
+import { NoCasesFoundError, NoCaseStatusFoundError, CaseDoesNotExistError } from '../errors/case.error.js';
+import Case from '../models/case.model.js';
+import errorHandler from '../errors/errorHandler.js';
 import { dbConfig } from "../config.js"
 
 class CasesController {
 	createCase(req, res) {
 		res.status(404).send("Work In Progress!");
 	}
-	getCases(req, res) {
-		res.status(404).send("Work In Progress!");
+
+	async getCases(req, res) {
+		const { query } = req.query;
+		try {
+			const cases = await Case.query(query);
+			if(cases.length === 0) {
+				throw new NoCasesFoundError();
+			}
+			res.json(cases);
+		} catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
+
 	async getCaseById(req, res) {
         const { id } = req.params;
         try {
@@ -23,7 +34,8 @@ class CasesController {
             errorHandler.handleError(res, error);
         }
     }
-	getCasesStatusTypes(req, res) {
+
+	getCaseStatusTypes(req, res) {
         try {
             const caseStatusTypes = dbConfig.CASE_STATUS_TYPES;
             if (!caseStatusTypes || caseStatusTypes.length === 0) {

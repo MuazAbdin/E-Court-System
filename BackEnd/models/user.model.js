@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { dbConfig } from '../config.js';
 
 const userSchema = new Schema({
     idNumber: { type: String, required: true, unique: true },
