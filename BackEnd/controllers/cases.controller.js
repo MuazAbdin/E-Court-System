@@ -31,6 +31,8 @@ class CasesController {
 		const { caseId, title, description, status, court, judge } = req.body
 		try{
 			GenericValidator.validateObjectId(caseId);
+			GenericValidator.validateObjectId(court);
+			GenericValidator.validateObjectId(judge);
 			CaseValidator.validateCaseData({ title, description, status, court, judge });
 			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: { title, description, status, court, judge }}, { new: true });
 			if(updatedCase === null) {
