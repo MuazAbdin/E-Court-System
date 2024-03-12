@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 
 const documentSchema = new Schema({
     case: { type: Schema.Types.ObjectId, ref: "Case", required: true },
+    party: { type: Schema.Types.ObjectId, ref: 'Party', required: true },
     uploadedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: true },
     fileLocation: { type: String, required: true },

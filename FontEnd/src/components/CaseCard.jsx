@@ -107,7 +107,7 @@ export default function CaseCard() {
       <div className="cards">
         <div className="create-new">
           <Card>
-            <Button component={Link} to="/dashboard/case">
+            <Button component={Link} to="/user/cases/add-new">
               <span className="new-case-btn" style={{ fontSize: "2rem" }}>
                 +
               </span>

@@ -15,6 +15,7 @@ const Input = forwardRef(function Input(
     label,
     id,
     icon,
+    readOnly,
     validator,
     severErrorMsg,
     prevValue,
@@ -30,7 +31,7 @@ const Input = forwardRef(function Input(
     showMessage,
     handleInputChange,
     handleInputBlur,
-  } = useInput(validator, null, severErrorMsg, isSubmitted, prevValue);
+  } = useInput(validator, severErrorMsg, isSubmitted, prevValue);
 
   return (
     <Wrapper>
@@ -41,7 +42,7 @@ const Input = forwardRef(function Input(
         fullWidth
         variant="filled"
         size="small"
-        InputProps={setInputProps(icon)}
+        InputProps={{ ...setInputProps(icon), readOnly }}
         value={value}
         onChange={handleInputChange}
         onBlur={handleInputBlur}

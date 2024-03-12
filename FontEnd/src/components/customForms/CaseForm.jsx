@@ -1,27 +1,16 @@
-import React, { useEffect, useState } from "react";
-import Wrapper from "../assets/stylingWrappers/CaseForm";
+import { useEffect, useState } from "react";
 import {
-  Button,
-  FormControlLabel,
-  FormLabel,
-  IconButton,
-  InputAdornment,
   InputLabel,
   ListItemIcon,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
-  TextField,
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { CASE_FIELDS, CLIENT_CASE_FIELDS } from "../utils/constants";
-import { redirect } from "react-router-dom";
-import { fetcher } from "../utils/fetcher";
 import { StyledForms } from "../assets/stylingWrappers/StyledForms";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import Person3Icon from "@mui/icons-material/Person3";
-import axios from "axios";
+import { fetcher } from "../../utils/fetcher";
 
 export default function CaseForm() {
   // const addParty = (e) => {
@@ -184,43 +173,4 @@ export default function CaseForm() {
       <Toaster position="bottom-center" />
     </>
   );
-}
-
-export async function action({ request }) {
-  const fd = await request.formData();
-  const data = Object.fromEntries(
-    [...fd.entries()]
-      .filter((entry) => entry[0] !== "submit")
-      .map((entry) => [entry[0].split("-")[2], entry[1]])
-  );
-  data.court = document.getElementById("court-dropdown").value;
-  data.judge = document.getElementById("judge-dropdown").value;
-  console.log(data);
-
-  for (const key in data) {
-    if (!data[key]) {
-      toast.error(`${key} cannot be empty!`);
-      return null;
-    }
-  }
-
-  try {
-    const response = await fetcher("/cases/", {
-      method: request.method,
-      body: JSON.stringify(data),
-    });
-
-    console.log(response);
-    if (!response.ok) {
-      const data = await response.text();
-      console.log(data);
-      throw new Error(data);
-    }
-
-    toast.success("Created Successfully!");
-    return redirect("");
-  } catch (error) {
-    toast.error(error.message);
-    return error;
-  }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Wrapper from "../assets/stylingWrappers/DocumentForm";
+import Wrapper from "../../assets/stylingWrappers/DocumentForm";
 import {
   IconButton,
   InputAdornment,
@@ -22,8 +22,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import BadgeIcon from "@mui/icons-material/Badge";
 import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import toast, { Toaster } from "react-hot-toast";
-import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { DOCUMENT_FIELDS } from "../utils/constants";
+import { StyledRegisterForm } from "../../assets/stylingWrappers/StyledAuthForm";
+import { DOCUMENT_FIELDS } from "../../utils/constants";
 import { redirect } from "react-router-dom";
 import { fetcher } from "../utils/fetcher";
 import { StyledForms } from "../assets/stylingWrappers/StyledForms";
