@@ -10,6 +10,7 @@ import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { COURT_FIELDS } from "../utils/constants";
 import { redirect } from "react-router-dom";
 import { fetcher } from "../utils/fetcher";
+import { StyledForms } from "../assets/stylingWrappers/StyledForms";
 export default function CourtForm() {
   // name, city, street, phoneNumber, email
   const [name, setName] = useState("");
@@ -122,20 +123,21 @@ export default function CourtForm() {
     //   </form>
     // </Wrapper>
     <>
-    <StyledRegisterForm className={'court-form'}
-    formID="court-form"
-    title="Court Details Form"
-    method="POST"
-    buttonText="ADD COURT"
-    fields={COURT_FIELDS}
-    />
-    <Toaster position="bottom-center" />
+      <StyledForms
+        className={"court-form"}
+        formID="court-form"
+        title="Court Details Form"
+        method="POST"
+        buttonText="ADD COURT"
+        fields={COURT_FIELDS}
+      />
+      <Toaster position="bottom-center" />
     </>
   );
 }
 
-export async function action ({request}){
-  const fd = await request.formData()
+export async function action({ request }) {
+  const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
       .filter((entry) => entry[0] !== "submit")
@@ -149,7 +151,7 @@ export async function action ({request}){
     }
   }
   try {
-    const response = await fetcher('/court/', {
+    const response = await fetcher("/courts/", {
       method: request.method,
       body: JSON.stringify(data),
     });
@@ -162,7 +164,7 @@ export async function action ({request}){
     }
 
     toast.success("Created Successfully!");
-    return redirect('');
+    return redirect("");
   } catch (error) {
     toast.error(error.message);
     return error;

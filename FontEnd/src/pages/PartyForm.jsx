@@ -4,8 +4,9 @@ import toast, { Toaster } from "react-hot-toast";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { LEGAL_PARTY_FIELDS } from "../utils/constants";
-import { redirect } from "react-router-dom";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { fetcher } from "../utils/fetcher";
+import { StyledForms } from "../assets/stylingWrappers/StyledForms";
 
 export default function PartyForm() {
   const [partyName, setPartyName] = useState("");
@@ -13,6 +14,7 @@ export default function PartyForm() {
   const [caseId, setCaseId] = useState("");
   const [stakeholders, setStakeholders] = useState([]);
   const [newStakeholder, setNewStakeholder] = useState("");
+  const navigate = useNavigate();
 
   const handleAddStakeholder = () => {
     if (newStakeholder.trim() !== "") {
@@ -89,32 +91,31 @@ export default function PartyForm() {
     //   </form>
     // </Wrapper>
     <>
-      <StyledRegisterForm
+      <StyledForms
         className={"party-form"}
         formID="party-form"
         title="Legal Party Details Form"
         method="POST"
         buttonText="SUBMIT"
         fields={LEGAL_PARTY_FIELDS}
-      />
+
+      >
+        <button className="pdf-btn" onClick={() => navigate(`/dashboard/stakeholder`)}>
+          Add Stakeholder
+        </button>
+      </StyledForms>
       <Toaster position="bottom-center" />
     </>
   );
 }
-<<<<<<< HEAD
 export async function action({ request }) {
   const fd = await request.formData();
-=======
-export async function action ({request}){
-  const fd = await request.formData()
->>>>>>> main
   const data = Object.fromEntries(
     [...fd.entries()]
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
   console.log(data);
-<<<<<<< HEAD
   for (const key in data) {
     if (!data[key]) {
       toast.error(`${key} cannot be empty!`);
@@ -123,11 +124,6 @@ export async function action ({request}){
   }
   try {
     const response = await fetcher("/party/", {
-=======
-  
-  try {
-    const response = await fetcher('/party/', {
->>>>>>> main
       method: request.method,
       body: JSON.stringify(data),
     });
@@ -140,11 +136,7 @@ export async function action ({request}){
     }
 
     toast.success("Created Successfully!");
-<<<<<<< HEAD
     return redirect("");
-=======
-    return redirect('');
->>>>>>> main
   } catch (error) {
     toast.error(error.message);
     return error;

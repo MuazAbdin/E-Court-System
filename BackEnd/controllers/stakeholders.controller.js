@@ -8,9 +8,10 @@ import GenericValidator from "../validators/generic.validate.js";
 class StakeholdersController {
 	
 	async createStakeholder(req, res) {
-		    const { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
+		    const { partyId, idNumber, firstName, lastName, email, phone: phoneNumber, city, street } = req.body;
 		try {
-			StackholderValidator.validateStackholderData(req.body);
+			GenericValidator.validateObjectId(partyId);
+			StackholderValidator.validateStackholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			const stackholder = await Stakeholder.create({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			res.json(stackholder);
 		}

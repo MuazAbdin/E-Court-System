@@ -26,6 +26,7 @@ import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { DOCUMENT_FIELDS } from "../utils/constants";
 import { redirect } from "react-router-dom";
 import { fetcher } from "../utils/fetcher";
+import { StyledForms } from "../assets/stylingWrappers/StyledForms";
 
 export default function DocumentForm() {
   const [caseNum, setCaseNum] = useState("");
@@ -235,7 +236,7 @@ export default function DocumentForm() {
     //   </form>
     // </Wrapper>
     <>
-      <StyledRegisterForm
+      <StyledForms
         className={"document-form"}
         formID="document-form"
         title="Case Document"
@@ -278,11 +279,7 @@ export async function action({ request }) {
     }
 
     toast.success("Created Successfully!");
-<<<<<<< HEAD
     return redirect("");
-=======
-    return redirect('');
->>>>>>> main
   } catch (error) {
     toast.error(error.message);
     return error;

@@ -5,7 +5,7 @@ import { IconButton, useThemeProps } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-function AuthForm({
+function Forms({
   children,
   className,
   formID,
@@ -67,7 +67,7 @@ function AuthForm({
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
-      {children && children.filter((c) => c.type === "fieldset")}
+      {/* {children.filter((c) => c.type === "fieldset")} */}
       {fields.map((f) => {
         const validator =
           f.id === "passwordConfirm"
@@ -100,12 +100,12 @@ function AuthForm({
           />
         );
       })}
+      {children}
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
-      {children.filter((c) => c.type !== "fieldset")}
     </Form>
   );
 }
 
-export default AuthForm;
+export default Forms;

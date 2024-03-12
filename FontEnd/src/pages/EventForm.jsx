@@ -8,6 +8,7 @@ import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
 import { EVENT_FIELDS } from "../utils/constants";
 import { redirect } from "react-router-dom";
 import { fetcher } from "../utils/fetcher";
+import { StyledForms } from "../assets/stylingWrappers/StyledForms";
 export default function EventForm() {
   // const [caseId, setCaseId] = useState("");
   // const [eventType, setEventType] = useState("");
@@ -75,7 +76,7 @@ export default function EventForm() {
     //   </form>
     // </Wrapper>
 <>
-    <StyledRegisterForm
+    <StyledForms
       className={"event-form"}
       formID="event-form"
       title="Legal Events Log Form"

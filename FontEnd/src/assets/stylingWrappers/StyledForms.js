@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import AuthForm from "../../components/AuthForm";
+import Forms from "../../components/Forms";
 
-export const StyledRegisterForm = styled(AuthForm)`
+export const StyledForms = styled(Forms)`
   display: grid;
   align-content: start;
   grid-template-columns: 1fr 1fr;
@@ -13,7 +13,7 @@ export const StyledRegisterForm = styled(AuthForm)`
   font-family: var(--main-font);
   font-size: 1.65rem;
   line-height: 1.2;
-
+z-index: 3;
   .title {
     font-size: 2.5rem;
     font-family: var(--subtitle-font);
@@ -44,7 +44,22 @@ export const StyledRegisterForm = styled(AuthForm)`
     gap: 1rem;
     border: none;
   }
-
+  .court-judge{
+   
+  }
+.court-judge #court-dropdown-label,
+ .court-judge .MuiInputBase-root,
+ .court-judge #case-dropdown,
+ .court-judge #judge-dropdown-label,
+ .court-judge #stakeholder-dropdown-label{
+    width: 100%;
+    display: flex;
+    align-items: start;
+    align-content: start;
+    justify-items: start;
+    background-color: hsla(214, 32%, 91%, 0.75);
+    border-radius: var(--border-radius);
+}
   .btn {
     grid-column: 1 / 3;
     padding-top: 1.5rem;
@@ -55,7 +70,21 @@ export const StyledRegisterForm = styled(AuthForm)`
     font-size: 1.25rem;
     font-weight: 500;
   }
-
+  .pdf-btn {
+    grid-column: 1 / 3;
+    padding-top: 1.5rem;
+    height: fit-content;
+    width: 20%;
+    justify-self: end;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-family: var(--main-font);
+    background-color: var(--primary-400);
+    border-radius: var(--border-radius);
+  }
   .btn:disabled {
     cursor: not-allowed;
     background-color: var(--grey-500);
@@ -63,7 +92,7 @@ export const StyledRegisterForm = styled(AuthForm)`
 
   input:disabled {
     cursor: not-allowed;
-    background-color: var(--grey-200);
+    background-color: var(--grey-400);
   }
 
   .google-auth {
@@ -95,21 +124,3 @@ export const StyledRegisterForm = styled(AuthForm)`
     }
   }
 `;
-
-export const StyledLoginForm = styled(StyledRegisterForm)`
-  grid-template-columns: 1fr;
-
-  .title,
-  .switch-form,
-  .btn,
-  fieldset,
-  .google-auth {
-    grid-column: unset;
-  }
-
-  fieldset {
-    width: 70%;
-    justify-self: center;
-  }
-`;
-

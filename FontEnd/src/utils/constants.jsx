@@ -294,7 +294,6 @@ export const STAKEHOLDER_FIELDS = [
     icon: <MailIcon />,
     required: true,
     validator: isEmailValid,
-
   },
   {
     label: "Phone",
@@ -321,13 +320,14 @@ export const STAKEHOLDER_FIELDS = [
     icon: <LocationOnIcon />,
     required: true,
     validator: isAddressValid,
-  },{
-    label: "Stakeholder Type",
-    id: "stakeholdertype",
-    type: "text",
-    title: "street address",
-    required: true,
   },
+  // {
+  //   label: "Stakeholder Type",
+  //   id: "stakeholdertype",
+  //   type: "text",
+  //   title: "street address",
+  //   required: true,
+  // },
 ];
 export const CASE_FIELDS = [
   {
@@ -358,24 +358,24 @@ export const CASE_FIELDS = [
     required: true,
   },
   
-  {
-    label: "Court",
-    id: "court",
-    type: "text",
-    variant: "outlined",
-    title: "The court that is handling the case",
-    icon: <AccountBalanceIcon />,
-    required: true,
-  },
-  {
-    label: "Judge",
-    id: "judge",
-    type: "text",
-    variant: "outlined",
-    title: "the judge in the case",
-   icon: <Person3Icon />,
-   required: true,
-  },
+  // {
+  //   label: "Court",
+  //   id: "court",
+  //   type: "text",
+  //   variant: "outlined",
+  //   title: "The court that is handling the case",
+  //   icon: <AccountBalanceIcon />,
+  //   required: true,
+  // },
+  // {
+  //   label: "Judge",
+  //   id: "judge",
+  //   type: "text",
+  //   variant: "outlined",
+  //   title: "the judge in the case",
+  //  icon: <Person3Icon />,
+  //  required: true,
+  // },
   {
     label: "Parties",
     id: "newParty",
@@ -386,3 +386,54 @@ export const CASE_FIELDS = [
     required: true,
   },
 ];
+export const CLIENT_CASE_FIELDS = [
+  {
+    label: "First Name",
+    id: "firstName",
+    type: "text",
+    autoComplete: "given-name",
+    required: true,
+    validator: isFirstNameValid,
+  },
+  {
+    label: "Last Name",
+    id: "lastName",
+    type: "text",
+    autoComplete: "family-name",
+    required: true,
+    validator: isLastNameValid,
+  },
+  {
+    label: "Email",
+    id: "email",
+    type: "email",
+    autoComplete: "email",
+    icon: <MailIcon />,
+    required: true,
+    validator: isEmailValid,
+  },
+  {
+    label: "Mobile",
+    id: "mobile",
+    type: "number",
+    icon: <PhoneIcon />,
+    required: true,
+    validator: isMobileValid,
+  },
+  {
+    label: "City",
+    id: "city",
+    type: "text",
+    icon: <LocationCityIcon />,
+    required: true,
+    validator: isAddressValid,
+  },
+  {
+    label: "Street",
+    id: "street",
+    type: "text",
+    icon: <LocationOnIcon />,
+    required: true,
+    validator: isAddressValid,
+  },
+]

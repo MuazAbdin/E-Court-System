@@ -134,6 +134,17 @@ export default function CaseCard() {
                 <Button
                   size="small"
                   component={Link}
+                  to={`/dashboard/viewcase/${caseItem.id}`}
+                >
+                  View Case
+                </Button>
+              </CardActions>
+            </div>
+            <div className="link-btn">
+              <CardActions>
+                <Button
+                  size="small"
+                  component={Link}
                   to={`/dashboard/document/${caseItem.id}`}
                 >
                   Create Document
