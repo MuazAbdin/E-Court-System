@@ -47,21 +47,21 @@ function getFormMetadata(fields) {
         name: "login",
         url: "/auth/login",
         successMessage: "Logged in successfully",
-        redirectPath: "/dashboard",
+        redirectPath: "/user",
       };
     case 3:
       return {
         name: "changePassword",
-        url: "",
+        url: "/users/password",
         successMessage: "Changed successfully",
-        redirectPath: "/login",
+        redirectPath: "",
       };
     case 7:
       return {
         name: "editDetails",
         url: "/users",
         successMessage: "Updated successfully",
-        redirectPath: "/dashboard",
+        redirectPath: "/user",
       };
     default:
       return {

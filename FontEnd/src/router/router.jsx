@@ -29,6 +29,7 @@ import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDe
 import { action as browseAction } from "../pages/cases/BrowseCases";
 import { action as newCaseAction } from "../pages/cases/AddNewCase";
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
+import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
           {
             path: "change-password",
             element: <ChangeUserPassword />,
+            action: changePasswordAction,
           },
           {
             path: "cases",
