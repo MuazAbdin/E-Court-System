@@ -5,3 +5,11 @@ export default class Config {
     static JWT_SECRET_KEY = "1234";
     static JWT_EXPIRE_TIME = 60 * 60 * 24 * 7;
 }
+
+export class DBConfig {
+    static STAKEHOLDER_TYPES = [ "Client", "Witness" ];
+    static PARTY_NAMES = [ "PARTY1", "PARTY2" ];
+    static USER_TYPES = ['Judge', 'Lawyer', 'Admin', 'Secretary'];
+    static CASE_STATUS_TYPES = ["Pending", "Active", "Dismissed", "Settled", "Appealed"];
+    static EVENT_TYPES = ['General', 'Trial', 'Appeal', 'Hearing'];
+}
