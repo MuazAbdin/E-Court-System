@@ -6,12 +6,17 @@ import User from "../models/user.model.js";
 import GenericValidator from "../validators/generic.validate.js";
 import { DBConfig } from "../config.js";
 import EventValidator from "../validators/events.validate.js";
+import Case from "../models/case.model.js";
 
 class EventsController {
-	createEvent(req, res) {
+	async createEvent(req, res) {
 		const { caseId, eventType, date, description } = req.body;
 		try {
+			EventValidator.validateEventData({ caseId, eventType, date, description });
 
+			const newEvent = await Event.create({case: caseId, type: eventType, date, description});
+			await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }})
+			res.send(newEvent);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
@@ -41,7 +46,7 @@ class EventsController {
 	async updateEvent(req, res) {
 		const { eventId, date, description } = req.body;
 		try {
-			EventValidator.validateEventData(req.body);
+			EventValidator.validateUpdateEventData(req.body);
 			const updatedEvent = await Event.findByIdAndUpdate(eventId, {$set: { date, description }}, { new: true });
 			if(updatedEvent === null) {
 				throw new EventDoesNotExistError();

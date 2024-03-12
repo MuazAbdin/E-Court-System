@@ -36,7 +36,7 @@ export default class GenericValidator {
     }
 
     static validateDate(date) {
-        if(!validator.isDate(date + "")) {
+        if((new Date(date) === "Invalid Date") || isNaN(new Date(date))) {
             throw new InvalidDateError();
         }
     }
