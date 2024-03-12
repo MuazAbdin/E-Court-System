@@ -90,5 +90,17 @@ button{
 .court-container .MuiInputBase-root {
     width: 15vw;
 }
+.add-party-container{
+    display: flex;
+    column-gap: 10%;
+}
+.add-party-container .add-btn{
+    width: 100%;
+    height: 100%;
+    margin-right: 20%;
+}
+.add-party-container .MuiFormControl-root {
+    margin-left: 10%;
+}
 `
 export default Wrapper

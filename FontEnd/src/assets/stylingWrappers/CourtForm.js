@@ -26,12 +26,13 @@ p{
 }
 button{
     height: 7lvh;
-    width: 40%;
+    width: 30%;
     font-family: var(--subtitle-font);
     font-size: 20px;
     background-color: var(--primary-300);
     border-radius: 18px;
     margin-top: 5%;
+    margin-left: 60%;
 }
 h2{
     font-family: var(--title-font);
