@@ -12,8 +12,6 @@ const caseSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: "User" }],
         default: []
     },
-    creationDate: { type: Date, required: true, default: Date.now },
-    lastUpdateDate: { type: Date, default: null },
     events: {
         type: [{ type: Schema.Types.ObjectId, ref: "Event" }],
         default: []
@@ -22,7 +20,7 @@ const caseSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: "Party" }],
         default: []
      }
-})
+}, { timestamps: true })
 
 caseSchema.statics.caseNumberCounter = 1;
 caseSchema.statics.query = function(query) {
