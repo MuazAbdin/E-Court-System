@@ -2,8 +2,9 @@ import { UserDoesNotExistError, NoUsersFoundError, NoJudgesFoundError, NoLawyers
 import errorHandler from "../errors/errorHandler.js"; 
 import User from "../models/user.model.js";
 import { dbConfig } from "../config.js";
-import UserValidator from "../validators/user.validate.js";
+import UserValidator from "../validators/users.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
+import mongoose from 'mongoose';
 
 class UserController {
     async getJudges(req, res) {
