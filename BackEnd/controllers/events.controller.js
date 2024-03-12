@@ -11,16 +11,12 @@ import Court from "../models/court.model.js";
 
 class EventsController {
 	async createEvent(req, res) {
-		const { caseId, eventType, date, description } = req.body;
+		const { caseId, eventType, date, description, location } = req.body;
 		try {
-			EventValidator.validateEventData({ caseId, eventType, date, description });
+			EventValidator.validateEventData(req.body);
 
-			const newEvent = new Event({case: caseId, type: eventType, date, description});
-			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
-			const court = await Court.findById(case_.court);
-			newEvent.city = court.city;
-			newEvent.street = court.street;
-			await newEvent.save();
+			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
+			await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
 
 			res.send(newEvent);
 		}

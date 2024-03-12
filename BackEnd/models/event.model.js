@@ -8,8 +8,7 @@ const eventSchema = new Schema({
     type: { type: String, required: true,  enum: DBConfig.EVENT_TYPES },
     date: { type: Date, required: true },
     description: { type: String, required: true },
-    city: { type: String, required: true },
-    street: { type: String, required: true }
+    location: { type: String, required: true }
 })
 
 eventSchema.statics.softDelete = dbUtils.createSoftDeleteFunction(EventDoesNotExistError);
