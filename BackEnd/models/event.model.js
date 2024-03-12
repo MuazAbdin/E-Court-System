@@ -7,7 +7,9 @@ const eventSchema = new Schema({
     case: { type: Schema.Types.ObjectId, ref: "Case", required: true },
     type: { type: String, required: true,  enum: DBConfig.EVENT_TYPES },
     date: { type: Date, required: true },
-    description: { type: String, required: true }
+    description: { type: String, required: true },
+    city: { type: String, required: true },
+    street: { type: String, required: true }
 })
 
 eventSchema.statics.softDelete = dbUtils.createSoftDeleteFunction(EventDoesNotExistError);
