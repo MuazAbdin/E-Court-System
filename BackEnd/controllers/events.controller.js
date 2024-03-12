@@ -5,6 +5,7 @@ import Event from "../models/event.model.js";
 import User from "../models/user.model.js";
 import GenericValidator from "../validators/generic.validate.js";
 import { dbConfig } from "../config.js";
+import EventValidator from "../validators/events.validate.js";
 
 class EventsController {
     createEvent(req, res) {
@@ -30,7 +31,22 @@ class EventsController {
 			return errorHandler.handleError(res, error)
 		}
 	}
-  
+
+	async updateEvent(req, res) {
+		const { eventId, date, description } = req.body;
+		try {
+			EventValidator.validateEventData(req.body);
+			const updatedEvent = await Event.findByIdAndUpdate(eventId, {$set: { date, description }}, { new: true });
+			if(updatedEvent === null) {
+				throw new EventDoesNotExistError();
+			}
+			res.json(updatedStackholder);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
 	getEventTypes(req, res) {
         try {
             res.json(dbConfig.EVENT_TYPES);
@@ -64,10 +80,6 @@ class EventsController {
 			errorHandler.handleError(res, error);
 		}
 	}
-
-    updateEvent(req, res) {
-        res.status(404).send("Work In Progress!");
-    }
 }
 
 const eventsController = new EventsController();
