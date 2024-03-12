@@ -32,7 +32,7 @@ I want to work on register form on the frontend:
 
 ## API Routes
 #### Data Definitions:
-##### StakeholderData: { partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
+##### StakeholderData: { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
 ##### Stakeholder: { _id, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
 ##### Party: { name, lawyer, caseId, [ Stakeholder ] }
 ##### UserData: { password, confirmPassword, idNumber, firstName, LastName, userType, email, phoneNumber, city, street, licenseNumber? }

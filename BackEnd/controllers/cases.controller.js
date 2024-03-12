@@ -1,11 +1,57 @@
-import { NoCasesFoundError, NoCaseStatusFoundError, CaseDoesNotExistError } from '../errors/case.error.js';
-import Case from '../models/case.model.js';
-import errorHandler from '../errors/errorHandler.js';
-import { dbConfig } from "../config.js"
+import { NoCaseStatusFoundError, CaseDoesNotExistError, InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
+import errorHandler from "../errors/errorHandler.js";
+import CaseValidator from "../validators/cases.validate.js";
+import Case from "../models/case.model.js";
+import PartyValidator from "../validators/parties.validate.js";
+import Party from "../models/party.model.js";
+import Stakeholder from "../models/stakeholder.model.js";
+import mongoose from "mongoose";
+import { DBConfig } from "../config.js";
+import dbUtils from "../utils/db.utils.js";
 
 class CasesController {
-	createCase(req, res) {
-		res.status(404).send("Work In Progress!");
+	async createCase(req, res) {
+		const { title, description, status, court, judge, parties } = req.body;
+		// Saves created Documents to delete them on faliure/error
+		const savedDocs = [];
+		try {
+			// Validate parties!
+			CaseValidator.validateCaseData({ title, description, status, court, judge, parties });
+			for(const party of parties) {
+			 	PartyValidator.validateCaseCreatePartyData(party);
+			}
+
+			const newCase = new Case({title, description, status, court, judge});
+			const newParties = [];
+			for(const index in parties) {
+				const { lawyer, client } = parties[index];
+				const newParty = new Party({ lawyer, case: newCase, name: DBConfig.PARTY_NAMES[index], stakeholders: [] });
+				const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
+				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber, city, street });
+				await newClient.save();
+				savedDocs.push(newClient);
+				newParty.client = newClient;
+				newParties.push(newParty)
+			}
+			
+			newCase.parties = newParties.map(party => party._id);
+			await newCase.save();
+			savedDocs.push(newCase);
+			for(const party of newParties) {
+				await party.save();
+				savedDocs.push(party);
+			}
+			res.json(newCase);
+		}
+		catch(error) {
+			dbUtils.deleteDocuments(savedDocs);
+			if(error instanceof mongoose.Error.ValidationError) {
+				if(error.errors.status) {
+					return errorHandler.handleError(res, new InvalidCaseStatusError());
+				}
+			}
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async getCases(req, res) {
@@ -37,7 +83,7 @@ class CasesController {
 
 	getCaseStatusTypes(req, res) {
         try {
-            res.json(dbConfig.CASE_STATUS_TYPES);
+            res.json(DBConfig.CASE_STATUS_TYPES);
         } catch (error) {
             errorHandler.handleError(res, error);
         }

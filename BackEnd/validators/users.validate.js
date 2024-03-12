@@ -1,4 +1,4 @@
-import { dbConfig } from "../config.js";
+import { DBConfig } from "../config.js";
 import { InvalidUserTypeError } from "../errors/user.error.js";
 import GenericValidator from "./generic.validate.js";
 
@@ -9,7 +9,7 @@ export default class UserValidator {
 		GenericValidator.validateEmail(data.email);
 		GenericValidator.validatePhoneNumber(data.phoneNumber);
 		GenericValidator.validateIdNumber(data.idNumber);
-		if(!dbConfig.USER_TYPES.includes(data.userType)) {
+		if(!DBConfig.USER_TYPES.includes(data.userType)) {
 			throw new InvalidUserTypeError();
 		}
 	}

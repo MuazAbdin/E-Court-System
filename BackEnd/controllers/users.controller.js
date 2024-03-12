@@ -1,10 +1,9 @@
 import { UserDoesNotExistError, NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, InvalidUserTypeError } from '../errors/user.error.js';
 import errorHandler from "../errors/errorHandler.js"; 
 import User from "../models/user.model.js";
-import { dbConfig } from "../config.js";
+import { DBConfig } from "../config.js";
 import UserValidator from "../validators/users.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
-import mongoose from 'mongoose';
 
 class UserController {
     async getJudges(req, res) {
@@ -45,7 +44,7 @@ class UserController {
 
     getUserTypes(req, res) {
         try {
-            res.json(dbConfig.USER_TYPES);
+            res.json(DBConfig.USER_TYPES);
         } catch (error) {
             errorHandler.handleError(res, new UserTypeNotFoundError());
         }

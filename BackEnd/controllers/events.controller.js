@@ -4,13 +4,26 @@ import { EventDoesNotExistError, NoEventsFoundError, NoEventTypesFoundError } fr
 import Event from "../models/event.model.js";
 import User from "../models/user.model.js";
 import GenericValidator from "../validators/generic.validate.js";
-import { dbConfig } from "../config.js";
+import { DBConfig } from "../config.js";
 import EventValidator from "../validators/events.validate.js";
+import Case from "../models/case.model.js";
+import Court from "../models/court.model.js";
 
 class EventsController {
-    createEvent(req, res) {
-        res.status(404).send("Work In Progress!");
-    }
+	async createEvent(req, res) {
+		const { caseId, eventType, date, description, location } = req.body;
+		try {
+			EventValidator.validateEventData(req.body);
+
+			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
+			await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
+
+			res.send(newEvent);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
 
     async getUpcomingEvents(req, res) {
         // console.log(req);
@@ -35,7 +48,7 @@ class EventsController {
 	async updateEvent(req, res) {
 		const { eventId, date, description } = req.body;
 		try {
-			EventValidator.validateEventData(req.body);
+			EventValidator.validateUpdateEventData(req.body);
 			const updatedEvent = await Event.findByIdAndUpdate(eventId, {$set: { date, description }}, { new: true });
 			if(updatedEvent === null) {
 				throw new EventDoesNotExistError();
@@ -49,7 +62,7 @@ class EventsController {
 
 	getEventTypes(req, res) {
         try {
-            res.json(dbConfig.EVENT_TYPES);
+            res.json(DBConfig.EVENT_TYPES);
 		} catch (error) {
             errorHandler.handleError(res, error); 
         }
