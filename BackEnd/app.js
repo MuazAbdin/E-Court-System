@@ -13,6 +13,7 @@ import { router as documentsRoutes } from "./routes/documents.route.js";
 import { router as eventsRoutes } from "./routes/events.route.js";
 import { router as partiesRoutes } from "./routes/parties.route.js";
 import { router as stakeholdersRoutes } from "./routes/stakeholders.route.js";
+import { router as typesRoutes } from "./routes/types.route.js"
 import { authorizationMiddleWare } from "./middlewares/userAuth.middleware.js";
 
 const app = express();
@@ -41,5 +42,6 @@ app.use("/documents", documentsRoutes);
 app.use("/events", authorizationMiddleWare, eventsRoutes);
 app.use("/parties", partiesRoutes);
 app.use("/stakeholders", stakeholdersRoutes);
+app.use("/types", typesRoutes);
 
 export default app;
