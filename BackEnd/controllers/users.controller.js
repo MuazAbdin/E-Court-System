@@ -1,9 +1,10 @@
 import { UserDoesNotExistError, NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, InvalidUserTypeError } from '../errors/user.error.js';
-import errorHandler from '../errors/errorHandler.js'; 
-import User from '../models/user.model.js';
+import errorHandler from "../errors/errorHandler.js"; 
+import User from "../models/user.model.js";
 import { dbConfig } from "../config.js";
-import UserValidator from "../validators/user.validate.js";
+import UserValidator from "../validators/users.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
+import mongoose from 'mongoose';
 
 class UserController {
     async getJudges(req, res) {
@@ -50,15 +51,29 @@ class UserController {
         }
     }
 
-    updateAllUserData(req, res) {
-        res.status(404).send("Work In Progress!");
+   async updateAllUserData(req, res) {
+          const { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street } = req.body;
+		try {
+            GenericValidator.validateObjectId(_id);
+			UserValidator.validateUserData({ idNumber, firstName, lastName, userType, email, phoneNumber, city, street });
+			const updatedUser = await User.findByIdAndUpdate(_id,
+				{$set: { idNumber, firstName, lastName, userType, email, phoneNumber, city, street }},
+				{ new: true });
+			if(updatedUser === null) {
+				throw new UserDoesNotExistError();
+			}
+			res.json(updatedUser);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
     }
+    
 
    async updateUser(req, res) {
        const { _id, phoneNumber, city, street } = req.body
 		try {
-            GenericValidator.validateObjectId(_id);
-			UserValidator.validateUserData({ phoneNumber, city, street });
+			UserValidator.validateUpdateUserData({ phoneNumber, city, street });
 			const updatedUser = await User.findByIdAndUpdate(_id, {$set: { phoneNumber, city, street }}, { new: true });
 			if(updatedUser === null) {
 				throw new UserDoesNotExistError();
