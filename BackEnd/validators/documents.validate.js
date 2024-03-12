@@ -11,7 +11,6 @@ export default class DocumentsValidator {
 	}
 	static validateUpdateDocumentData(data) {
 		GenericValidator.validateObjectId(data.id);
-
 		Object.keys(data).forEach((key) =>
 			GenericValidator.validateNotEmpty(data[key])
 		);
