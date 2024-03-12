@@ -40,7 +40,7 @@ class PartiesController {
 		try {
 			GenericValidator.validateObjectId(partyId);
 			PartyValidator.validatePartyData({ partyName, lawyer });
-			const updatedParty = await Party.findByIdAndUpdate(partyId, {$set: { partyName, lawyer  }}, { new: true });
+			const updatedParty = await Party.findByIdAndUpdate(partyId, {$set: { name:partyName, lawyer  }}, { new: true });
 			if(updatedParty === null) {
 				throw new PartyDoesNotExistError();
 			}
