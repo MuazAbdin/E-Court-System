@@ -27,25 +27,29 @@ function Aside() {
             title="cases"
             Icon={MdGavel}
             subsectoins={[
-              { name: "browse", to: "browse" },
-              // { name: "create new case", to: "case" },
-              // { name: "create new document", to: "document" },
-              // { name: "event", to: "event" }
+              { name: "browse", to: "cases" },
+              { name: "add new", to: "cases/add-new" },
             ]}
           />
           <Accordion.Item
             id="nav-court"
             title="court"
             Icon={AccountBalanceIcon}
-            subsectoins={[{ name: "court form", to: "court" }]}
+            subsectoins={[
+              // { name: "browse", to: "courts" },
+              { name: "add new", to: "courts/add-new" },
+            ]}
           />
           <Accordion.Item
             id="nav-legal-entity"
             title="Legal Entity"
             Icon={BalanceIcon}
             subsectoins={[
-              { name: "Party", to: "party" },
-              { name: "Stakeholder", to: "stakeholder" },
+              { name: "Party", to: "legal-entities/parties/add-new" },
+              {
+                name: "Stakeholder",
+                to: "legal-entities/stakeholders/add-new",
+              },
             ]}
           />
         </Accordion>

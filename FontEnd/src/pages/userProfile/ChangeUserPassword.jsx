@@ -1,6 +1,6 @@
-import { StyledEditDetailsForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { CHANGE_PASSWORD_FIELDS } from "../utils/constants";
-import { action as submitAction } from "../utils/submitAction";
+import { StyledEditDetailsForm } from "../../assets/stylingWrappers/StyledAuthForm";
+import { CHANGE_PASSWORD_FIELDS } from "../../utils/constants";
+import { action as submitAction } from "../../utils/submitAction";
 
 function ChangeUserPassword() {
   return (

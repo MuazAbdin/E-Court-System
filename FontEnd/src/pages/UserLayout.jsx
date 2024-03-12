@@ -1,5 +1,5 @@
 import { Outlet, useLoaderData } from "react-router-dom";
-import Wrapper from "../assets/stylingWrappers/DashboardLayout";
+import Wrapper from "../assets/stylingWrappers/UserLayout";
 import { Aside, PageHeader } from "../components";
 import { toast } from "react-toastify";
 import { fetcher } from "../utils/fetcher";

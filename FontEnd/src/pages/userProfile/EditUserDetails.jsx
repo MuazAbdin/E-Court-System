@@ -1,8 +1,8 @@
 import { useOutletContext } from "react-router-dom";
-import { StyledEditDetailsForm } from "../assets/stylingWrappers/StyledAuthForm";
+import { StyledEditDetailsForm } from "../../assets/stylingWrappers/StyledAuthForm";
 
-import { EDIT_USER_FIELDS } from "../utils/constants";
-import { action as submitAction } from "../utils/submitAction";
+import { EDIT_USER_FIELDS } from "../../utils/constants";
+import { action as submitAction } from "../../utils/submitAction";
 
 function EditUserDetails() {
   const { userData } = useOutletContext();
