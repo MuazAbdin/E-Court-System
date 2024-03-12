@@ -20,6 +20,7 @@ import {
   Stackholders,
   BrowseStackholders,
   AddNewStackholder,
+  Guest,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         path: "auth/:page",
         element: <Authentication />,
         action: authAction,
+      },
+      {
+        path: "guest",
+        element: <Guest />,
       },
       {
         path: "user",

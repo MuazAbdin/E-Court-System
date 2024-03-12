@@ -11,6 +11,8 @@ import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
 import authUtils from "../utils/auth.utils.js";
 import AuthDataValidator from "../validators/auth.validate.js";
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client();
 
 class AuthController {
   async register(req, res) {
@@ -98,6 +100,33 @@ class AuthController {
 
   logout(req, res) {
     res.clearCookie("token").sendStatus(204);
+  }
+
+  async loginWithGoogle(req, res) {
+    const { credential, client_id } = req.body;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: client_id,
+      });
+      const payload = ticket.getPayload();
+      const {
+        sub: userGID,
+        given_name: firstName,
+        family_name: lastName,
+        email,
+        email_verified,
+      } = payload;
+      if (!email_verified) throw new InvalidCredintialsError();
+      // console.log(payload);
+      // console.log({ userGID, firstName, lastName, email });
+      res.json({
+        msg: "logged in successfully",
+        payload: { userGID, firstName, lastName, email },
+      });
+    } catch (error) {
+      errorHandler.handleError(res, error);
+    }
   }
 }
 
