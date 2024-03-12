@@ -45,10 +45,10 @@ function Aside() {
             title="Legal Entity"
             Icon={BalanceIcon}
             subsectoins={[
-              { name: "Party", to: "legal-entities/parties/add-new" },
+              { name: "Party", to: "legal-entities/parties" },
               {
                 name: "Stakeholder",
-                to: "legal-entities/stakeholders/add-new",
+                to: "legal-entities/stackholders",
               },
             ]}
           />

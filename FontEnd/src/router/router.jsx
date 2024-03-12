@@ -4,7 +4,6 @@ import {
   Landing,
   Authentication,
   UserLayout,
-  Profile,
   EditUserDetails,
   ChangeUserPassword,
   Overview,
@@ -60,22 +59,6 @@ const router = createBrowserRouter([
             path: "change-password",
             element: <ChangeUserPassword />,
           },
-          // {
-          //   path: "profile",
-          //   element: <Profile />,
-          //   children: [
-          //     { index: true, element: <Overview /> },
-          //     {
-          //       path: "edit-details",
-          //       element: <EditUserDetails />,
-          //       action: editUserDetailsAction,
-          //     },
-          //     {
-          //       path: "change-password",
-          //       element: <ChangeUserPassword />,
-          //     },
-          //   ],
-          // },
           {
             path: "cases",
             element: <Cases />,
@@ -98,14 +81,6 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // {
-          //   path: "documents",
-          //   element: <Documents />,
-          //   children: [
-          //     { index: true, element: <BrowseDocumnets /> },
-          //     { path: "add-new", element: <AddNewDocument /> },
-          //   ],
-          // },
           {
             path: "courts",
             element: <Courts />,
@@ -118,31 +93,31 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // {
-          //   path: "legal-entities",
-          //   element: <LegalEntities />,
-          //   children: [
-          //     { index: true, element: <Parties /> },
-          //     {
-          //       path: "parties",
-          //       element: <Parties />,
-          //       children: [
-          //         // { index: true, element: <BrowseParties /> },
-          //         // { path: "add-new", element: <AddNewParty /> },
-          //         { index: true, element: <AddNewParty /> },
-          //       ],
-          //     },
-          //     {
-          //       path: "stackholders",
-          //       element: <Stackholders />,
-          //       children: [
-          //         { index: true, element: <AddNewStackholder /> },
-          //         // { index: true, element: <BrowseStackholders /> },
-          //         // { path: "add-new", element: <AddNewStackholder /> },
-          //       ],
-          //     },
-          //   ],
-          // },
+          {
+            path: "legal-entities",
+            element: <LegalEntities />,
+            children: [
+              // { index: true, element: <Parties /> },
+              {
+                path: "parties",
+                element: <Parties />,
+                children: [
+                  // { index: true, element: <BrowseParties /> },
+                  // { path: "add-new", element: <AddNewParty /> },
+                  { index: true, element: <AddNewParty /> },
+                ],
+              },
+              {
+                path: "stackholders",
+                element: <Stackholders />,
+                children: [
+                  { index: true, element: <AddNewStackholder /> },
+                  // { index: true, element: <BrowseStackholders /> },
+                  // { path: "add-new", element: <AddNewStackholder /> },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],

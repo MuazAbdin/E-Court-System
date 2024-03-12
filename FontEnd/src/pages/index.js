@@ -3,7 +3,6 @@ export { default as Landing } from "./Landing";
 export { default as Authentication } from "./Authentication";
 
 export { default as UserLayout } from "./UserLayout";
-export { default as Profile } from "./userProfile/Profile";
 export { default as Overview } from "./userProfile/Overview";
 export { default as EditUserDetails } from "./userProfile/EditUserDetails";
 export { default as ChangeUserPassword } from "./userProfile/ChangeUserPassword";
