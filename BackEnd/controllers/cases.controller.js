@@ -3,6 +3,7 @@ import Case from "../models/case.model.js";
 import { CaseDoesNotExistError, InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
 import GenericValidator from "../validators/generic.validate.js";
 import CaseValidator from "../validators/case.validate.js";
+import mongoose from "mongoose";
 
 class CasesController {
 	createCase(req, res) {
