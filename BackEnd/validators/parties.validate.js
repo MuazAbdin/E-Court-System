@@ -22,4 +22,9 @@ export default class PartyValidator {
             GenericValidator.validateNotEmpty(data[key]));
         StakeholderValidator.validateStakeholderDataNoPartyId(data.client);      
     }
+
+    static validateUpdatePartyData(data) {
+        GenericValidator.validateObjectId(data.partyId);
+        GenericValidator.validateObjectId(data.lawyer);
+    }
 }

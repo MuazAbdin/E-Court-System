@@ -83,8 +83,19 @@ class PartiesController {
 		}
 	}
 
-	updateParty(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateParty(req, res) {
+		const { partyId, partyName, lawyer } = req.body
+		try {
+			PartyValidator.validateUpdatePartyData(req.body);
+			const updatedParty = await Party.findByIdAndUpdate(partyId, {$set: { name:partyName, lawyer  }}, { new: true });
+			if(updatedParty === null) {
+				throw new PartyDoesNotExistError();
+			}
+			res.json(updatedParty);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async deleteParty(req, res) {
