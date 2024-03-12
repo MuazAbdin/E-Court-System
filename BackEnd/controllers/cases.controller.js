@@ -31,7 +31,7 @@ class CasesController {
 		res.status(404).send("Work In Progress!");
 	}
 
-	async updateCaseStatus(req, res) {
+	async updateCaseStatus(req, res) {	
 			const { _id, status } = req.body
 		try{
 			GenericValidator.validateObjectId(_id);
