@@ -21,7 +21,7 @@ function MainHeader({ isDark, themeToggle }) {
       <nav>
         <menu>
           <li>
-            <FaHouse/>
+            <FaHouse />
             <Link to="/">Home</Link>
           </li>
           {/* <li>
@@ -30,7 +30,7 @@ function MainHeader({ isDark, themeToggle }) {
           </li> */}
           <li>
             <FaScaleBalanced />
-            <Link to="dashboard">Services</Link>
+            <Link to="user">Services</Link>
           </li>
           <li>
             <FaEnvelope />

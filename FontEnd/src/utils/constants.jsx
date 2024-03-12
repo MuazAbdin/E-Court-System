@@ -114,6 +114,38 @@ export const LOGIN_FIELDS = [
   },
 ];
 
+export const EDIT_USER_FIELDS = REGISTER_FIELDS.filter(
+  (f) => f.id !== "password" && f.id !== "passwordConfirm"
+).map((f) => {
+  if (f.id === "IDcard") return { ...f, readOnly: true };
+  return f;
+});
+
+export const CHANGE_PASSWORD_FIELDS = [
+  {
+    label: "Old Password",
+    id: "oldPassword",
+    type: "password",
+    placeholder: "Old Password",
+    // validator: isEmpty,
+  },
+  {
+    label: "New Password",
+    id: "password",
+    type: "password",
+    placeholder: "New Password",
+    validator: isPasswordValid,
+    help: "6-12 characters. At least one lowercase, one uppercase, one digit, one of #?!@$ %^&*- .",
+  },
+  {
+    label: "Confirm Password",
+    id: "passwordConfirm",
+    type: "password",
+    placeholder: "Confirm Password",
+    validator: isPasswordConfirmValid,
+  },
+];
+
 export const COURT_FIELDS = [
   {
     type: "text",
@@ -326,7 +358,7 @@ export const CASE_FIELDS = [
     type: "text",
     variant: "outlined",
     title: "the judge in the case",
-   icon: <Person3Icon />
+    icon: <Person3Icon />,
   },
   {
     label: "Court",
@@ -342,6 +374,6 @@ export const CASE_FIELDS = [
     type: "text",
     variant: "outlined",
     title: "the parties to the case",
-    icon: <GroupIcon style={{ backgroundColor: "transparent" }} />
+    icon: <GroupIcon style={{ backgroundColor: "transparent" }} />,
   },
 ];

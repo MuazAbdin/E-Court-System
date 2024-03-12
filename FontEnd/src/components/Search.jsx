@@ -37,23 +37,23 @@ export default function Search() {
     try {
       // .get(`http://localhost:4000/cases/?query=${search}&caseTitle=${title}&creationDate=${date}&options=${selectedOption}`)
       const response = await fetcher(`/cases/?query=${search}`);
-      // 
+      //
       if (!response.ok) {
         const data = await response.text();
         console.log(data);
         throw new Error(data);
       }
-      const data = await response.json()
-      console.log(data)
-      setCases(data)
+      const data = await response.json();
+      console.log(data);
+      setCases(data);
     } catch (error) {
       console.error("Error fetching data: ", error.message);
     }
   };
 
   useEffect(() => {
-     getCases();
-  }, [search, selectedOption])
+    getCases();
+  }, [search, selectedOption]);
 
   return (
     <Wrapper>
@@ -152,15 +152,4 @@ export default function Search() {
       </div>
     </Wrapper>
   );
-}
-
-export async function action({request}) {
-  const fd = await request.formData();
-
-  try {
-    const { data } = await axios.get(`http://localhost:4000/?query=${search}`);
-    return data;
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  }
 }

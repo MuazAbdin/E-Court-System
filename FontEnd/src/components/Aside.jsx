@@ -3,7 +3,14 @@ import Wrapper from "../assets/stylingWrappers/Aside";
 import Accordion from "./Accordion";
 import { MdGavel } from "react-icons/md";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import BalanceIcon from '@mui/icons-material/Balance';
+import BalanceIcon from "@mui/icons-material/Balance";
+
+const PROFILE_SECTIONS = [
+  { name: "overview", to: "" },
+  { name: "edit details", to: "edit-details" },
+  { name: "change password", to: "change-password" },
+];
+
 function Aside() {
   return (
     <Wrapper>
@@ -13,17 +20,15 @@ function Aside() {
             id="nav-profile"
             title="profile"
             Icon={FaRegCircleUser}
-            subsectoins={[{ name: "overview", to: "" }]}
+            subsectoins={PROFILE_SECTIONS}
           />
           <Accordion.Item
             id="nav-cases"
             title="cases"
             Icon={MdGavel}
             subsectoins={[
-              { name: "browse", to: "browse" },
-              // { name: "create new case", to: "case" },
-              // { name: "create new document", to: "document" },
-              // { name: "event", to: "event" }
+              { name: "browse", to: "cases" },
+              { name: "add new", to: "cases/add-new" },
             ]}
           />
           <Accordion.Item
@@ -31,7 +36,8 @@ function Aside() {
             title="court"
             Icon={AccountBalanceIcon}
             subsectoins={[
-              { name: "court form", to: "court" },
+              // { name: "browse", to: "courts" },
+              { name: "add new", to: "courts/add-new" },
             ]}
           />
           <Accordion.Item
@@ -39,8 +45,11 @@ function Aside() {
             title="Legal Entity"
             Icon={BalanceIcon}
             subsectoins={[
-              { name: "Party", to: "party" },
-              { name: "Stakeholder", to: "stakeholder" },
+              { name: "Party", to: "legal-entities/parties" },
+              {
+                name: "Stakeholder",
+                to: "legal-entities/stackholders",
+              },
             ]}
           />
         </Accordion>

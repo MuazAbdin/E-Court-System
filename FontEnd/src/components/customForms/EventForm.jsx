@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Wrapper from "../assets/stylingWrappers/EventForm";
+import Wrapper from "../../assets/stylingWrappers/EventForm";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import { MdEditDocument } from "react-icons/md";
 import toast, { Toaster } from "react-hot-toast";
-import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { EVENT_FIELDS } from "../utils/constants";
+import { StyledRegisterForm } from "../../assets/stylingWrappers/StyledAuthForm";
+import { EVENT_FIELDS } from "../../utils/constants";
 export default function EventForm() {
   const [caseId, setCaseId] = useState("");
   const [eventType, setEventType] = useState("");
