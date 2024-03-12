@@ -8,6 +8,7 @@ import Stakeholder from "../models/stakeholder.model.js";
 import mongoose from "mongoose";
 import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
+import GenericValidator from "../validators/generic.validate.js";
 
 class CasesController {
 	async createCase(req, res) {

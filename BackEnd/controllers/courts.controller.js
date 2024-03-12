@@ -46,6 +46,22 @@ class CourtsController {
 			errorHandler.handleError(res, error);
 		}
 	}
+
+	async updateJudges(req, res) {
+		const { _id, judge } = req.body
+		GenericValidator.validateObjectId(_id)
+		GenericValidator.validateObjectId(judge)
+		try{
+			const updatedJudges = await Court.findByIdAndUpdate({_id},{ $push: { judges: judge } }, {new: true} );
+			if(updatedJudges === null) {
+				throw new CourtDoesNotExistError();
+			}
+			res.json(updatedJudges);
+		} catch (error) {
+			errorHandler.handleError(res, error);
+		}
+
+	}
 }
 
 const courtsController = new CourtsController();
