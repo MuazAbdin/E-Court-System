@@ -2,7 +2,6 @@ import { CaseDoesNotExistError, InvalidCaseStatusError, NoCasesFoundError } from
 import errorHandler from "../errors/errorHandler.js";
 import CaseValidator from "../validators/cases.validate.js";
 import Case from "../models/case.model.js";
-import GenericValidator from "../validators/generic.validate.js";
 import PartyValidator from "../validators/parties.validate.js";
 import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
@@ -46,11 +45,6 @@ class CasesController {
 		}
 		catch(error) {
 			dbUtils.deleteDocuments(savedDocs);
-			if(error instanceof mongoose.Error.ValidationError) {
-				if(error.errors.status) {
-					return errorHandler.handleError(res, new InvalidCaseStatusError());
-				}
-			}
 			errorHandler.handleError(res, error);
 		}
 	}
@@ -93,21 +87,13 @@ class CasesController {
 	async updateCase(req, res) {
 		const { caseId, title, description, status, court, judge } = req.body
 		try{
-			GenericValidator.validateObjectId(caseId);
-			GenericValidator.validateObjectId(court);
-			GenericValidator.validateObjectId(judge);
-			CaseValidator.validateCaseData({ title, description, status, court, judge });
+			CaseValidator.validateUpdateCaseData({ caseId, title, description, status, court, judge });
 			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: { title, description, status, court, judge }}, { new: true });
 			if(updatedCase === null) {
 				throw new CaseDoesNotExistError();
 			}
 			res.json(updatedCase);
 		} catch(error) {
-			if(error instanceof mongoose.Error.ValidationError) {
-				if(error.errors.status) {
-					return errorHandler.handleError(res, new InvalidCaseStatusError());
-				}
-			}
 			errorHandler.handleError(res, error);
 		}
 	}
