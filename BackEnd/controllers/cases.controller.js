@@ -1,4 +1,4 @@
-import { InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
+import { NoCaseStatusFoundError, CaseDoesNotExistError, InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
 import errorHandler from "../errors/errorHandler.js";
 import CaseValidator from "../validators/cases.validate.js";
 import Case from "../models/case.model.js";
@@ -67,10 +67,27 @@ class CasesController {
 		}
 	}
 
+	async getCaseById(req, res) {
+        const { id } = req.params;
+        try {
+            const case_ = Case.findById(id);
+			if(!case_) {
+				throw new CaseDoesNotExistError();
+			}
+            res.json(case_);
+        }
+        catch(error) {
+            errorHandler.handleError(res, error);
+        }
+    }
 
-	getCaseById(req, res) {
-		res.status(404).send("Work In Progress!");
-	}
+	getCaseStatusTypes(req, res) {
+        try {
+            res.json(DBConfig.CASE_STATUS_TYPES);
+        } catch (error) {
+            errorHandler.handleError(res, error);
+        }
+    }
 
 	updateCase(req, res) {
 		res.status(404).send("Work In Progress!");

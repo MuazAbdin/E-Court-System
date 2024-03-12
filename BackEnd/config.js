@@ -9,4 +9,7 @@ export default class Config {
 export class DBConfig {
     static STAKEHOLDER_TYPES = [ "Client", "Witness" ];
     static PARTY_NAMES = [ "PARTY1", "PARTY2" ]
+    static USER_TYPES = ['Judge', 'Lawyer', 'Admin', 'Secretary'];
+    static CASE_STATUS_TYPES = ['Created', 'Closed'];
+    static EVENT_TYPES = ['General', 'Trial', 'Appeal', 'Hearing'];
 }

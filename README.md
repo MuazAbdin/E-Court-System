@@ -70,17 +70,17 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Document | /documents/ | POST | caseId, title, uploadedBy, documentFile | _id, caseId, title, uploadedBy |
-| Get User Documents | /documents/:userId | GET | | Document |
 | Get Document | /documents/:id | GET | | Document |
-| Get Party Documents | /documents/:partyId | GET | | Document |
-| Get Case Documents | /documents/:caseId | GET | | Document |
+| Get User Documents | /documents/user/:id | GET | | Document |
+| Get Party Documents | /documents/party/:id | GET | | Document |
+| Get Case Documents | /documents/case/:id | GET | | Document |
 | Update Document Title | /documents/ | PATCH | id, title | Document |
 
 ### Event Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Event | /events/ | POST | caseId, eventType, date, description | Event |
-| Get Case Events | /events/:caseId | GET | | [ Event ] |
+| Get Case Events | /events/case/:id | GET | | [ Event ] |
 | Get Event | /events/:id | GET | | Event |
 | Update Event | /events/ | PATCH | eventId, date, description | Event |
 | Delete Event | /events/ | DELETE | eventId | |
@@ -89,7 +89,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Party | /parties/ | POST | partyName, lawyer?, caseId, [ StakeholderData ] | Party |
-| Get Case Parties | /parties/:caseId | GET | | [ Party ] |
+| Get Case Parties | /parties/case/:id | GET | | [ Party ] |
 | Get Party | /parties/:id | GET | | Party |
 | Update Party | /parties/ | PATCH | partyId, partyName, lawyer | Party |
 | Delete Party | /parties/ | DELETE | partyId | |
@@ -98,7 +98,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Stakeholder | /stakeholders/ | POST | StakeholderData | Stakeholder |
-| Get Stakeholders | /stakeholders/:partyId | GET |  | [ Stakeholder ] |
+| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ Stakeholder ] |
 | Get Stakeholders | /stakeholders/:id | GET |  | Stakeholder |
 | Update Stakeholder | /stakeholders/ | PUT | Stakeholder | Stakeholder |
 | Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |

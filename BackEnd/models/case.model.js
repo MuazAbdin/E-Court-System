@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
 import dbUtils from '../utils/db.utils.js';
+import { DBConfig } from '../config.js'
 
 const caseSchema = new Schema({
-    caseNumber: { type: String, unique: true, default: getCaseNumber },
-    status: { type: String, required: true,
-         enum: ["Created", "Closed"] },
+    caseNumber: { type: Number, required: true, unique: true, default: getCaseNumber },
+    status: { type: String, required: true, enum: DBConfig.CASE_STATUS_TYPES },
     title: { type: String, required: true },
     description: { type: String, required: true },
     court: { type: Schema.Types.ObjectId, ref: "Court", required: true },

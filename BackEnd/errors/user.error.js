@@ -2,6 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import errorGenerator from "../utils/errorGenerator.utils.js";
 
 export const NoUsersFoundError = errorGenerator.noDataErrorGenerator("users");
+export const NoJudgesFoundError = errorGenerator.noDataErrorGenerator("judgess");
+export const NoLawyersFoundError = errorGenerator.noDataErrorGenerator("lawyers");
 
 export const UserDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("User");
 export const LawyerDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("Lawyer");
