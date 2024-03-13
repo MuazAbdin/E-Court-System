@@ -26,11 +26,23 @@ import {
 import { loader as userLayoutLoader } from "../pages/UserLayout";
 
 import { action as authAction } from "../pages/Authentication";
+// import { action as courtAction } from "../pages/CourtForm";
+// import { action as partyCreation } from "../pages/PartyForm";
+// import { action as stakeholderCreation } from "../pages/StakeholderForm";
+// import { action as eventCreation } from "../pages/EventForm";
+
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
-import { action as browseAction } from "../pages/cases/BrowseCases";
+import {
+  action as browseAction,
+  loader as browseLoader,
+} from "../pages/cases/BrowseCases";
+import { loader as caseDetailsLoader } from "../pages/cases/CaseDetails";
 import { action as newCaseAction } from "../pages/cases/AddNewCase";
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
+import ViewCase from "../pages/ViewCase";
+import { EventForm, PartyForm, StakeholderForm } from "../components";
+import CaseDetails from "../pages/cases/CaseDetails";
 
 const router = createBrowserRouter([
   {
@@ -70,21 +82,66 @@ const router = createBrowserRouter([
             path: "cases",
             element: <Cases />,
             children: [
-              { index: true, element: <BrowseCases />, action: browseAction },
-              // {
-              //   path: ":caseID",
-              //   element: <CaseDetails />,
-              //   children: [
-              //     { index: true, element: <Case /> },
-              //     { path: "court", element: <Court /> },
-              //     { path: "party", element: <Party /> },
-              //     { path: "stackholder", element: <Stackholder /> },
-              //   ],
-              // },
+              {
+                index: true,
+                element: <BrowseCases />,
+                loader: browseLoader,
+                action: browseAction,
+              },
               {
                 path: "add-new",
                 element: <AddNewCase />,
                 action: newCaseAction,
+              },
+              {
+                path: ":caseID",
+                children: [
+                  {
+                    index: true,
+                    element: <CaseDetails />,
+                    loader: caseDetailsLoader,
+                  },
+                  {
+                    path: "party",
+                    // element: ,
+                    children: [
+                      { path: "add-new", element: <PartyForm /> },
+                      {
+                        path: ":partyId",
+                        // element: ,
+                        children: [
+                          // { index: true, element: <ViewParty />},
+                          // { path: "edit", element: <PartyEditForm />},
+                          {
+                            path: "stakeholder",
+                            children: [
+                              { path: "add-new", element: <StakeholderForm /> },
+                              {
+                                path: ":stakeholderId",
+                                children: [
+                                  // { path: "edit", element: <EditStakeholderForm /> }
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    path: "event",
+                    children: [
+                      // { index: true, element: <BrowseEvenets /> },
+                      { path: "add-new", element: <EventForm /> },
+                      {
+                        path: ":eventID",
+                        children: [
+                          // { path: "edit", element: <EventEditForm /> }
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
@@ -97,6 +154,12 @@ const router = createBrowserRouter([
                 path: "add-new",
                 element: <AddNewCourt />,
                 action: newCourtAction,
+              },
+              {
+                path: ":courtID",
+                children: [
+                  // { path: "edit", element: <CourtEditForm /> }
+                ],
               },
             ],
           },

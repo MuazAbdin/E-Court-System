@@ -1,4 +1,3 @@
-import toast, { Toaster } from "react-hot-toast";
 import { redirect } from "react-router-dom";
 import { CourtForm } from "../../components";
 import { fetcher } from "../../utils/fetcher";
@@ -17,9 +16,14 @@ export async function action({ request }) {
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
   console.log(data);
-
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
   try {
-    const response = await fetcher("/court/", {
+    const response = await fetcher("/courts/", {
       method: request.method,
       body: JSON.stringify(data),
     });

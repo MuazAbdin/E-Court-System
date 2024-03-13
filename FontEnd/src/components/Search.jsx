@@ -13,12 +13,12 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import CaseCard from "./CaseCard";
 import { fetcher } from "../utils/fetcher";
 
-export default function Search() {
+export default function Search({ cases }) {
+  console.log(cases)
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [search, setSearch] = useState("");
-  const [cases, setCases] = useState([]);
 
   const handleToggleFilter = () => {
     setFilterVisible(!isFilterVisible);
@@ -32,28 +32,6 @@ export default function Search() {
   const handleSearChange = (event) => {
     setSearch(event.target.value.toLowerCase());
   };
-
-  const getCases = async () => {
-    try {
-      // .get(`http://localhost:4000/cases/?query=${search}&caseTitle=${title}&creationDate=${date}&options=${selectedOption}`)
-      const response = await fetcher(`/cases/?query=${search}`);
-      //
-      if (!response.ok) {
-        const data = await response.text();
-        console.log(data);
-        throw new Error(data);
-      }
-      const data = await response.json();
-      console.log(data);
-      setCases(data);
-    } catch (error) {
-      console.error("Error fetching data: ", error.message);
-    }
-  };
-
-  useEffect(() => {
-    getCases();
-  }, [search, selectedOption]);
 
   return (
     <Wrapper>
