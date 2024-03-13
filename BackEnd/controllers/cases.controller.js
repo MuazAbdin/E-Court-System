@@ -5,7 +5,6 @@ import Case from "../models/case.model.js";
 import PartyValidator from "../validators/parties.validate.js";
 import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
-import mongoose from "mongoose";
 import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
 
