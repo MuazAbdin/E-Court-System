@@ -6,9 +6,7 @@ import { toast } from "react-toastify";
 function BrowseCases() {
   const { casesData } = useLoaderData();
 
-  return (
-      <Search cases={casesData} />
-  );
+  return <Search cases={casesData} />;
 }
 
 export default BrowseCases;
@@ -16,8 +14,9 @@ export default BrowseCases;
 export async function loader() {
   try {
     const response = await fetcher("/cases/");
+    if (response.status === 404) return { casesData: [] };
     if (!response.ok) throw response;
-    const casesData = await response.json();
+    const casesData = (await response.json()) || [];
     return { casesData };
   } catch (error) {
     toast.error(error.message);

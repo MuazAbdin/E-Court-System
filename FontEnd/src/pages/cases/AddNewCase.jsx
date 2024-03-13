@@ -1,10 +1,17 @@
 import toast, { Toaster } from "react-hot-toast";
 import { redirect } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
-import { CaseForm } from "../../components";
+import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 
 function AddNewCase() {
-  return <CaseForm />;
+  return (
+    <StyledCaseForm
+      formID="case-form"
+      title="calim form"
+      method="POST"
+      buttonText="submit"
+    />
+  );
 }
 
 export default AddNewCase;
@@ -16,7 +23,7 @@ export async function action({ request }) {
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
-  
+
   console.log(data);
 
   for (const key in data) {
