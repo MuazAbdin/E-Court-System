@@ -8,4 +8,3 @@ router.get("/", casesController.getCases);
 router.get("/:id", casesController.getCaseById);
 router.patch("/", casesController.updateCase);
 router.patch("/status", casesController.updateCaseStatus);
-

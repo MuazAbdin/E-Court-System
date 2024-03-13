@@ -7,7 +7,6 @@ import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
 import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
-import GenericValidator from "../validators/generic.validate.js";
 
 class CasesController {
 	async createCase(req, res) {
@@ -15,7 +14,6 @@ class CasesController {
 		// Saves created Documents to delete them on faliure/error
 		const savedDocs = [];
 		try {
-			// Validate parties!
 			CaseValidator.validateCaseData({ title, description, status, court, judge, parties });
 			for(const party of parties) {
 			 	PartyValidator.validateCaseCreatePartyData(party);

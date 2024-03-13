@@ -49,11 +49,10 @@ class CourtsController {
 
 	async addJudge(req, res) {
 		const { _id, judge } = req.body
-	
 		try{
 			GenericValidator.validateObjectId(_id)
 		    GenericValidator.validateObjectId(judge)
-			const updatedJudges = await Court.findByIdAndUpdate({_id},{ $push: { judges: judge } }, {new: true} );
+			const updatedJudges = await Court.findByIdAndUpdate(_id, { $push: { judges: judge } }, {new: true} );
 			if(updatedJudges === null) {
 				throw new CourtDoesNotExistError();
 			}
@@ -69,7 +68,7 @@ class CourtsController {
 		try{
 			GenericValidator.validateObjectId(_id)
 		    GenericValidator.validateObjectId(judge)
-			const updatedJudges = await Court.findByIdAndUpdate(_id,{ $pull:{ judges:judge } }, {new: true} );
+			const updatedJudges = await Court.findByIdAndUpdate(_id, { $pull:{ judges:judge } }, {new: true} );
 			if(updatedJudges === null) {
 				throw new CourtDoesNotExistError();
 			}

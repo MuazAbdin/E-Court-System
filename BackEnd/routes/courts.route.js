@@ -6,5 +6,5 @@ export const router = Router();
 router.post("/", courtsController.createCourt);
 router.get("/:id", courtsController.getCourtById);
 router.patch("/", courtsController.updateCourt);
-router.patch("/judges", courtsController.addJudge)
-router.patch("/judges/remove", courtsController.removeJudge)
+router.patch("/add-judge", courtsController.addJudge)
+router.delete("/remove-judge", courtsController.removeJudge)
