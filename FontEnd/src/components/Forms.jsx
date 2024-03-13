@@ -5,7 +5,7 @@ import { IconButton, useThemeProps } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-function AuthForm({
+function Forms({
   children,
   className,
   formID,
@@ -15,7 +15,6 @@ function AuthForm({
   fields,
   values,
 }) {
-  // console.log(values);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const insertedPassword = useRef(null);
@@ -62,12 +61,14 @@ function AuthForm({
     return field.icon;
   };
 
+  const USER_TYPES = ["Lawyer", "Judge"];
+  const [userType, setUserType] = useState("Lawyer");
+
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
-      {children?.filter((c) => c.type === "fieldset")}
+      {/* {children.filter((c) => c.type === "fieldset")} */}
       {fields.map((f) => {
-        // console.log(values[f.id]);
         const validator =
           f.id === "passwordConfirm"
             ? (value) =>
@@ -87,12 +88,10 @@ function AuthForm({
             type={handleFieldType(f)}
             id={`${formID}-${f.id}`}
             icon={handleFieldIcon(f)}
-            readOnly={f.readOnly}
             ref={f.id === "password" ? insertedPassword : null}
             autoComplete={f.autoComplete ?? "off"}
             validator={validator}
             required={f.required}
-            disabled={f.disabled}
             severErrorMsg={severErrorMsg}
             multiline={f.multiline ?? false}
             rows={f.rows ?? undefined}
@@ -101,12 +100,12 @@ function AuthForm({
           />
         );
       })}
+      {children}
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
-      {children?.filter((c) => c.type !== "fieldset")}
     </Form>
   );
 }
 
-export default AuthForm;
+export default Forms;

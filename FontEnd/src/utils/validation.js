@@ -64,7 +64,7 @@ export const isMobileValid = function (mobile) {
   if (mobile.length === 0) return { result: false, message: "required" };
   const result = /05\d{8}/.test(mobile);
   if (!result)
-    return { result: false, message: "insert a valid israeli mobile nmber" };
+    return { result: false, message: "insert a valid israeli mobile number" };
   return { result: true, message: "valid" };
 };
 
@@ -73,17 +73,19 @@ export const isAddressValid = function (address) {
 };
 
 export function validateAllFields(fields) {
-  const results = REGISTER_FIELDS.map((f) => {
-    const validator =
-      f.id === "passwordConfirm"
-        ? (value) => f.validator(fields.password || "", value)
-        : f.validator;
-    return {
-      name: f.id,
-      value: fields[f.id],
-      ...validator(fields[f.id]),
-    };
-  });
+  const results = REGISTER_FIELDS.filter((f) => fields[f.id] !== undefined).map(
+    (f) => {
+      const validator =
+        f.id === "passwordConfirm"
+          ? (value) => f.validator(fields.password || "", value)
+          : f.validator;
+      return {
+        name: f.id,
+        value: fields[f.id],
+        ...validator(fields[f.id]),
+      };
+    }
+  );
   const data = results
     .filter((r) => !r.result)
     .map((r) => {
@@ -115,5 +117,6 @@ export function validateForm(fields) {
   ) {
     return validateLoginFields(fields);
   }
+  // if ()
   return validateAllFields(fields);
 }

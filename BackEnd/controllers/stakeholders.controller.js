@@ -11,9 +11,9 @@ import Party from "../models/party.model.js";
 class StakeholdersController {
 	
 	async createStakeholder(req, res) {
-		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
+		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phone: phoneNumber, city, street } = req.body;
 		try {
-			StakeholderValidator.validateStakeholderData(req.body);
+			StackholderValidator.validateStackholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			if(stakeholderType === DBConfig.STAKEHOLDER_TYPES[0]) {
 				throw new InvalidStakeholderTypeError
 			}

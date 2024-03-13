@@ -1,11 +1,10 @@
-import { NoCaseStatusFoundError, CaseDoesNotExistError, InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
+import { CaseDoesNotExistError, InvalidCaseStatusError, NoCasesFoundError } from "../errors/case.error.js";
 import errorHandler from "../errors/errorHandler.js";
 import CaseValidator from "../validators/cases.validate.js";
 import Case from "../models/case.model.js";
 import PartyValidator from "../validators/parties.validate.js";
 import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
-import mongoose from "mongoose";
 import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
 import GenericValidator from "../validators/generic.validate.js";
@@ -46,11 +45,6 @@ class CasesController {
 		}
 		catch(error) {
 			dbUtils.deleteDocuments(savedDocs);
-			if(error instanceof mongoose.Error.ValidationError) {
-				if(error.errors.status) {
-					return errorHandler.handleError(res, new InvalidCaseStatusError());
-				}
-			}
 			errorHandler.handleError(res, error);
 		}
 	}
@@ -71,10 +65,11 @@ class CasesController {
 	async getCaseById(req, res) {
         const { id } = req.params;
         try {
-            const case_ = Case.findById(id);
+            const case_ = await Case.findById(id);
 			if(!case_) {
 				throw new CaseDoesNotExistError();
 			}
+			console.log(case_)
             res.json(case_);
         }
         catch(error) {
@@ -90,12 +85,32 @@ class CasesController {
         }
     }
 
-	updateCase(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateCase(req, res) {
+		const { caseId, title, description, status, court, judge } = req.body
+		try{
+			CaseValidator.validateUpdateCaseData({ caseId, title, description, status, court, judge });
+			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: { title, description, status, court, judge }}, { new: true });
+			if(updatedCase === null) {
+				throw new CaseDoesNotExistError();
+			}
+			res.json(updatedCase);
+		} catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
-	updateCaseStatus(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateCaseStatus(req, res) {	
+			const { _id, status } = req.body
+		try{
+			CaseValidator.validateUpdateCaseStatusData({ _id, status });
+			const updatedCase = await Case.findByIdAndUpdate(_id, {$set: { status }}, { new: true });
+			if(updatedCase === null) {
+				throw new CaseDoesNotExistError();
+			}
+			res.json(updatedCase);
+		} catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 
