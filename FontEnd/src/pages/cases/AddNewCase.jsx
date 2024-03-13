@@ -7,7 +7,7 @@ function AddNewCase() {
   return (
     <StyledCaseForm
       formID="case-form"
-      title="calim form"
+      title="claim form"
       method="POST"
       buttonText="submit"
     />

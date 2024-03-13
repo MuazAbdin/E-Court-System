@@ -11,6 +11,7 @@ export { default as ChangeUserPassword } from "./userProfile/ChangeUserPassword"
 export { default as Cases } from "./cases/Cases";
 export { default as BrowseCases } from "./cases/BrowseCases";
 export { default as AddNewCase } from "./cases/AddNewCase";
+export { default as EditCase } from "./cases/EditCase";
 
 export { default as Courts } from "./courts/Courts";
 export { default as BrowseCourts } from "./courts/BrowseCourts";

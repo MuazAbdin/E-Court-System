@@ -11,7 +11,15 @@ const COURTS = [
   { id: 2, value: "District Court - Jerusalem", icon: <AccountBalanceIcon /> },
 ];
 
-function CaseForm({ children, className, formID, title, method, buttonText }) {
+function CaseForm({
+  children,
+  className,
+  formID,
+  title,
+  method,
+  buttonText,
+  isEdit,
+}) {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -40,11 +48,23 @@ function CaseForm({ children, className, formID, title, method, buttonText }) {
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
 
-      <StyledInputSelect
-        id={`${formID}-court`}
-        label="Court"
-        menuItems={COURTS}
-      />
+      {!isEdit ? (
+        <StyledInputSelect
+          id={`${formID}-court`}
+          label="Court"
+          menuItems={COURTS}
+        />
+      ) : (
+        <Input
+          key={`${formID}-court`}
+          label="Court"
+          type="text"
+          id={`${formID}-court`}
+          icon={<AccountBalanceIcon />}
+          readOnly={true}
+          prevValue={"Supreme Court - Jerusalem"}
+        />
+      )}
 
       <div className="parties">
         {["claimant", "respondent"].map((party) => (
@@ -59,6 +79,7 @@ function CaseForm({ children, className, formID, title, method, buttonText }) {
                 icon={f.icon}
                 ref={null}
                 autoComplete={f.autoComplete ?? "off"}
+                validator={f.validator}
                 required={f.required}
                 severErrorMsg={""}
                 multiline={f.multiline ?? false}

@@ -70,6 +70,12 @@ const StyledCaseForm = styled(CaseForm)`
     background-color: var(--grey-500);
   }
 
+  input:disabled,
+  input:read-only {
+    cursor: not-allowed;
+    background-color: var(--grey-200);
+  }
+
   .pdf-btn {
     position: absolute;
     top: 1rem;

@@ -270,7 +270,7 @@ export const DOCUMENT_FIELDS = [
 
 export const PARTY_DETAILS_FIELDS = EDIT_USER_FIELDS.map((f) =>
   f.id === "IDcard" ? { ...f, label: "ID Number", id: "idNumber" } : f
-);
+).filter((f) => !["city", "street"].includes(f.id));
 
 export const LEGAL_PARTY_FIELDS = [
   {

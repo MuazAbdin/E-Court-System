@@ -21,6 +21,7 @@ import {
   BrowseStackholders,
   AddNewStackholder,
   Guest,
+  EditCase,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -92,6 +93,11 @@ const router = createBrowserRouter([
                 path: "add-new",
                 element: <AddNewCase />,
                 action: newCaseAction,
+              },
+              {
+                path: "edit",
+                element: <EditCase />,
+                // action: newCaseAction,
               },
               {
                 path: ":caseID",

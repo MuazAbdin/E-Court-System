@@ -29,6 +29,7 @@ function Aside() {
             subsectoins={[
               { name: "browse", to: "cases" },
               { name: "add new", to: "cases/add-new" },
+              { name: "edit", to: "cases/edit" },
             ]}
           />
           <Accordion.Item
