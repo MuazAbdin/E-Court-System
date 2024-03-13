@@ -147,6 +147,12 @@ const router = createBrowserRouter([
                 element: <AddNewCourt />,
                 action: newCourtAction,
               },
+              {
+                path: ":courtID",
+                children: [
+                  // { path: "edit", element: <CourtEditForm /> }
+                ]
+              }
             ],
           },
           {
