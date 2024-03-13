@@ -5,6 +5,10 @@ const courtSchema = new Schema({
     city: { type: String, required: true },
     street: { type: String, required: true },
     phoneNumber: { type: String, required: true },
+    judges: { 
+        type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        default: []
+    },
     email: { type: String, required: true, lowercase: true}
 })
 

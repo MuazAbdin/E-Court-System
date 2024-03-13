@@ -14,7 +14,6 @@ class CasesController {
 		// Saves created Documents to delete them on faliure/error
 		const savedDocs = [];
 		try {
-			// Validate parties!
 			CaseValidator.validateCaseData({ title, description, status, court, judge, parties });
 			for(const party of parties) {
 			 	PartyValidator.validateCaseCreatePartyData(party);
