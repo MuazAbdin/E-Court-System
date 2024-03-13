@@ -6,7 +6,7 @@ import GenericValidator from "../validators/generic.validate.js";
 
 class CourtsController {
 	async createCourt(req, res) {
-		const { courtName, city, street, phoneNumber, email } = req.body;
+		const { courtName, city, street, mobile: phoneNumber, email } = req.body;
 		try {
 			CourtValidator.validateCourtData({ courtName, city, street, phoneNumber, email });
 			const court = await Court.create({ name: courtName, city, street, phoneNumber, email });
