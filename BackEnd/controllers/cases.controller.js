@@ -5,7 +5,6 @@ import Case from "../models/case.model.js";
 import PartyValidator from "../validators/parties.validate.js";
 import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
-import mongoose from "mongoose";
 import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
 
@@ -99,8 +98,18 @@ class CasesController {
 		}
 	}
 
-	updateCaseStatus(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateCaseStatus(req, res) {	
+			const { _id, status } = req.body
+		try{
+			CaseValidator.validateUpdateCaseStatusData({ _id, status });
+			const updatedCase = await Case.findByIdAndUpdate(_id, {$set: { status }}, { new: true });
+			if(updatedCase === null) {
+				throw new CaseDoesNotExistError();
+			}
+			res.json(updatedCase);
+		} catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 }
 
