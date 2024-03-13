@@ -267,6 +267,11 @@ export const DOCUMENT_FIELDS = [
     required: true,
   },
 ];
+
+export const PARTY_DETAILS_FIELDS = EDIT_USER_FIELDS.map((f) =>
+  f.id === "IDcard" ? { ...f, label: "ID Number", id: "idNumber" } : f
+);
+
 export const LEGAL_PARTY_FIELDS = [
   {
     label: "Party Name",
@@ -316,7 +321,6 @@ export const STAKEHOLDER_FIELDS = [
     title: "last name",
     required: true,
     validator: isLastNameValid,
-
   },
   {
     label: "Email",
@@ -361,108 +365,109 @@ export const STAKEHOLDER_FIELDS = [
   //   required: true,
   // },
 ];
-export const CASE_FIELDS = [
-  {
-    label: "Case Title",
-    id: "caseTitle",
-    type: "text",
-    variant: "outlined",
-    title: "case title",
-    required: true,
-  },
-  {
-    label: "Description",
-    id: "description",
-    type: "text",
-    variant: "outlined",
-    title: "case description",
-    multiline: true,
-    rows: 4,
-    icon: <EditNoteIcon />,
-    required: true,
-  },
-  {
-    label: "Status",
-    id: "status",
-    type: "text",
-    variant: "standard",
-    title: "case status",
-    required: true,
-  },
-  {
-    label: "Judge",
-    id: "judge",
-    type: "text",
-    variant: "outlined",
-    title: "the judge in the case",
-    icon: <Person3Icon />,
-  },
-  {
-    label: "Court",
-    id: "court",
-    type: "text",
-    variant: "outlined",
-    title: "The court that is handling the case",
-    icon: <AccountBalanceIcon />,
-  },
-  {
-    label: "Parties",
-    id: "newParty",
-    type: "text",
-    variant: "outlined",
-    title: "the parties to the case",
-    icon: <GroupIcon style={{ backgroundColor: "transparent" }} />,
-    required: true,
-  },
-];
-export const CLIENT_CASE_FIELDS = [
-  {
-    label: "First Name",
-    id: "firstName",
-    type: "text",
-    autoComplete: "given-name",
-    required: true,
-    validator: isFirstNameValid,
-  },
-  {
-    label: "Last Name",
-    id: "lastName",
-    type: "text",
-    autoComplete: "family-name",
-    required: true,
-    validator: isLastNameValid,
-  },
-  {
-    label: "Email",
-    id: "email",
-    type: "email",
-    autoComplete: "email",
-    icon: <MailIcon />,
-    required: true,
-    validator: isEmailValid,
-  },
-  {
-    label: "Mobile",
-    id: "mobile",
-    type: "number",
-    icon: <PhoneIcon />,
-    required: true,
-    validator: isMobileValid,
-  },
-  {
-    label: "City",
-    id: "city",
-    type: "text",
-    icon: <LocationCityIcon />,
-    required: true,
-    validator: isAddressValid,
-  },
-  {
-    label: "Street",
-    id: "street",
-    type: "text",
-    icon: <LocationOnIcon />,
-    required: true,
-    validator: isAddressValid,
-  },
-]
+
+// export const CASE_FIELDS = [
+//   {
+//     label: "Case Title",
+//     id: "caseTitle",
+//     type: "text",
+//     variant: "outlined",
+//     title: "case title",
+//     required: true,
+//   },
+//   {
+// label: "Description",
+// id: "description",
+// type: "text",
+// variant: "outlined",
+// title: "case description",
+// multiline: true,
+// rows: 4,
+// icon: <EditNoteIcon />,
+// required: true,
+//   },
+//   {
+//     label: "Status",
+//     id: "status",
+//     type: "text",
+//     variant: "standard",
+//     title: "case status",
+//     required: true,
+//   },
+//   {
+//     label: "Judge",
+//     id: "judge",
+//     type: "text",
+//     variant: "outlined",
+//     title: "the judge in the case",
+//     icon: <Person3Icon />,
+//   },
+//   {
+//     label: "Court",
+//     id: "court",
+//     type: "text",
+//     variant: "outlined",
+//     title: "The court that is handling the case",
+//     icon: <AccountBalanceIcon />,
+//   },
+//   {
+//     label: "Parties",
+//     id: "newParty",
+//     type: "text",
+//     variant: "outlined",
+//     title: "the parties to the case",
+//     icon: <GroupIcon style={{ backgroundColor: "transparent" }} />,
+//     required: true,
+//   },
+// ];
+// export const CLIENT_CASE_FIELDS = [
+//   {
+//     label: "First Name",
+//     id: "firstName",
+//     type: "text",
+//     autoComplete: "given-name",
+//     required: true,
+//     validator: isFirstNameValid,
+//   },
+//   {
+//     label: "Last Name",
+//     id: "lastName",
+//     type: "text",
+//     autoComplete: "family-name",
+//     required: true,
+//     validator: isLastNameValid,
+//   },
+//   {
+//     label: "Email",
+//     id: "email",
+//     type: "email",
+//     autoComplete: "email",
+//     icon: <MailIcon />,
+//     required: true,
+//     validator: isEmailValid,
+//   },
+//   {
+//     label: "Mobile",
+//     id: "mobile",
+//     type: "number",
+//     icon: <PhoneIcon />,
+//     required: true,
+//     validator: isMobileValid,
+//   },
+//   {
+//     label: "City",
+//     id: "city",
+//     type: "text",
+//     icon: <LocationCityIcon />,
+//     required: true,
+//     validator: isAddressValid,
+//   },
+//   {
+//     label: "Street",
+//     id: "street",
+//     type: "text",
+//     icon: <LocationOnIcon />,
+//     required: true,
+//     validator: isAddressValid,
+//   },
+// ]

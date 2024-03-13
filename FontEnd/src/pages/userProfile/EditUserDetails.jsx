@@ -6,9 +6,17 @@ import { action as submitAction } from "../../utils/submitAction";
 
 function EditUserDetails() {
   const { userData } = useOutletContext();
-  console.log(userData);
-  const { IDcard, firstName, lastName, email, mobile, city, street, ...rest } =
-    userData;
+  const {
+    IDcard,
+    firstName,
+    lastName,
+    email,
+    mobile,
+    city,
+    street,
+    userType,
+    ...rest
+  } = userData;
   const user = {
     IDcard,
     firstName,
@@ -17,6 +25,7 @@ function EditUserDetails() {
     mobile,
     city,
     street,
+    userType,
   };
   return (
     <StyledEditDetailsForm

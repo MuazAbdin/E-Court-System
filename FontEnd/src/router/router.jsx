@@ -20,6 +20,7 @@ import {
   Stackholders,
   BrowseStackholders,
   AddNewStackholder,
+  Guest,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -38,6 +39,7 @@ import {
 import { loader as caseDetailsLoader } from "../pages/cases/CaseDetails";
 import { action as newCaseAction } from "../pages/cases/AddNewCase";
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
+import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 import ViewCase from "../pages/ViewCase";
 import { EventForm, PartyForm, StakeholderForm } from "../components";
 import CaseDetails from "../pages/cases/CaseDetails";
@@ -57,6 +59,10 @@ const router = createBrowserRouter([
         action: authAction,
       },
       {
+        path: "guest",
+        element: <Guest />,
+      },
+      {
         path: "user",
         element: <UserLayout />,
         loader: userLayoutLoader,
@@ -70,6 +76,7 @@ const router = createBrowserRouter([
           {
             path: "change-password",
             element: <ChangeUserPassword />,
+            action: changePasswordAction,
           },
           {
             path: "cases",
@@ -109,11 +116,11 @@ const router = createBrowserRouter([
                             path: "stakeholder",
                             children: [
                               { path: "add-new", element: <StakeholderForm /> },
-                              { 
+                              {
                                 path: ":stakeholderId",
                                 children: [
                                   // { path: "edit", element: <EditStakeholderForm /> }
-                                ] 
+                                ],
                               },
                             ],
                           },
@@ -121,17 +128,18 @@ const router = createBrowserRouter([
                       },
                     ],
                   },
-                  { 
+                  {
                     path: "event",
                     children: [
                       // { index: true, element: <BrowseEvenets /> },
-                      { path: "add-new", element: <EventForm />},
-                      { path: ":eventID",
+                      { path: "add-new", element: <EventForm /> },
+                      {
+                        path: ":eventID",
                         children: [
                           // { path: "edit", element: <EventEditForm /> }
-                        ]
-                      }
-                    ]
+                        ],
+                      },
+                    ],
                   },
                 ],
               },
@@ -151,8 +159,8 @@ const router = createBrowserRouter([
                 path: ":courtID",
                 children: [
                   // { path: "edit", element: <CourtEditForm /> }
-                ]
-              }
+                ],
+              },
             ],
           },
           {

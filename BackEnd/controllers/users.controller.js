@@ -10,6 +10,9 @@ import User from "../models/user.model.js";
 import { DBConfig } from "../config.js";
 import UserValidator from "../validators/users.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
+import UserAuth from "../models/userAuth.model.js";
+import authUtils from "../utils/auth.utils.js";
+import AuthDataValidator from "../validators/auth.validate.js";
 
 class UserController {
   async getJudges(req, res) {
@@ -133,7 +136,9 @@ class UserController {
       //     { $set: { phoneNumber, city, street } },
       //     { new: true }
       //   );
-      UserValidator.validateUserData(userData);
+      // console.log(userData);
+      const user = await User.findOne({ idNumber: userData.idNumber });
+      UserValidator.validateUserData({ ...userData, userType: user.userType });
       const { idNumber, ...newUserData } = userData;
       const updatedUser = await User.findOneAndUpdate(
         { idNumber },
@@ -144,6 +149,32 @@ class UserController {
         throw new UserDoesNotExistError();
       }
       res.json(updatedUser);
+    } catch (error) {
+      errorHandler.handleError(res, error);
+    }
+  }
+
+  async changePassword(req, res) {
+    const {
+      oldPassword,
+      password,
+      passwordConfirm: confirmPassword,
+    } = req.body;
+    try {
+      AuthDataValidator.validateChangePasswordData({
+        oldPassword,
+        password,
+        confirmPassword,
+      });
+      const userAuth = await UserAuth.findOne({ user: req.userId });
+      if (!userAuth) throw new UserDoesNotExistError();
+      const userHashedPassword = userAuth.hashedPassword;
+      authUtils.verifyPassword(oldPassword, userHashedPassword);
+
+      userAuth.hashedPassword = password;
+      await userAuth.save();
+
+      res.json({ msg: "password updated successfully" });
     } catch (error) {
       errorHandler.handleError(res, error);
     }
