@@ -36,12 +36,12 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/users", authorizationMiddleWare, usersRoutes);
-app.use("/cases", casesRoutes);
-app.use("/courts", courtsRoutes);
-app.use("/documents", documentsRoutes);
+app.use("/cases", authorizationMiddleWare, casesRoutes);
+app.use("/courts", authorizationMiddleWare, courtsRoutes);
+app.use("/documents", authorizationMiddleWare, documentsRoutes);
 app.use("/events", authorizationMiddleWare, eventsRoutes);
-app.use("/parties", partiesRoutes);
-app.use("/stakeholders", stakeholdersRoutes);
+app.use("/parties", authorizationMiddleWare, partiesRoutes);
+app.use("/stakeholders", authorizationMiddleWare, stakeholdersRoutes);
 app.use("/types", typesRoutes);
 
 export default app;
