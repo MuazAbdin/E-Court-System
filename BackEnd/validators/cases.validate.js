@@ -1,8 +1,12 @@
-import { NoPartiesProvidedError, TooManyPartiesProvidedError } from "../errors/case.error.js";
+import { DBConfig } from "../config.js";
+import { InvalidCaseStatusError, NoPartiesProvidedError, TooManyPartiesProvidedError } from "../errors/case.error.js";
 import GenericValidator from "./generic.validate.js";
 
 export default class CaseValidator {
     static validateCaseData(data) {
+        if(!DBConfig.CASE_STATUS_TYPES.includes(data.status)) {
+            throw new InvalidCaseStatusError();
+        }
         if(!Array.isArray(data.parties)) {
             throw new PartiesMustBeAnArrayError();
         };
@@ -14,6 +18,17 @@ export default class CaseValidator {
         }
         GenericValidator.validateObjectId(data.judge);
         GenericValidator.validateObjectId(data.court);
+        Object.keys(data).forEach(key => 
+            GenericValidator.validateNotEmpty(data[key]));
+    }
+
+    static validateUpdateCaseData(data) {
+        GenericValidator.validateObjectId(data.caseId);
+        GenericValidator.validateObjectId(data.court);
+        GenericValidator.validateObjectId(data.judge);
+        if(!DBConfig.CASE_STATUS_TYPES.includes(data.status)) {
+            throw new InvalidCaseStatusError();
+        }
         Object.keys(data).forEach(key => 
             GenericValidator.validateNotEmpty(data[key]));
     }
