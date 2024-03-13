@@ -1,23 +1,13 @@
-import React, { useState } from "react";
-import Wrapper from "../assets/stylingWrappers/StakeholderForm";
-import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import{ Toaster } from "react-hot-toast";
 import {
-  InputAdornment,
   InputLabel,
-  ListItemIcon,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import PhoneIcon from "@mui/icons-material/Phone";
-import MailIcon from "@mui/icons-material/Mail";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { STAKEHOLDER_FIELDS } from "../utils/constants";
-import { fetcher } from "../utils/fetcher";
-import { redirect } from "react-router-dom";
-import { StyledForms } from "../assets/stylingWrappers/StyledForms";
+import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
+import { STAKEHOLDER_FIELDS } from "../../utils/constants";
 
 export default function StakeholderForm() {
   const [stakeholderType, setStakeholderType] = useState("");

@@ -70,10 +70,11 @@ class CasesController {
 	async getCaseById(req, res) {
         const { id } = req.params;
         try {
-            const case_ = Case.findById(id);
+            const case_ = await Case.findById(id);
 			if(!case_) {
 				throw new CaseDoesNotExistError();
 			}
+			console.log(case_)
             res.json(case_);
         }
         catch(error) {

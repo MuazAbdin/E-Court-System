@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import Wrapper from "../assets/stylingWrappers/PartyForm";
+import{ useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { LEGAL_PARTY_FIELDS } from "../utils/constants";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
-import { fetcher } from "../utils/fetcher";
-import { StyledForms } from "../assets/stylingWrappers/StyledForms";
+import { useNavigate } from "react-router-dom";
+import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
+import { LEGAL_PARTY_FIELDS } from "../../utils/constants";
+
+
 
 export default function PartyForm() {
   const [partyName, setPartyName] = useState("");

@@ -6,11 +6,12 @@ import {
   Select,
 } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
-import { CASE_FIELDS, CLIENT_CASE_FIELDS } from "../utils/constants";
-import { StyledForms } from "../assets/stylingWrappers/StyledForms";
+import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import Person3Icon from "@mui/icons-material/Person3";
 import { fetcher } from "../../utils/fetcher";
+import { CASE_FIELDS, CLIENT_CASE_FIELDS } from "../../utils/constants";
+
 
 export default function CaseForm() {
   // const addParty = (e) => {

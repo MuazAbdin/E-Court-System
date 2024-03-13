@@ -8,7 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-export default function CaseCard() {
+export default function CaseCard({ cases }) {
+  console.log(cases)
   const dummyCases = [
     {
       id: 1,
@@ -119,27 +120,18 @@ export default function CaseCard() {
             </CardContent>
           </Card>
         </div>
-        {dummyCases.map((caseItem) => (
-          <Card key={caseItem.id} className="card" component="div">
+        {cases.map((caseItem) => (
+          <Card key={caseItem._id} className="card" component="div">
             <CardContent>
               <Typography className="create-new-case-text">
-                {caseItem.title}
+                <Link to={`/user/cases/${caseItem._id}`}>
+                  {caseItem.title}
+                </Link>
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {caseItem.creationDate}
+                {caseItem.createdAt}
               </Typography>
             </CardContent>
-            <div className="link-btn">
-              <CardActions>
-                <Button
-                  size="small"
-                  component={Link}
-                  to={`/dashboard/viewcase/${caseItem.id}`}
-                >
-                  View Case
-                </Button>
-              </CardActions>
-            </div>
             <div className="link-btn">
               <CardActions>
                 <Button
