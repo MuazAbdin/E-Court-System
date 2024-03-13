@@ -47,21 +47,10 @@ class AuthController {
         userData.licenseNumber = licenseNumber;
       }
 
-      console.log(userData);
-
       AuthDataValidator.validateRegisterData(userData);
 
-      // const foundUser = await User.findOne({
-      //   $or: [{ email: email }, { idNumber: idNumber }],
-      // });
-      // if (foundUser && foundUser.email === email) {
-      //   throw new EmailAlreadyUsedError();
-      // }
-      // if (foundUser && foundUser.idNumber === idNumber) {
-      //   throw new IdNumberAlreadyUsedError();
-      // }
-
       const foundUser = await User.findOne({ idNumber });
+      console.log(foundUser);
       if (foundUser) throw new IdNumberAlreadyUsedError();
 
       const user = new User(userData);

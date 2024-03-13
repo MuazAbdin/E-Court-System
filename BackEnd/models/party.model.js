@@ -1,10 +1,12 @@
 import { model, Schema } from 'mongoose';
 import { PartyDoesNotExistError } from '../errors/party.error.js';
 import dbUtils from '../utils/db.utils.js';
+import { DBConfig } from '../config.js';
 
 const partySchema = new Schema({
-    name: { type: String, required: true },
+    name: { type: String, required: true, enum: DBConfig.PARTY_NAMES },
     lawyer: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    client: { type: Schema.Types.ObjectId, ref: "Stakeholder", required: true },
     stakeholders: {
         type: [{ type: Schema.Types.ObjectId, ref: "Stakeholder" }],
         default: []

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import Wrapper from "../assets/stylingWrappers/PartyForm";
+import{ useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { StyledRegisterForm } from "../assets/stylingWrappers/StyledAuthForm";
-import { LEGAL_PARTY_FIELDS } from "../utils/constants";
-import { redirect } from "react-router-dom";
-import { fetcher } from "../utils/fetcher";
+import { useNavigate } from "react-router-dom";
+import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
+import { LEGAL_PARTY_FIELDS } from "../../utils/constants";
+
+
 
 export default function PartyForm() {
   const [partyName, setPartyName] = useState("");
@@ -13,6 +12,7 @@ export default function PartyForm() {
   const [caseId, setCaseId] = useState("");
   const [stakeholders, setStakeholders] = useState([]);
   const [newStakeholder, setNewStakeholder] = useState("");
+  const navigate = useNavigate();
 
   const handleAddStakeholder = () => {
     if (newStakeholder.trim() !== "") {
@@ -88,43 +88,21 @@ export default function PartyForm() {
     //     <Toaster position="bottom-center" />
     //   </form>
     // </Wrapper>
+    <>
+      <StyledForms
+        className={"party-form"}
+        formID="party-form"
+        title="Legal Party Details Form"
+        method="POST"
+        buttonText="SUBMIT"
+        fields={LEGAL_PARTY_FIELDS}
 
-    <StyledRegisterForm
-      className={"party-form"}
-      formID="party-form"
-      title="Legal Party Details Form"
-      method="POST"
-      buttonText="SUBMIT"
-      fields={LEGAL_PARTY_FIELDS}
-    />
+      >
+        <button className="pdf-btn" onClick={() => navigate(`/dashboard/stakeholder`)}>
+          Add Stakeholder
+        </button>
+      </StyledForms>
+      <Toaster position="bottom-center" />
+    </>
   );
-}
-export async function action ({request}){
-  const fd = await request.formData()
-  const data = Object.fromEntries(
-    [...fd.entries()]
-      .filter((entry) => entry[0] !== "submit")
-      .map((entry) => [entry[0].split("-")[2], entry[1]])
-  );
-  console.log(data);
-  
-  try {
-    const response = await fetcher('/party/', {
-      method: request.method,
-      body: JSON.stringify(data),
-    });
-
-    console.log(response);
-    if (!response.ok) {
-      const data = await response.text();
-      console.log(data);
-      throw new Error(data);
-    }
-
-    toast.success("Created Successfully!");
-    return redirect('');
-  } catch (error) {
-    toast.error(error.message);
-    return error;
-  }
 }

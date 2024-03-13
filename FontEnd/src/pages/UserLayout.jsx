@@ -1,18 +1,19 @@
 import { Outlet, useLoaderData } from "react-router-dom";
-import Wrapper from "../assets/stylingWrappers/DashboardLayout";
+import Wrapper from "../assets/stylingWrappers/UserLayout";
 import { Aside, PageHeader } from "../components";
 import { toast } from "react-toastify";
 import { fetcher } from "../utils/fetcher";
 
 function DashboardLayout() {
-  const { user } = useLoaderData();
+  const { userData } = useLoaderData();
+  // console.log(userData);
 
   return (
     <Wrapper>
       <Aside />
-      <PageHeader name={`${user.firstName} ${user.lastName}`} />
+      <PageHeader name={`${userData.firstName} ${userData.lastName}`} />
       <section className="content">
-        <Outlet />
+        <Outlet context={{ userData }} />
       </section>
     </Wrapper>
   );
@@ -26,7 +27,10 @@ export async function loader() {
     if (!response.ok) throw response;
     const data = await response.json();
     // console.log(data);
-    return data;
+    const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data.user;
+    const userData = { IDcard, mobile, ...rest };
+    // console.log(userData);
+    return { userData };
   } catch (error) {
     toast.error(error.message);
     return error;
