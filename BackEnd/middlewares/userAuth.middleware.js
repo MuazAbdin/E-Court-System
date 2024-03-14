@@ -7,6 +7,7 @@ export function authorizationMiddleWare(req, res, next) {
   try {
     const { userId } = jwt.verify(token, Config.JWT_SECRET_KEY);
     req.userId = userId;
+    console.log(userId)
     next();
   } catch (error) {
     res.status(401).send("Invalid JWT token!");

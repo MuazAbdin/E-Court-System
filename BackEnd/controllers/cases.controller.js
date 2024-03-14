@@ -47,6 +47,57 @@ class CasesController {
 		}
 	}
 
+	async fileACase(req, res) {
+
+	}
+
+	async getPendingCases(req, res) {
+
+	}
+
+	async resolvePendingCase(req, res) {
+		try {
+			const cases = await Case.find({ status: "Pending" });
+			if(cases.length === 0) {
+				throw new NoCasesFoundError();
+			}
+			return cases;
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
+	async getUserCases(req, res) {
+		const userId = req.userId;
+		console.log(req.userId)
+		try {
+			const caseIds = await Party.find({ lawyer: userId }).populate("case");
+			// TODO only apply one query based on the user type
+			const cases = await Case.find({ $or: [{judge: userId}, {_id: caseIds }] });
+			if(cases.length === 0) {
+				throw new NoCasesFoundError();
+			}
+			return cases;
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
+	async getPublicCases(req, res) {
+		try {
+			const cases = await Case.find({ public: true });
+			if(cases.length === 0) {
+				throw new NoCasesFoundError();
+			}
+			return cases;
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
 	async getCases(req, res) {
 		const { query } = req.query;
 		try {
