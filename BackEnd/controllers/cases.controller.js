@@ -99,7 +99,17 @@ class CasesController {
 	}
 
 	async resolvePendingCase(req, res) {
-
+		const { caseId, status, judge } = req.body;
+		try{
+			CaseValidator.validateResolvePendingCaseData({ caseId, status, judge });
+			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: { status, judge } }, { new: true });
+			if(updatedCase === null) {
+				throw new CaseDoesNotExistError();
+			}
+			res.json(updatedCase);
+		} catch(error) {
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async getUserCases(req, res) {

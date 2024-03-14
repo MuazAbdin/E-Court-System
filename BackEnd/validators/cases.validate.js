@@ -37,6 +37,14 @@ export default class CaseValidator {
             GenericValidator.validateNotEmpty(data[key]));
     }
 
+    static validateResolvePendingCaseData(data) {
+        GenericValidator.validateObjectId(data.caseId);
+        GenericValidator.validateObjectId(data.judge);
+        if(!DBConfig.CASE_STATUS_TYPES.includes(data.status)) {
+            throw new InvalidCaseStatusError();
+        }
+    }
+
     static validateUpdateCaseData(data) {
         GenericValidator.validateObjectId(data.caseId);
         GenericValidator.validateObjectId(data.court);
