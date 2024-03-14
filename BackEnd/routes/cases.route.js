@@ -11,3 +11,4 @@ router.get("/user", casesController.getUserCases);
 router.get("/:id", casesController.getCaseById);
 router.patch("/", casesController.updateCase);
 router.patch("/status", casesController.updateCaseStatus);
+router.patch("/resolve-pending", casesController.resolvePendingCase);
