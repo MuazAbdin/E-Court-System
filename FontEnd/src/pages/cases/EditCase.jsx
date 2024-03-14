@@ -4,7 +4,7 @@ function EditCase() {
   return (
     <StyledCaseForm
       formID="case-form"
-      title="claim form"
+      title="edit claim"
       method="PATCH"
       buttonText="save"
       isEdit={true}
