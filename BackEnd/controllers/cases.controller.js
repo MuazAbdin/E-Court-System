@@ -52,10 +52,6 @@ class CasesController {
 	}
 
 	async getPendingCases(req, res) {
-
-	}
-
-	async resolvePendingCase(req, res) {
 		try {
 			const cases = await Case.find({ status: "Pending" });
 			if(cases.length === 0) {
@@ -66,6 +62,10 @@ class CasesController {
 		catch(error) {
 			errorHandler.handleError(res, error);
 		}
+	}
+
+	async resolvePendingCase(req, res) {
+
 	}
 
 	async getUserCases(req, res) {
