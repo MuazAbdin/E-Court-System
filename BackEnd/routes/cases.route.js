@@ -4,6 +4,7 @@ import casesController from "../controllers/cases.controller.js";
 export const router = Router();
 
 router.post("/", casesController.createCase);
+router.post("/file-a-case", casesController.fileACase);
 router.get("/", casesController.getCases);
 router.get("/pending", casesController.getPendingCases);
 router.get("/user", casesController.getUserCases);

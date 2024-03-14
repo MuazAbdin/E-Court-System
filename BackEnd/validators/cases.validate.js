@@ -22,6 +22,21 @@ export default class CaseValidator {
             GenericValidator.validateNotEmpty(data[key]));
     }
 
+    static validateFilaACaseData(data) {
+        if(!Array.isArray(data.parties)) {
+            throw new PartiesMustBeAnArrayError();
+        };
+        if(data.parties.length === 0) {
+            throw new NoPartiesProvidedError();
+        }
+        else if(data.parties.length > 2) {
+            throw new TooManyPartiesProvidedError();
+        }
+        GenericValidator.validateObjectId(data.court);
+        Object.keys(data).forEach(key => 
+            GenericValidator.validateNotEmpty(data[key]));
+    }
+
     static validateUpdateCaseData(data) {
         GenericValidator.validateObjectId(data.caseId);
         GenericValidator.validateObjectId(data.court);

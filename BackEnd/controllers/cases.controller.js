@@ -48,7 +48,41 @@ class CasesController {
 	}
 
 	async fileACase(req, res) {
+		const { title, description, court, parties } = req.body;
+		// Saves created Documents to delete them on faliure/error
+		const savedDocs = [];
+		try {
+			CaseValidator.validateFilaACaseData({ title, description, court, parties });
+			for(const party of parties) {
+			 	PartyValidator.validateCaseCreatePartyData(party);
+			}
 
+			const newCase = new Case({title, description, status: "Pending", court, judge: null});
+			const newParties = [];
+			for(const index in parties) {
+				const { lawyer, client } = parties[index];
+				const newParty = new Party({ lawyer, case: newCase, name: DBConfig.PARTY_NAMES[index], stakeholders: [] });
+				const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
+				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber, city, street });
+				await newClient.save();
+				savedDocs.push(newClient);
+				newParty.client = newClient;
+				newParties.push(newParty)
+			}
+			
+			newCase.parties = newParties.map(party => party._id);
+			await newCase.save();
+			savedDocs.push(newCase);
+			for(const party of newParties) {
+				await party.save();
+				savedDocs.push(party);
+			}
+			res.json(newCase);
+		}
+		catch(error) {
+			dbUtils.deleteDocuments(savedDocs);
+			errorHandler.handleError(res, error);
+		}
 	}
 
 	async getPendingCases(req, res) {
