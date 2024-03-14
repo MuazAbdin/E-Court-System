@@ -1,15 +1,24 @@
+import { StatusCodes } from "http-status-codes";
 import Config from "../config.js";
 import jwt from "jsonwebtoken";
 
 export function authorizationMiddleWare(req, res, next) {
-  //   console.log(req);
-  const { token } = req.cookies;
-  try {
-    const { userId } = jwt.verify(token, Config.JWT_SECRET_KEY);
-    req.userId = userId;
-    console.log(userId)
-    next();
-  } catch (error) {
-    res.status(401).send("Invalid JWT token!");
-  }
+    const { token } = req.cookies;
+    try {
+        const payload = jwt.verify(token, Config.JWT_SECRET_KEY);
+        if(payload.visitor) {
+            req.userGID = payload.userGID;
+            req.firstName = payload.firstName;
+            req.lastName = payload.lastName;
+            req.email = payload.email;
+        }
+        else {
+            req.userId = payload.userId;
+        }
+        next();
+    } catch (error) {
+        res.clearCookie("token")
+        .status(StatusCodes.UNAUTHORIZED)
+        .send("Invalid JWT token!");
+    }
 }

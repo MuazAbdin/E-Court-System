@@ -61,7 +61,7 @@ class CasesController {
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}
-			return cases;
+			res.json(cases);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
@@ -70,15 +70,17 @@ class CasesController {
 
 	async getUserCases(req, res) {
 		const userId = req.userId;
-		console.log(req.userId)
 		try {
-			const caseIds = await Party.find({ lawyer: userId }).populate("case");
-			// TODO only apply one query based on the user type
-			const cases = await Case.find({ $or: [{judge: userId}, {_id: caseIds }] });
+			// TODO use only apply one query based on the user type
+			const cases = [
+				...(await Case.find({ judge: userId })),
+				...((await Party.find({ lawyer: userId }).populate("case"))
+					.map(party => party.case))
+			]
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}
-			return cases;
+			res.json(cases);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
@@ -91,7 +93,7 @@ class CasesController {
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}
-			return cases;
+			res.json(cases);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
