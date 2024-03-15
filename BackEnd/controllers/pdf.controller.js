@@ -7,24 +7,25 @@ const doc = new PDFDocument();
 doc.pipe(fs.createWriteStream("output.pdf"));
 
 class PdfController {
-	createPdf(req, res) {
-		const { title, text } = req.body;
+	async createPdf(req, res) {
+		const content = req.body;
 
 		try {
-			doc.font("Helvetica-Bold").fontSize(25).text(`${title}`, 40, 50);
-			doc.font("Helvetica").fontSize(14).text(`${text}`, 40, 120);
-			doc.fontSize(17).text("", 40, 300);
-			// doc.image("lebraLogo.png", {
+			doc.font("Helvetica-Bold").fontSize(29).text(`${content.title}`, 280, 30);
+			for(let i = 70, j=0 ; j<content.sections.length; i+=50, j++){
+				doc.font("Helvetica-Bold").fontSize(17).text(`${content.sections[j].sectionTite}`, 55, i);
+				doc.font("Helvetica").fontSize(13).text(`${content.sections[j].sectionParagraph}`, 65, i+18);
+				doc.save();	
+			}
+			// doc.image(logo.Response, {
 			// 	fit: [150, 200],
 			// 	align: "center",
 			// 	valign: "center",
 			// });
-			doc.save();
 			doc.end();
-			res.send("success")
+			res.send("pdf file created successfully")
 		} catch (error) {
 			res.send(error)
-			console.log(error);
 		}
 	}
 }
