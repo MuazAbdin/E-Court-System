@@ -121,7 +121,7 @@ const StyledSearchBar = styled(SearchBar)`
     input {
       border-radius: 50px;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.5rem 0.5rem 2rem;
       font-family: var(--main-font);
       font-size: 1rem;
     }

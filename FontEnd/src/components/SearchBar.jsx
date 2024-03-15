@@ -31,7 +31,17 @@ function SearchBar({ className, pagesCount, currentPage }) {
     const query = fd.get("search") || "";
     const location = fd.getAll("location") || [];
     const status = fd.getAll("status") || [];
-    const params = new URLSearchParams({ query, location, status, page });
+    const start = fd.get("start") || "";
+    const end = fd.get("end") || "";
+
+    const params = new URLSearchParams({
+      query,
+      location,
+      status,
+      start,
+      end,
+      page,
+    });
     // console.log(params.toString());
     // console.log(`${routeLocation.pathname}?${params.toString()}`);
 
@@ -108,6 +118,9 @@ function RangeDatePicker() {
     <fieldset className="range-date-picker c-flex">
       <span>from</span>
       <DatePicker
+        showIcon
+        name="start"
+        placeholderText="MM/DD/YYYY"
         selected={startDate}
         onChange={(date) => setStartDate(date)}
         selectsStart
@@ -116,6 +129,9 @@ function RangeDatePicker() {
       />
       <span>to</span>
       <DatePicker
+        showIcon
+        name="end"
+        placeholderText="MM/DD/YYYY"
         selected={endDate}
         onChange={(date) => setEndDate(date)}
         selectsEnd

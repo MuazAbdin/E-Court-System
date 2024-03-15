@@ -21,6 +21,8 @@ export async function loader({ params, request }) {
   const location = url.searchParams.getAll("location") || [];
   const status = url.searchParams.getAll("status") || [];
   const page = parseInt(url.searchParams.get("page") || "1");
+  const start = url.searchParams.get("start") || "";
+  const end = url.searchParams.get("end") || "";
   const limit = 10;
   const offset = (page - 1) * limit;
   // console.log({ query, location, status, page, offset, limit });
@@ -29,16 +31,12 @@ export async function loader({ params, request }) {
     query,
     location,
     status,
+    start,
+    end,
     offset,
     limit,
   });
   console.log(serverSearchParams.toString());
   const data = { pagesCount: 7, currentPage: page, result: [] };
   return data;
-}
-
-export async function action({ params, request }) {
-  const fd = await request.formData();
-  console.log([...fd.entries()]);
-  return null;
 }
