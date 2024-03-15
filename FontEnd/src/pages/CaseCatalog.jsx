@@ -1,6 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/CaseCatalog";
 import StyledSearchBar from "../assets/stylingWrappers/SearchBar";
+import { Table } from "../components";
 
 function CaseCatalog() {
   const { pagesCount, currentPage, result } = useLoaderData();
@@ -8,7 +9,15 @@ function CaseCatalog() {
     <Wrapper>
       <h3 className="title">browse cases</h3>
       <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
-      {/* <Table /> */}
+      <Table tableCaption="" tableHeader={["", "number", "title", "status"]}>
+        {result.map((r) => (
+          <tr key={r.number}>
+            <td>{r.number}</td>
+            <td>{r.title}</td>
+            <td>{r.status}</td>
+          </tr>
+        ))}
+      </Table>
     </Wrapper>
   );
 }
@@ -37,6 +46,14 @@ export async function loader({ params, request }) {
     limit,
   });
   console.log(serverSearchParams.toString());
-  const data = { pagesCount: 7, currentPage: page, result: [] };
+  const data = {
+    pagesCount: 7,
+    currentPage: page,
+    result: [
+      { number: "1234", title: "Bankruptcy Proceedings", status: "Active" },
+      { number: "5601", title: "Medical Malpractice", status: "Dismissed" },
+      { number: "9074", title: "Contract Dispute", status: "Settled" },
+    ],
+  };
   return data;
 }
