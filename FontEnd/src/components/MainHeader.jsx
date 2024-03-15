@@ -56,7 +56,7 @@ function MainHeader({ isDark, themeToggle }) {
 export default MainHeader;
 
 const SERVICES = [
-  { id: 1, name: "case catalog", link: "/guest" },
+  { id: 1, name: "case catalog", link: "/catalog" },
   { id: 2, name: "case filing", link: "/user/cases/add-new" },
   { id: 3, name: "case judgment", link: "/" },
   { id: 4, name: "case managment", link: "/" },

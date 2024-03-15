@@ -3,6 +3,7 @@ import {
   HomeLayout,
   Landing,
   Authentication,
+  CaseCatalog,
   UserLayout,
   EditUserDetails,
   ChangeUserPassword,
@@ -20,7 +21,6 @@ import {
   Stackholders,
   BrowseStackholders,
   AddNewStackholder,
-  Guest,
   EditCase,
 } from "../pages";
 
@@ -33,6 +33,8 @@ import { action as authAction } from "../pages/Authentication";
 // import { action as eventCreation } from "../pages/EventForm";
 
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
+import { loader as catalogLoader } from "../pages/CaseCatalog";
+
 import {
   action as browseAction,
   loader as browseLoader,
@@ -44,6 +46,7 @@ import { action as changePasswordAction } from "../pages/userProfile/ChangeUserP
 import ViewCase from "../pages/ViewCase";
 import { EventForm, PartyForm, StakeholderForm } from "../components";
 import CaseDetails from "../pages/cases/CaseDetails";
+import StyledPartyForm from "../assets/stylingWrappers/PartyForm";
 
 const router = createBrowserRouter([
   {
@@ -60,8 +63,9 @@ const router = createBrowserRouter([
         action: authAction,
       },
       {
-        path: "guest",
-        element: <Guest />,
+        path: "catalog",
+        element: <CaseCatalog />,
+        loader: catalogLoader,
       },
       {
         path: "user",
@@ -165,31 +169,6 @@ const router = createBrowserRouter([
                 path: ":courtID",
                 children: [
                   // { path: "edit", element: <CourtEditForm /> }
-                ],
-              },
-            ],
-          },
-          {
-            path: "legal-entities",
-            element: <LegalEntities />,
-            children: [
-              // { index: true, element: <Parties /> },
-              {
-                path: "parties",
-                element: <Parties />,
-                children: [
-                  // { index: true, element: <BrowseParties /> },
-                  // { path: "add-new", element: <AddNewParty /> },
-                  { index: true, element: <AddNewParty /> },
-                ],
-              },
-              {
-                path: "stackholders",
-                element: <Stackholders />,
-                children: [
-                  { index: true, element: <AddNewStackholder /> },
-                  // { index: true, element: <BrowseStackholders /> },
-                  // { path: "add-new", element: <AddNewStackholder /> },
                 ],
               },
             ],

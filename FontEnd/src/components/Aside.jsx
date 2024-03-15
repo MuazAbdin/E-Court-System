@@ -27,9 +27,9 @@ function Aside() {
             title="cases"
             Icon={MdGavel}
             subsectoins={[
-              { name: "browse", to: "cases" },
-              { name: "add new", to: "cases/add-new" },
-              { name: "edit", to: "cases/edit" },
+              { name: "my cases", to: "cases" },
+              { name: "new case", to: "cases/add-new" },
+              { name: "view", to: "cases/edit" },
             ]}
           />
           <Accordion.Item

@@ -123,6 +123,8 @@ function CaseForm({
         isSubmitted={false}
       />
 
+      {children}
+
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
