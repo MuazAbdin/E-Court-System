@@ -21,9 +21,9 @@ const caseSchema = new Schema({
 }, { timestamps: true })
 
 caseSchema.statics.caseNumberCounter = 1;
-caseSchema.statics.query = function(queries, mainQuery) {
+caseSchema.statics.query = async function(queries, mainQuery) {
     const offset = queries.offset ? queries.offset : 0;
-    const limit = queries.limit ? queries.limit : 10;
+    const limit = queries.limit && queries.limit > 0 ? queries.limit : 10;
     const dbMainQuery = mainQuery ? mainQuery : {} ;
     const dbQuery = [];
 
@@ -72,16 +72,30 @@ caseSchema.statics.query = function(queries, mainQuery) {
             dbQuery.push(dbMainQuery);
         }
 
-        return this.find({
-                $and: dbQuery 
-            })
-            .skip(offset * limit)
-            .limit(limit);
+        const pagesCount = Math.ceil((await this.countDocuments({
+            $and: dbQuery 
+        })) / limit)
+        const result = await this.find({
+            $and: dbQuery 
+        }) 
+        .skip(offset * limit)
+        .limit(limit)
+
+        return {
+            pagesCount,
+            result
+        };
     }
     else {
-        return this.find(dbMainQuery)
+        const pagesCount = Math.ceil((await this.countDocuments(dbMainQuery)) / limit);
+        const result = await this.find(dbMainQuery)
             .skip(offset * limit)
-            .limit(limit);
+            .limit(limit)
+
+        return {
+            pagesCount,
+            result
+        };
     }
 }
 
