@@ -64,7 +64,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Document Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Document | /documents/ | POST | caseId, title, uploadedBy, documentFile | _id, caseId, title, uploadedBy |
+| Create Document | /documents/ | POST | caseId, title, uploadedBy, law, subject, requirement, honoringParty, documentFile | _id, caseId, title, uploadedBy |
 | Get Document | /documents/:id | GET | | Document |
 | Get User Documents | /documents/user/:id | GET | | Document |
 | Get Party Documents | /documents/party/:id | GET | | Document |
