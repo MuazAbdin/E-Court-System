@@ -65,11 +65,11 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Document | /documents/ | POST | caseId, title, uploadedBy, law, subject, requirement, honoringParty, documentFile | _id, caseId, title, uploadedBy |
-| Get Document | /documents/:id | GET | | Document |
-| Get User Documents | /documents/user/:id | GET | | Document |
-| Get Party Documents | /documents/party/:id | GET | | Document |
-| Get Case Documents | /documents/case/:id | GET | | Document |
-| Update Document Title | /documents/ | PATCH | id, title | Document |
+| Get Document | /documents/:id | GET | | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
+| Get User Documents | /documents/user/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Get Party Documents | /documents/party/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Get Case Documents | /documents/case/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Update Document Title | /documents/ | PATCH | id, title | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
 
 ### Event Routes
 | Title | Route | Type | Request | Response |
