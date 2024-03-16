@@ -6,11 +6,6 @@ import { FaRegFilePdf } from "react-icons/fa6";
 import { PARTY_DETAILS_FIELDS } from "../../utils/constants";
 import Input from "../Input";
 
-const COURTS = [
-  { id: 1, value: "Supreme Court - Jerusalem", icon: <AccountBalanceIcon /> },
-  { id: 2, value: "District Court - Jerusalem", icon: <AccountBalanceIcon /> },
-];
-
 function CaseForm({
   children,
   className,
@@ -19,7 +14,14 @@ function CaseForm({
   method,
   buttonText,
   isEdit,
+  courts,
 }) {
+  const courtsData = courts.map((c) => ({
+    id: c._id,
+    value: `${c.name} - ${c.city}`,
+    icon: <AccountBalanceIcon />,
+  }));
+
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -52,7 +54,7 @@ function CaseForm({
         <StyledInputSelect
           id={`${formID}-court`}
           label="Court"
-          menuItems={COURTS}
+          menuItems={courtsData}
         />
       ) : (
         <Input
@@ -72,10 +74,10 @@ function CaseForm({
             <h5 className="title">{party}</h5>
             {PARTY_DETAILS_FIELDS.map((f) => (
               <Input
-                key={`${formID}${party}-${f.id}`}
+                key={`${formID}-${party}_${f.id}`}
                 label={f.label}
                 type="text"
-                id={`${formID}${party}-${f.id}`}
+                id={`${formID}-${party}_${f.id}`}
                 icon={f.icon}
                 ref={null}
                 autoComplete={f.autoComplete ?? "off"}
@@ -93,10 +95,10 @@ function CaseForm({
       </div>
 
       <Input
-        key={`${formID}-topic`}
-        label="Topic"
+        key={`${formID}-title`}
+        label="Title"
         type="text"
-        id={`${formID}-topic`}
+        id={`${formID}-title`}
         icon={null}
         ref={null}
         autoComplete="off"

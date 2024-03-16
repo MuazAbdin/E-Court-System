@@ -40,7 +40,10 @@ import {
   loader as browseLoader,
 } from "../pages/cases/BrowseCases";
 import { loader as caseDetailsLoader } from "../pages/cases/CaseDetails";
-import { action as newCaseAction } from "../pages/cases/AddNewCase";
+import {
+  action as newCaseAction,
+  loader as newCaseLoader,
+} from "../pages/cases/AddNewCase";
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 import ViewCase from "../pages/ViewCase";
@@ -96,6 +99,7 @@ const router = createBrowserRouter([
               {
                 path: "add-new",
                 element: <AddNewCase />,
+                loader: newCaseLoader,
                 action: newCaseAction,
               },
               {
