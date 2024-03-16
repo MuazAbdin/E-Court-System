@@ -12,7 +12,7 @@ export default class Config {
 
 export class DBConfig {
     static STAKEHOLDER_TYPES = [ "Client", "Witness" ];
-    static PARTY_NAMES = [ "PARTY1", "PARTY2" ];
+    static PARTY_NAMES = [ "Claimant", "Respondent" ];
     static USER_TYPES = ['Judge', 'Lawyer', 'Admin', 'Court Manager'];
     static CASE_STATUS_TYPES = ["Pending", "Active", "Dismissed", "Settled", "Appealed"];
     static EVENT_TYPES = ['General', 'Trial', 'Appeal', 'Hearing'];

@@ -45,7 +45,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
 | Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
-| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ]
+| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
 | Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] |
 | Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
 | Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |

@@ -8,7 +8,7 @@ const caseSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     court: { type: Schema.Types.ObjectId, ref: "Court", required: true },
-    judge: { type: Schema.Types.ObjectId, ref: "User"},
+    judge: { type: Schema.Types.ObjectId, ref: "User" },
     events: {
         type: [{ type: Schema.Types.ObjectId, ref: "Event" }],
         default: []
