@@ -27,8 +27,6 @@ caseSchema.statics.query = async function(queries, mainQuery) {
     const dbMainQuery = mainQuery ? mainQuery : {} ;
     const dbQuery = [];
 
-    console.log(queries)
-
     if(queries.query) {
         dbQuery.push({ 
             $or: [
@@ -38,25 +36,20 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         });
     }
 
-    if(queries.start && queries.end) {
+    if(queries.start) {
+        const startDate = new Date(queries.start);
         dbQuery.push({
             createdAt: {
-                $gte: queries.start,
-                $lte: queries.end
+                $gte: startDate,
             }
         });
     }
-    else if(queries.start) {
+    if(queries.end) {
+        const endDate = new Date(queries.end);
+        endDate.setDate(endDate.getDate() + 1);
         dbQuery.push({
             createdAt: {
-                $gte: queries.start,
-            }
-        });
-    }
-    else if(queries.end) {
-        dbQuery.push({
-            createdAt: {
-                $lte: queries.end,
+                $lte: endDate,
             }
         });
     }
