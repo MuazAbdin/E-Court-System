@@ -6,12 +6,22 @@ import { FaRegFilePdf } from "react-icons/fa6";
 import { PARTY_DETAILS_FIELDS } from "../../utils/constants";
 import Input from "../Input";
 
-const COURTS = [
-  { id: 1, value: "Supreme Court - Jerusalem", icon: <AccountBalanceIcon /> },
-  { id: 2, value: "District Court - Jerusalem", icon: <AccountBalanceIcon /> },
-];
+function CaseForm({
+  children,
+  className,
+  formID,
+  title,
+  method,
+  buttonText,
+  isEdit,
+  courts,
+}) {
+  const courtsData = courts.map((c) => ({
+    id: c._id,
+    value: `${c.name} - ${c.city}`,
+    icon: <AccountBalanceIcon />,
+  }));
 
-function CaseForm({ children, className, formID, title, method, buttonText }) {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -40,11 +50,23 @@ function CaseForm({ children, className, formID, title, method, buttonText }) {
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
 
-      <StyledInputSelect
-        id={`${formID}-court`}
-        label="Court"
-        menuItems={COURTS}
-      />
+      {!isEdit ? (
+        <StyledInputSelect
+          id={`${formID}-court`}
+          label="Court"
+          menuItems={courtsData}
+        />
+      ) : (
+        <Input
+          key={`${formID}-court`}
+          label="Court"
+          type="text"
+          id={`${formID}-court`}
+          icon={<AccountBalanceIcon />}
+          readOnly={true}
+          prevValue={"Supreme Court - Jerusalem"}
+        />
+      )}
 
       <div className="parties">
         {["claimant", "respondent"].map((party) => (
@@ -52,13 +74,14 @@ function CaseForm({ children, className, formID, title, method, buttonText }) {
             <h5 className="title">{party}</h5>
             {PARTY_DETAILS_FIELDS.map((f) => (
               <Input
-                key={`${formID}${party}-${f.id}`}
+                key={`${formID}-${party}_${f.id}`}
                 label={f.label}
                 type="text"
-                id={`${formID}${party}-${f.id}`}
+                id={`${formID}-${party}_${f.id}`}
                 icon={f.icon}
                 ref={null}
                 autoComplete={f.autoComplete ?? "off"}
+                validator={f.validator}
                 required={f.required}
                 severErrorMsg={""}
                 multiline={f.multiline ?? false}
@@ -72,10 +95,10 @@ function CaseForm({ children, className, formID, title, method, buttonText }) {
       </div>
 
       <Input
-        key={`${formID}-topic`}
-        label="Topic"
+        key={`${formID}-title`}
+        label="Title"
         type="text"
-        id={`${formID}-topic`}
+        id={`${formID}-title`}
         icon={null}
         ref={null}
         autoComplete="off"
@@ -101,6 +124,8 @@ function CaseForm({ children, className, formID, title, method, buttonText }) {
         prevValue={""}
         isSubmitted={false}
       />
+
+      {children}
 
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}

@@ -14,31 +14,53 @@ const Wrapper = styled.header`
   background-color: var(--background-color-transparent);
   z-index: 10;
 
-  menu {
+  nav > menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
     gap: 0.25rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: var(--highlight-color);
+      font-size: 1.25rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      border-radius: var(--border-radius);
+      padding: 0.5rem;
+      transition: var(--transition);
+      position: relatives;
+
+      span {
+        color: var(--text-color);
+      }
+    }
+
+    li:hover {
+      box-shadow: 0 0 5px var(--text-color);
+    }
   }
 
-  li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    color: var(--highlight-color);
-    font-size: 1.25rem;
-    font-weight: 600;
-    border: 1px solid transparent;
+  .services-list {
+    display: ${(props) => props.display};
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    transform: translate(-20%, 90%);
+    background-color: var(--background-color);
     border-radius: var(--border-radius);
-    padding: 0.5rem;
-    transition: var(--transition);
-  }
 
-  li:hover {
-    box-shadow: 0 0 5px black;
+    li {
+      font-size: 1.2rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      text-transform: capitalize;
+    }
   }
 
   .theme-btn {

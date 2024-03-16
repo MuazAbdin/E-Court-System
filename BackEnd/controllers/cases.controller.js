@@ -96,7 +96,7 @@ class CasesController {
 
 	async getPendingCases(req, res) {
 		try {
-			const cases = await Case.find({ status: "Pending" });
+			const cases = await Case.query(req.query, { status: "Pending" });
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}
@@ -126,7 +126,7 @@ class CasesController {
 		try {
 			// TODO use only apply one query based on the user type
 			const cases = [
-				...(await Case.find({ judge: userId })),
+				...(await Case.query(req.query, { judge: userId })),
 				...((await Party.find({ lawyer: userId }).populate("case"))
 					.map(party => party.case))
 			]
@@ -142,7 +142,7 @@ class CasesController {
 
 	async getPublicCases(req, res) {
 		try {
-			const cases = await Case.find({ public: true });
+			const cases = await Case.qyery(req.query, { public: true });
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}
@@ -154,9 +154,8 @@ class CasesController {
 	}
 
 	async getCases(req, res) {
-		const { query } = req.query;
 		try {
-			const cases = await Case.query(query);
+			const cases = await Case.query(req.query);
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}
