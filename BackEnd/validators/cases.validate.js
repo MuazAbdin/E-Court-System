@@ -57,7 +57,7 @@ export default class CaseValidator {
     }
 
     static validateUpdateCaseStatusData(data) {
-        GenericValidator.validateObjectId(data._id);
+        GenericValidator.validateObjectId(data.caseId);
         Object.keys(data).forEach(key => 
             GenericValidator.validateNotEmpty(data[key]));
         if(!DBConfig.CASE_STATUS_TYPES.includes(data.status)) {
