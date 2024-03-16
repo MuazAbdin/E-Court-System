@@ -11,6 +11,7 @@ class PdfController {
 		const content = req.body;
 
 		try {
+			doc.fontSize(5).text(`${"E-COURT-SYSTEM"}`, 280, 714);
 			doc.font("Helvetica-Bold").fontSize(29).text(`${content.title}`, 280, 30);
 			for(let i = 70, j=0 ; j<content.sections.length; i+=50, j++){
 				doc.font("Helvetica-Bold").fontSize(17).text(`${content.sections[j].sectionTite}`, 55, i);
