@@ -74,10 +74,10 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Event Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Event | /events/ | POST | caseId, eventType, date, description | Event |
-| Get Case Events | /events/case/:id | GET | | [ Event ] |
-| Get Event | /events/:id | GET | | Event |
-| Update Event | /events/ | PATCH | eventId, date, description | Event |
+| Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location |
+| Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] |
+| Get Event | /events/:id | GET | | _id, case, type, date, description, location |
+| Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location |
 | Delete Event | /events/ | DELETE | eventId | |
 
 ### Party Routes
