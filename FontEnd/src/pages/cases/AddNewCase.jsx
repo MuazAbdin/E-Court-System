@@ -65,20 +65,21 @@ export async function action({ request }) {
   // }
 
   try {
-    // const response = await fetcher("/cases/", {
-    //   method: request.method,
-    //   body: JSON.stringify(data),
-    // });
+    console.log("...");
+    const response = await fetcher("/cases/file-a-case", {
+      method: request.method,
+      body: JSON.stringify(reqBody),
+    });
 
-    // console.log(response);
-    // if (!response.ok) {
-    //   const data = await response.text();
-    //   console.log(data);
-    //   throw new Error(data);
-    // }
+    console.log(response);
+    if (!response.ok) {
+      const data = await response.text();
+      console.log(data);
+      throw new Error(data);
+    }
 
     toast.success("Created Successfully!");
-    return redirect("");
+    return redirect("..");
   } catch (error) {
     toast.error(error.message);
     return error;

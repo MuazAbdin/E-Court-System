@@ -1,5 +1,5 @@
 import { DBConfig } from "../config.js";
-import { InvalidCaseStatusError, NoPartiesProvidedError, TooManyPartiesProvidedError } from "../errors/case.error.js";
+import { InvalidCaseStatusError, NoPartiesProvidedError, PartiesMustBeAnArrayError, TooManyPartiesProvidedError } from "../errors/case.error.js";
 import GenericValidator from "./generic.validate.js";
 
 export default class CaseValidator {
