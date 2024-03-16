@@ -24,8 +24,8 @@ class CasesController {
 			for(const index in parties) {
 				const { lawyer, client } = parties[index];
 				const newParty = new Party({ lawyer, case: newCase, name: DBConfig.PARTY_NAMES[index], stakeholders: [] });
-				const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
-				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber, city, street });
+				const { idNumber, firstName, lastName, email, phoneNumber } = client;
+				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber });
 				await newClient.save();
 				savedDocs.push(newClient);
 				newParty.client = newClient;
@@ -62,8 +62,8 @@ class CasesController {
 			for(const index in parties) {
 				const { lawyer, client } = parties[index];
 				const newParty = new Party({ lawyer, case: newCase, name: DBConfig.PARTY_NAMES[index], stakeholders: [] });
-				const { idNumber, firstName, lastName, email, phoneNumber, city, street } = client;
-				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber, city, street });
+				const { idNumber, firstName, lastName, email, phoneNumber } = client;
+				const newClient = new Stakeholder({ type: DBConfig.STAKEHOLDER_TYPES[0], party: newParty._id, idNumber, firstName, lastName, email, phoneNumber });
 				await newClient.save();
 				savedDocs.push(newClient);
 				newParty.client = newClient;
