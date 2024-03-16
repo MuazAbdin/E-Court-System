@@ -10,4 +10,4 @@ export const InvalidCaseStatusError = errorGenerator.invalidValueErrorGenerator(
 
 export const NoPartiesProvidedError = errorGenerator.createErrorClass("There need to be at least one party in a case!", StatusCodes.BAD_REQUEST);
 export const TooManyPartiesProvidedError = errorGenerator.createErrorClass("There can only be two parties in a case!", StatusCodes.BAD_REQUEST);
-export const PartiesMustBeAnArrayError = errorGenerator.createErrorClass("Parties must be an array!")
+export const PartiesMustBeAnArrayError = errorGenerator.createErrorClass("Parties must be an array!", StatusCodes.BAD_REQUEST)

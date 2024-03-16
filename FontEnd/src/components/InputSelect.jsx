@@ -20,12 +20,13 @@ function InputSelect({ className, id, label, menuItems }) {
       <Select
         labelId={`${id}-label`}
         id={id}
+        name={id}
         value={age}
         label={label}
         onChange={handleChange}
       >
         {menuItems.map((item) => (
-          <MenuItem key={item.id} value={item.value}>
+          <MenuItem key={item.id} value={item.id}>
             {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
             {item.value}
           </MenuItem>

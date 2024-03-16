@@ -39,7 +39,7 @@ function Authentication() {
             fields={REGISTER_FIELDS}
           >
             <fieldset className="user-role">
-              <legend> Your Role </legend>
+              <legend> As </legend>
               <div className="d-selector">
                 <input
                   type="radio"
@@ -61,6 +61,17 @@ function Authentication() {
                   checked={radioValue === "Judge"}
                 />
                 <label htmlFor="judge">judge</label>
+              </div>
+              <div className="d-selector">
+                <input
+                  type="radio"
+                  id="court"
+                  name="register-form-userType"
+                  value="Court"
+                  onChange={changeSelection}
+                  checked={radioValue === "Court"}
+                />
+                <label htmlFor="court">Court</label>
               </div>
             </fieldset>
             <div

@@ -6,6 +6,7 @@ export { default as ToggleTheme } from "./ToggleTheme";
 export { default as AuthForm } from "./AuthForm";
 export { default as GoogleLoginButton } from "./GoogleLoginButton";
 export { default as SearchBar } from "./SearchBar";
+export { default as Table } from "./Table";
 
 export { default as Accordion } from "./Accordion";
 export { default as Aside } from "./Aside";

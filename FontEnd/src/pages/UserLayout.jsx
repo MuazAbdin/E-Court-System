@@ -4,7 +4,7 @@ import { Aside, PageHeader } from "../components";
 import { toast } from "react-toastify";
 import { fetcher } from "../utils/fetcher";
 
-function DashboardLayout() {
+function UserLayout() {
   const { userData } = useLoaderData();
   // console.log(userData);
 
@@ -19,7 +19,7 @@ function DashboardLayout() {
   );
 }
 
-export default DashboardLayout;
+export default UserLayout;
 
 export async function loader() {
   try {

@@ -70,6 +70,31 @@ const StyledCaseForm = styled(CaseForm)`
     background-color: var(--grey-500);
   }
 
+  input:disabled,
+  input:read-only {
+    cursor: not-allowed;
+    background-color: var(--grey-200);
+  }
+
+  .btn-group {
+    grid-column: 1 / 3;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+    border-top: 1px dashed var(--text-color);
+    border-bottom: 1px dashed var(--text-color);
+
+    .btn {
+      background-color: hsla(214, 32%, 91%, 0.75);
+      color: rgba(0, 0, 0, 0.6);
+      border-radius: 50px;
+      gap: 0.5rem;
+
+      &:hover {
+        box-shadow: 0 0 10px var(--highlight-color);
+      }
+    }
+  }
+
   .pdf-btn {
     position: absolute;
     top: 1rem;
