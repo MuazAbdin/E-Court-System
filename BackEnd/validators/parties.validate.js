@@ -18,6 +18,10 @@ export default class PartyValidator {
 
     static validateCaseCreatePartyData(data) {
         GenericValidator.validateObjectId(data.lawyer);
+        PartyValidator.validateFileACasePartyData(data);
+    }
+
+    static validateFileACasePartyData(data) {
         Object.keys(data).forEach(key => 
             GenericValidator.validateNotEmpty(data[key]));
         StakeholderValidator.validateStakeholderDataNoPartyId(data.client);      

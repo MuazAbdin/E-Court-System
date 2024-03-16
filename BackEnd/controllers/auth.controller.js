@@ -14,7 +14,7 @@ class AuthController {
         const {
         password, passwordConfirm: confirmPassword, 
         IDcard: idNumber, firstName, lastName, userType, email, 
-        mobile: phoneNumber, city, street, licenseNumber,
+        mobile: phoneNumber, city, street, licenseNumber
         } = req.body;
 
         try {
@@ -40,7 +40,7 @@ class AuthController {
             const payload = { userId: user._id };
             const tokenCookie = authUtils.createTokenCookie(payload);
             res.setHeader("Set-Cookie", tokenCookie);
-            res.json({ firstName: user.firstName, lastName: user.lastName });
+            res.json({ firstName: user.firstName, lastName: user.lastName, userType: user.userType });
         } catch (error) {
             if (error instanceof mongoose.Error.ValidationError) {
                 if (error.errors.userType) {
@@ -68,7 +68,7 @@ class AuthController {
             const payload = { userId: user._id };
             const tokenCookie = authUtils.createTokenCookie(payload);
             res.setHeader("Set-Cookie", tokenCookie);
-            res.json({ firstName: user.firstName, lastName: user.lastName });
+            res.json({ firstName: user.firstName, lastName: user.lastName, userType: user.userType });
         } catch (error) {
             errorHandler.handleError(res, error);
         }

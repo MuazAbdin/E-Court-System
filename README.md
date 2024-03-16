@@ -31,50 +31,45 @@ I want to work on register form on the frontend:
 
 
 ## API Routes
-#### Data Definitions:
-##### StakeholderData: { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
-##### Stakeholder: { _id, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
-##### Party: { name, lawyer, caseId, [ Stakeholder ] }
-##### UserData: { password, confirmPassword, idNumber, firstName, LastName, userType, email, phoneNumber, city, street, licenseNumber? }
-##### User: { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street }
-##### Event: {_id, caseId, eventType, date, description }
-##### Document: { _id, caseId, title, uploadedBy, fileName }
-##### Case: { _id, title, description ,status, court, judge, creationDate, lastUpdatedDate }
-##### Court: { _id, name, city, street, phoneNumber, email }
 
 ### Authentication Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Register | /auth/register/ | POST | UserData | firstName, lastName |
-| Login | /auth/login/ | POST | email, password | firstName, lastName |
+| Register | /auth/register/ | POST | password, passwordConfirm, IDcard, firstName, lastName, userType, email, mobile, city, street, licenseNumber | firstName, lastName, userType |
+| Login | /auth/login/ | POST | IDcard, password | firstName, lastName, userType |
 | Logout | /auth/logout/ | POST | | |
+| Log in with google | /auth/google | POST | credential, client_id | 
 JWT-HTTP-Only-Cookie is set after a successful Register or Login
 
 ### Case Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Case | /cases/ | POST | title, decription, status, court, judge? | Case |
-| Get All Cases | /cases/?query | GET | | [ Case ] |
-| Get Case | /cases/:id | GET | | CASE
-| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | Case |
-| Update Case Status | /cases/status/ | PATCH | _id, status | CASE |
+| Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
+| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
+| Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] |
+| Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
+| Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
+| Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt
+| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
+| Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
+| Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
 
 ### Court Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Court | /courts/ | POST | courtName, city, street, phoneNumber, email | Court |
-| Get Court | /court/:id | GET | | Court |
-| Update Court | /court/ | Patch | id, name, phoneNumber, email | Court
+| Create Court | /courts/ | POST | courtName, city, street, mobile, email, judges? | _id, name, city, street, phoneNumber, judges, email |
+| Get Court | /court/:id | GET | | _id, name, city, street, phoneNumber, judges, email |
+| Update Court | /court/ | Patch | id, name, phoneNumber, email | _id, name, city, street, phoneNumber, judges, email
 
 ### Document Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Document | /documents/ | POST | caseId, title, uploadedBy, documentFile | _id, caseId, title, uploadedBy |
-| Get Document | /documents/:id | GET | | Document |
-| Get User Documents | /documents/user/:id | GET | | Document |
-| Get Party Documents | /documents/party/:id | GET | | Document |
-| Get Case Documents | /documents/case/:id | GET | | Document |
-| Update Document Title | /documents/ | PATCH | id, title | Document |
+| Create Document | /documents/ | POST | caseId, title, uploadedBy, law, subject, requirement, honoringParty, documentFile | _id, caseId, title, uploadedBy |
+| Get Document | /documents/:id | GET | | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
+| Get User Documents | /documents/user/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Get Party Documents | /documents/party/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Get Case Documents | /documents/case/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Update Document Title | /documents/ | PATCH | id, title | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
 
 ### Event Routes
 | Title | Route | Type | Request | Response |
