@@ -9,10 +9,14 @@ function CaseCatalog() {
     <Wrapper>
       <h3 className="title">browse cases</h3>
       <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
-      <Table tableCaption="" tableHeader={["", "number", "title", "status"]}>
+      <Table
+        tableCaption=""
+        tableHeader={["", "number", "court", "title", "status"]}
+      >
         {result.map((r) => (
           <tr key={r.number}>
             <td>{r.number}</td>
+            <td>{r.court}</td>
             <td>{r.title}</td>
             <td>{r.status}</td>
           </tr>
@@ -50,9 +54,24 @@ export async function loader({ params, request }) {
     pagesCount: 7,
     currentPage: page,
     result: [
-      { number: "1234", title: "Bankruptcy Proceedings", status: "Active" },
-      { number: "5601", title: "Medical Malpractice", status: "Dismissed" },
-      { number: "9074", title: "Contract Dispute", status: "Settled" },
+      {
+        number: "1234",
+        court: "District - Jerusalem",
+        title: "Bankruptcy Proceedings",
+        status: "Active",
+      },
+      {
+        number: "5601",
+        court: "Supreme - Jerusalem",
+        title: "Medical Malpractice",
+        status: "Dismissed",
+      },
+      {
+        number: "9074",
+        court: "District - Haifa",
+        title: "Contract Dispute",
+        status: "Settled",
+      },
     ],
   };
   return data;
