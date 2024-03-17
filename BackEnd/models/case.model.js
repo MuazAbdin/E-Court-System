@@ -73,6 +73,8 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         }) 
         .skip(offset * limit)
         .limit(limit)
+        .populate("court")
+        .exec()
 
         return {
             pagesCount,
@@ -84,6 +86,8 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         const result = await this.find(dbMainQuery)
             .skip(offset * limit)
             .limit(limit)
+            .populate("court")
+            .exec()
 
         return {
             pagesCount,
