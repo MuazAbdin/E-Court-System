@@ -53,7 +53,7 @@ class EventsController {
 			if(updatedEvent === null) {
 				throw new EventDoesNotExistError();
 			}
-			res.json(updatedStackholder);
+			res.json(updatedEvent);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
