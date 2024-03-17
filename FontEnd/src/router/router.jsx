@@ -9,20 +9,12 @@ import {
   ChangeUserPassword,
   Overview,
   Cases,
-  BrowseCases,
-  AddNewCase,
   BrowseCourts,
   AddNewCourt,
   Courts,
-  LegalEntities,
-  Parties,
-  BrowseParties,
-  AddNewParty,
-  Stackholders,
-  BrowseStackholders,
-  AddNewStackholder,
-  EditCase,
   MyCases,
+  Claim,
+  Respond,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -36,15 +28,11 @@ import { action as authAction } from "../pages/Authentication";
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
 import { loader as catalogLoader } from "../pages/CaseCatalog";
 
-import {
-  action as browseAction,
-  loader as browseLoader,
-} from "../pages/cases/BrowseCases";
 import { loader as caseDetailsLoader } from "../pages/cases/CaseDetails";
 import {
   action as newCaseAction,
   loader as newCaseLoader,
-} from "../pages/cases/AddNewCase";
+} from "../pages/cases/Claim";
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 import ViewCase from "../pages/ViewCase";
@@ -99,14 +87,14 @@ const router = createBrowserRouter([
                 // action: browseAction,
               },
               {
-                path: "add-new",
-                element: <AddNewCase />,
+                path: "claim",
+                element: <Claim />,
                 loader: newCaseLoader,
                 action: newCaseAction,
               },
               {
-                path: "edit",
-                element: <EditCase />,
+                path: "respond",
+                element: <Respond />,
                 // action: newCaseAction,
               },
               {

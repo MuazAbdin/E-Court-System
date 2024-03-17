@@ -12,7 +12,8 @@ export { default as Cases } from "./cases/Cases";
 export { default as MyCases } from "./cases/MyCases";
 
 export { default as BrowseCases } from "./cases/BrowseCases";
-export { default as AddNewCase } from "./cases/AddNewCase";
+export { default as Claim } from "./cases/Claim";
+export { default as Respond } from "./cases/Respond";
 export { default as EditCase } from "./cases/EditCase";
 
 export { default as Courts } from "./courts/Courts";

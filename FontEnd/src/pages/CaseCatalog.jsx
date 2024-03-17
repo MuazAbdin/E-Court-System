@@ -1,8 +1,9 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/CaseCatalog";
 import StyledSearchBar from "../assets/stylingWrappers/SearchBar";
 import { Table } from "../components";
 import { fetcher } from "../utils/fetcher";
+import { toast } from "react-toastify";
 
 function CaseCatalog() {
   const { pagesCount, currentPage, result } = useLoaderData();
@@ -15,8 +16,10 @@ function CaseCatalog() {
         tableHeader={["", "number", "court", "title", "status"]}
       >
         {result.map((r) => (
-          <tr key={r.number}>
-            <td>{r.number}</td>
+          <tr key={r._id}>
+            <td>
+              <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
+            </td>
             <td>{r.court}</td>
             <td>{r.title}</td>
             <td>{r.status}</td>
@@ -58,33 +61,12 @@ export async function loader({ params, request }) {
 
   try {
     const response = await fetcher(`/cases/?${serverSearchParams}`);
-    const cases = await response.json();
-    console.log(cases);
-    // console.log({ pagesCount, result });
-  } catch (error) {}
-  const data = {
-    pagesCount: 7,
-    currentPage: page,
-    result: [
-      {
-        number: "1234",
-        court: "District - Jerusalem",
-        title: "Bankruptcy Proceedings",
-        status: "Active",
-      },
-      {
-        number: "5601",
-        court: "Supreme - Jerusalem",
-        title: "Medical Malpractice",
-        status: "Dismissed",
-      },
-      {
-        number: "9074",
-        court: "District - Haifa",
-        title: "Contract Dispute",
-        status: "Settled",
-      },
-    ],
-  };
-  return data;
+    if (!response.ok) throw response;
+    const { pagesCount, result } = await response.json();
+    console.log({ pagesCount, result });
+    return { pagesCount, currentPage: page, result };
+  } catch (error) {
+    toast.error(error.message);
+    return error;
+  }
 }

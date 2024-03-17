@@ -18,25 +18,7 @@ function EditCase() {
       isEdit={true}
       courts={[]}
     >
-      <section className="documents">
-        <h5 className="section-title">documents</h5>
-        <Table tableHeader={["", "party", "title", ""]}>
-          <tr>
-            <td>party 1</td>
-            <td>doc 1</td>
-            <td>
-              <FaTrashCan />
-            </td>
-          </tr>
-        </Table>
-        <div className="btn add-doc c-flex">
-          <Link to="">
-            <FaFileCirclePlus />
-            add new document
-          </Link>
-        </div>
-
-        {/* {DOCUMENT_FIELDS.map((f) => (
+      {/* {DOCUMENT_FIELDS.map((f) => (
           <Input
             key={`case-form-${f.id}`}
             label={f.label}
@@ -55,41 +37,6 @@ function EditCase() {
           />
         ))}
         <InputFileUpload /> */}
-      </section>
-      <section className="stakeholders">
-        <h5 className="section-title">stakeholders</h5>
-        <Table tableHeader={["", "name", "party", ""]}>
-          <tr>
-            <td>name 1</td>
-            <td>party 1</td>
-            <td>
-              <FaTrashCan />
-            </td>
-          </tr>
-        </Table>
-        <div className="btn add-stakeholder c-flex">
-          <RiUserAddFill />
-          add new stakeholder
-        </div>
-      </section>
-      <section className="events">
-        <h5 className="section-title">events</h5>
-        <Table tableHeader={["", "date", "time", "location", "type", ""]}>
-          <tr>
-            <td>date 1</td>
-            <td>time 1</td>
-            <td>loc 1</td>
-            <td>type 1</td>
-            <td>
-              <FaTrashCan />
-            </td>
-          </tr>
-        </Table>
-        <div className="btn add-event c-flex">
-          <MdEventNote />
-          add new event
-        </div>
-      </section>
     </StyledCaseForm>
   );
 }

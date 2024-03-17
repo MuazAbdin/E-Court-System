@@ -2,8 +2,12 @@ import styled from "styled-components";
 import { CaseForm } from "../../components";
 
 const StyledCaseForm = styled(CaseForm)`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   gap: 1rem;
   position: relative;
 
@@ -20,27 +24,54 @@ const StyledCaseForm = styled(CaseForm)`
   }
 
   & > .MuiFormControl-root {
-    grid-column: 1/3;
     width: 60%;
-    justify-self: center;
+    margin: auto;
+  }
+
+  .case-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1rem;
+
+    fieldset:nth-child(3) {
+      grid-column: 1/3;
+    }
   }
 
   .parties {
     border-top: 1px dashed;
     padding-top: 1rem;
-    grid-column: 1 / 3;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 
     & > section {
       flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
 
       .title {
         font-family: var(--main-font);
         font-size: 1.2rem;
         font-weight: 600;
+        padding-bottom: 0;
       }
+    }
+  }
+
+  .notes {
+    border-top: 1px dashed;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .title {
+      font-family: var(--main-font);
+      font-size: 1.35rem;
+      font-weight: 600;
+      padding-bottom: 0;
     }
   }
 
@@ -57,29 +88,13 @@ const StyledCaseForm = styled(CaseForm)`
     background-color: var(--grey-200);
   } */
 
-  & > fieldset {
-    grid-column: 1 / 3;
-  }
-
-  & > fieldset:nth-of-type(1),
-  & > fieldset:nth-of-type(4) {
-    grid-column: 1/2;
-  }
-
-  & > fieldset:nth-of-type(2),
-  & > fieldset:nth-of-type(5) {
-    grid-column: 2;
-  }
-
   .btn {
-    grid-column: 1 / 3;
-    padding-top: 1.5rem;
     height: fit-content;
     width: 50%;
-    justify-self: center;
     padding: 0.75rem 0;
     font-size: 1.25rem;
     font-weight: 500;
+    margin: auto;
   }
 
   .btn:disabled {
@@ -117,6 +132,7 @@ const StyledCaseForm = styled(CaseForm)`
     .add-doc,
     .add-stakeholder,
     .add-event {
+      margin: 0 auto 0 0;
       gap: 0.5rem;
       width: fit-content;
       padding: 0.25rem 1rem;
@@ -127,6 +143,14 @@ const StyledCaseForm = styled(CaseForm)`
 
       &:hover {
         box-shadow: 0 0 10px var(--highlight-color);
+      }
+
+      a {
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(0, 0, 0, 0.6);
       }
     }
 
@@ -161,7 +185,7 @@ const StyledCaseForm = styled(CaseForm)`
   .pdf-btn {
     position: absolute;
     top: 1rem;
-    left: 0;
+    left: 1.25rem;
     width: fit-content;
     font-size: 1.75rem;
     padding: 0.75rem;

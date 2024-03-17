@@ -3,7 +3,7 @@ import { redirect, useLoaderData } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 
-function AddNewCase() {
+function Claim() {
   const courts = useLoaderData();
   // console.log(courts);
   return (
@@ -17,7 +17,7 @@ function AddNewCase() {
   );
 }
 
-export default AddNewCase;
+export default Claim;
 
 export async function loader({ params, request }) {
   try {
