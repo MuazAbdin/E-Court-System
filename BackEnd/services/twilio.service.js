@@ -3,7 +3,13 @@ import Config from "../config.js";
 
 class TwilioMessagesManager {
     constructor() {
-        this.client = twilio(Config.TWILIO_ACCOUNT_SID, Config.TWILIO_AUTH_TOKEN);
+        try {
+            this.client = twilio(Config.TWILIO_ACCOUNT_SID, Config.TWILIO_AUTH_TOKEN);
+        }
+        catch(error) {
+            console.log("Failed to Initialize Twilio Client");
+            console.log(error);
+        }
     }
 
     async sendSMS(phoneNumber, message) {

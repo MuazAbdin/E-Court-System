@@ -19,24 +19,26 @@ class EventsController {
 			EventValidator.validateEventData(req.body);
 
 			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
-			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
+			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true })
+			.populate({ path: "parties", populate: { path: "lawyer client stakeholders" } }).exec();
 
 			if(case_ === null) {
 				await Event.findByIdAndDelete(newEvent._id);
 				throw new CaseDoesNotExistError();
 			}
 
-			const user = await User.findById(req.userId);
-			if(user === null) {
-				throw new UserDoesNotExistError();
+			const notifiedUsers = [];
+			for(const party of case_.parties) {
+				users.push({ type: "Lawyer", email: party.lawyer.email, phoneNumber: party.lawyer.phoneNumber });
+				users.push({ type: "client", email: party.client.email, phoneNumber: party.client.phoneNumber });
+				for(const stakeholder of party.stakeholders) {
+					users.push({ type: "stakeholder", email: stakeholder.email, phoneNumber: stakeholder.phoneNumber });
+				}
 			}
 
 			notificationsManager.sendEventNotifications(
 				date, newEvent.type, case_.title, newEvent.location, 
-				{ 
-					email: user.email,
-					phoneNumber: user.phoneNumber
-				}
+				notifiedUsers
 			);
 
 			res.send(newEvent);

@@ -3,13 +3,19 @@ import Config from '../config.js';
 
 class NodeMailerManager {
     constructor() {
-        this.transporter = nodemailer.createTransport({
-            service: 'gmail', 
-            auth: {
-                user: Config.NODE_MAILER_EMAIL, 
-                pass: Config.NODE_MAILER_SECRET, 
-            },
-        });
+        try {
+            this.transporter = nodemailer.createTransport({
+                service: 'gmail', 
+                auth: {
+                    user: Config.NODE_MAILER_EMAIL, 
+                    pass: Config.NODE_MAILER_SECRET, 
+                },
+            });
+        }
+        catch(error) {
+            console.log("Failed to Initialize Node MAiler Transporter");
+            console.log(error);
+        }
     }
 
     async sendEmail(toEmail, subject, text) {
