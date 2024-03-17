@@ -78,21 +78,14 @@ class UserController {
     }
 
     async updateUser(req, res) {
-        const { IDcard: idNumber, firstName, lastName, email, mobile: phoneNumber, city, street } = req.body;
-        const userData = { idNumber, firstName, lastName, email, phoneNumber, city, street };
+        const { firstName, lastName, email, mobile: phoneNumber, city, street } = req.body;
         try {
-            //   GenericValidator.validateObjectId(_id);
-            //   UserValidator.validateUserData({ phoneNumber, city, street });
-            //   const updatedUser = await User.findByIdAndUpdate(
-            //     _id,
-            //     { $set: { phoneNumber, city, street } },
-            //     { new: true }
-            //   );
-            // console.log(userData);
-            const user = await User.findOne({ idNumber: userData.idNumber });
-            UserValidator.validateUserData({ ...userData, userType: user.userType });
-            const { idNumber, ...newUserData } = userData;
-            const updatedUser = await User.findOneAndUpdate( { idNumber }, { $set: newUserData }, { new: true });
+            UserValidator.validateUpdateUserData({ firstName, lastName, email, phoneNumber, city, street });
+            const updatedUser = await User.findByIdAndUpdate(
+                req.userId,
+                { $set: { firstName, lastName, email, phoneNumber, city, street } },
+                { new: true }
+            );
             if (updatedUser === null) {
                 throw new UserDoesNotExistError();
             }
