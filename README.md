@@ -46,9 +46,9 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 |-------|-------|------|---------|----------|--------|
 | Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
 | File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
-| Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] | Court Manager |
-| Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer |
-| Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Court Manager |
+| Get All Cases | /cases/?offset&limit&query&start&end&status | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] | Court Manager |
+| Get User Cases | /cases/user/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer |
+| Get Pending Cases | /cases/pending/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Court Manager |
 | Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Lawyer |
 | Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
 | Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Judge |
