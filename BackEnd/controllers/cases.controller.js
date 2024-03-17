@@ -89,8 +89,19 @@ class CasesController {
         }
     }
 
-	updateCase(req, res) {
-		res.status(404).send("Work In Progress!");
+	async updateCase(req, res) {
+		const { id } = req.params;
+		const { title, description, court, judge } = req.body;
+		Case.findByIdAndUpdate(id, { title, description, court, judge }, { new: true })
+			.then(updatedCase => {
+				if (!updatedCase) {
+					throw new CaseDoesNotExistError();
+				}
+				res.json(updatedCase);
+			})
+			.catch(error => {
+				errorHandler.handleError(res, error);
+			});
 	}
 
 	updateCaseStatus(req, res) {
