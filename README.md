@@ -93,10 +93,10 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Stakeholder Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Stakeholder | /stakeholders/ | POST | StakeholderData | Stakeholder |
-| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ Stakeholder ] |
-| Get Stakeholders | /stakeholders/:id | GET |  | Stakeholder |
-| Update Stakeholder | /stakeholders/ | PUT | Stakeholder | Stakeholder |
+| Create Stakeholder | /stakeholders/ | POST | stakeholderType, partyId, idNumber, firstName, lastName, email, phone, city, street | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
+| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ _id, type, party, idNumber, firstName, lastName, email, phoneNumber ] |
+| Get Stakeholders | /stakeholders/:id | GET |  | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
+| Update Stakeholder | /stakeholders/ | PUT | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
 | Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |
 
 ### User Routes
