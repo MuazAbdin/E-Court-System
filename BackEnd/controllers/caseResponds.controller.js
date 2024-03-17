@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import errorHandler from "../errors/errorHandler.js";
-import Case from "../models/case.model";
-import CaseRespond from "../models/caseRespond.model";
+import Case from "../models/case.model.js";
+import CaseRespond from "../models/caseRespond.model.js";
 import GenericValidator from "../validators/generic.validate.js";
 import { CaseDoesNotHaveARespondantPartyError, CaseRespondDoesNotExistError, NoCaseRespondsFoundError, RespondantPartyAlreadyHasALawyerError } from "../errors/caseRespond.error.js";
 import Party from "../models/party.model.js";
@@ -36,7 +36,7 @@ class CaseRespondController {
 
     async getAllCaseRespond(req, res) {
         try {
-            const caseResponds = await Case.find({}).populate("lawyer case");
+            const caseResponds = await CaseRespond.find({}).populate("lawyer case").exec();
             if(caseResponds.length === 0) {
                 throw new NoCaseRespondsFoundError();
             }
@@ -48,16 +48,16 @@ class CaseRespondController {
     }
 
     async reviewCaseRespond(req, res) {
-        const { approve, respondId } = req.body;
+        const { approve, caseRespondId } = req.body;
         try {
-            GenericValidator.validateObjectId(respondId);
+            GenericValidator.validateObjectId(caseRespondId);
+            const caseRespond = await CaseRespond.findById(caseRespondId)
+                .populate({ path: "case", populate: { path: "parties"}}).exec();
+            if(caseRespond === null) {
+                throw new CaseRespondDoesNotExistError();
+            }
 
-            if(approve) {
-                const caseRespond = await CaseRespond.findById(respondId)
-                    .populate({ path: "case", populate: { path: "parties"}}).exec();
-                if(caseRespond === null) {
-                    throw new CaseRespondDoesNotExistError();
-                }
+            if(approve !== "false") {
                 if(caseRespond.case === null) {
                     throw new CaseDoesNotExistError();
                 }
@@ -68,14 +68,17 @@ class CaseRespondController {
                     throw new RespondantPartyAlreadyHasALawyerError();
                 }
     
-                const party = await Party.findByIdAndUpdate(caseRespond.parties[1]._id, 
+                const party = await Party.findByIdAndUpdate(caseRespond.case.parties[1]._id, 
                     { $set: { lawyer: caseRespond.lawyer } });
                 if(party === null) {
                     throw new PartyDoesNotExistError();
                 }
+                await CaseRespond.deleteMany({ case: caseRespond.case._id });
+            }
+            else {
+                await CaseRespond.findByIdAndDelete(caseRespondId);
             }
 
-            await CaseRespond.findByIdAndDelete(respondId);
             res.sendStatus(StatusCodes.NO_CONTENT);
         }
         catch(error) {

@@ -1,6 +1,8 @@
 import { Router } from "express";
-import casesController from "../controllers/cases.controller.js";
+import caseRespondController from "../controllers/caseResponds.controller.js";
 
 export const router = Router();
 
-router.post("/", casesController.createCase);
+router.post("/", caseRespondController.createCaseRespond);
+router.get("/", caseRespondController.getAllCaseRespond);
+router.patch("/review", caseRespondController.reviewCaseRespond);

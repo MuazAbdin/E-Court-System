@@ -53,7 +53,13 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
 | Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Judge |
 | Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
-| Join Case as Respondant Lawyer | /cases/respond/ | PATCH | caseId | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
+
+### Case Respond Routes ( Respondant Lawyer applying to a case )
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Apply to Case as a Respondant Lawyer | /case-responds/ | POST | caseId | | Lawyer |
+| Get Respondant Lawyers Applying to Cases | /case-responds/ | GET | | Court Manager |
+| Approve Respondant Lawyer | /case-responds/review/ | PATCH | approve, caseRespondId | | Court Manager |
 
 ### Court Routes
 | Title | Route | Type | Request | Response |

@@ -7,4 +7,4 @@ export const CaseRespondDoesNotExistError = errorGenerator.itemDoesNotExistError
 
 export const CaseDoesNotHaveARespondantPartyError = errorGenerator.createErrorClass("Case does not have a respondant party!", StatusCodes.NOT_FOUND);
 
-export const RespondantPartyAlreadyHasALawyerError = errorGenerator.createErrorClass("Respondant party already has a lawyer!");
+export const RespondantPartyAlreadyHasALawyerError = errorGenerator.createErrorClass("Respondant party already has a lawyer!", StatusCodes.CONFLICT);
