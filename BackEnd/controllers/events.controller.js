@@ -54,6 +54,7 @@ class EventsController {
 				throw new EventDoesNotExistError();
 			}
 			res.json(updatedEvent);
+
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
