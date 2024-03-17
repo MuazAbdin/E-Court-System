@@ -84,10 +84,10 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Party Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Party | /parties/ | POST | partyName, lawyer?, caseId, [ StakeholderData ] | Party |
-| Get Case Parties | /parties/case/:id | GET | | [ Party ] |
-| Get Party | /parties/:id | GET | | Party |
-| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | Party |
+| Create Party | /parties/ | POST | lawyer, caseId, client: (idNumber, firstName, lastName, email, phone, city, street) [ stakeholderType, idNumber, firstName, lastName, email, phone, city, street ] | _id, name, lawyer, stakeholders, case, client |
+| Get Case Parties | /parties/case/:id | GET | | [ _id, name, lawyer, stakeholders, case, client ] |
+| Get Party | /parties/:id | GET | | _id, name, lawyer, stakeholders, case, client |
+| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | _id, name, lawyer, stakeholders, case, client |
 | Delete Party | /parties/ | DELETE | partyId | |
 
 ### Stakeholder Routes

@@ -5,6 +5,6 @@ export const router = Router();
 
 router.post("/", partiesController.createParty);
 router.get("/:id", partiesController.getPartyById);
-router.get("/:caseId", partiesController.getPartyByCaseId);
+router.get("/case/:caseId", partiesController.getPartyByCaseId);
 router.patch("/", partiesController.updateParty);
 router.delete("/", partiesController.deleteParty);
