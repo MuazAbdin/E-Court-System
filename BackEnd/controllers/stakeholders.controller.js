@@ -13,7 +13,7 @@ class StakeholdersController {
 	async createStakeholder(req, res) {
 		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phone: phoneNumber, city, street } = req.body;
 		try {
-			StackholderValidator.validateStackholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			StakeholderValidator.validateStakeholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			if(stakeholderType === DBConfig.STAKEHOLDER_TYPES[0]) {
 				throw new InvalidStakeholderTypeError
 			}

@@ -46,9 +46,9 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 |-------|-------|------|---------|----------|
 | Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
 | File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
-| Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] |
-| Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
-| Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
+| Get All Cases | /cases/?offset&limit&query&start&end&status | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] |
+| Get User Cases | /cases/user/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
+| Get Pending Cases | /cases/pending/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
 | Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt
 | Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
 | Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
@@ -74,35 +74,44 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Event Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Event | /events/ | POST | caseId, eventType, date, description | Event |
-| Get Case Events | /events/case/:id | GET | | [ Event ] |
-| Get Event | /events/:id | GET | | Event |
-| Update Event | /events/ | PATCH | eventId, date, description | Event |
+| Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location |
+| Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] |
+| Get Event | /events/:id | GET | | _id, case, type, date, description, location |
+| Get User Up-coming events | /parties/upcoming | GET | | [ _id, case, type, date, description, location ] |
+| Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location |
 | Delete Event | /events/ | DELETE | eventId | |
 
 ### Party Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Party | /parties/ | POST | partyName, lawyer?, caseId, [ StakeholderData ] | Party |
-| Get Case Parties | /parties/case/:id | GET | | [ Party ] |
-| Get Party | /parties/:id | GET | | Party |
-| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | Party |
+| Create Party | /parties/ | POST | lawyer, caseId, client: (idNumber, firstName, lastName, email, phone, city, street) [ stakeholderType, idNumber, firstName, lastName, email, phone, city, street ] | _id, name, lawyer, stakeholders, case, client |
+| Get Case Parties | /parties/case/:id | GET | | [ _id, name, lawyer, stakeholders, case, client ] |
+| Get Party | /parties/:id | GET | | _id, name, lawyer, stakeholders, case, client |
+| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | _id, name, lawyer, stakeholders, case, client |
 | Delete Party | /parties/ | DELETE | partyId | |
 
 ### Stakeholder Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Stakeholder | /stakeholders/ | POST | StakeholderData | Stakeholder |
-| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ Stakeholder ] |
-| Get Stakeholders | /stakeholders/:id | GET |  | Stakeholder |
-| Update Stakeholder | /stakeholders/ | PUT | Stakeholder | Stakeholder |
+| Create Stakeholder | /stakeholders/ | POST | stakeholderType, partyId, idNumber, firstName, lastName, email, phone, city, street | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
+| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ _id, type, party, idNumber, firstName, lastName, email, phoneNumber ] |
+| Get Stakeholders | /stakeholders/:id | GET |  | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
+| Update Stakeholder | /stakeholders/ | PUT | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
 | Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |
 
 ### User Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Get Judges | /users/judges | GET | | [ User ] |
-| Get Lawyers | /users/lawyers | GET | | [ User ] |
-| Get All Users | /users/ | GET | | [ User ] |
-| Update User(Admin) | /users/ | PUT | User | User |
-| Update User | /users/ | PATCH | phoneNumber, city, street | User |
+| Get Judges | /users/judges | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] |
+| Get Lawyers | /users/lawyers | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] |
+| Get All Users | /users/ | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] |
+| Update User(Admin) | /users/ | PUT | IDcard, firstName, lastName, userType, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents |
+| Update User | /users/ | PATCH | firstName, lastName, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents |
+| Reset User Password | /users/password/ | PATCH | oldPassword, password, passwordConfirm | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents |
+
+### Type Routes
+| Title | Route | Type | Request | Response |
+|-------|-------|------|---------|----------|
+| Get User Types | /types/user-types/ | GET | | [ userType ] |
+| Get Case Status Types | /case-status-types/ | GET | | [ caseStatusType ] |
+| Get Event Types | /event-types/ | GET | | [ eventType ] |
