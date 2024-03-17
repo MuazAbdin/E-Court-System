@@ -1,11 +1,11 @@
-import Config from "../config";
+import Config from "../config.js";
 
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref, uploadBytesResumable } from "firebase/storage"
 
-class firebaseFilesManager {
-    constructor( ) {
+class FirebaseFilesManager {
+    constructor() {
         const firebaseConfig = {
             apiKey: Config.FIREBASE_API_KEY,
             authDomain: Config.FIREBASE_AUTH_DOMAIN,
@@ -19,8 +19,8 @@ class firebaseFilesManager {
         this.storage = getStorage();
     }
 
-    async uploadFile() {
-        await signInWithEmailAndPassword(auth, process.env.FIREBASE_USER, process.env.FIREBASE_AUTH)
+    async uploadFile(file) {
+        await signInWithEmailAndPassword(this.auth, Config.FIREBASE_USER, Config.FIREBASE_AUTH);
         const dateTime = Date.now();
         const fileName = `files/${dateTime}`;
         const storageRef = ref(this.storage, fileName);
@@ -35,3 +35,6 @@ class firebaseFilesManager {
 
     }
 }
+
+const firebaseFilesManager = new FirebaseFilesManager();
+export default firebaseFilesManager;

@@ -1,17 +1,26 @@
 import Document from "../models/document.model.js"
-import { DocumentDoesNotExistError, NoDocumentsFoundError } from "../errors/document.error.js";
+import { DocumentDoesNotExistError, NoDocumentFileWasUploadedError, NoDocumentsFoundError } from "../errors/document.error.js";
 import errorHandler from "../errors/errorHandler.js";
 import DocumentsValidator from "../validators/documents.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
+import firebaseFilesManager from "../services/firebase.service.js";
 
 class DocumentsController {
     async createDocument(req, res) {
 		const { caseId, partyId, title, uploadedBy, law, subject, requirement, honoringParty } = req.body
-		
 		try {
-			// TODO upload file to cloud and get it's info
+			if(!req.file) {
+				throw new NoDocumentFileWasUploadedError();
+			}
+			const file = {
+				type: req.file.mimetype,
+				buffer: req.file.buffer
+			}
+			const fileName = req.file.originalname;
+			const fileLocation = await firebaseFilesManager.uploadFile(file);
+
 			DocumentsValidator.validateDocumentData({ caseId, partyId, title, uploadedBy, law, subject, requirement, honoringParty });
-			const document = await Document.create({ case: caseId, party: partyId, title, uploadedBy , fileLocation: "-", fileName: "-", law, subject, requirement, honoringParty });
+			const document = await Document.create({ case: caseId, party: partyId, title, uploadedBy , fileLocation, fileName, law, subject, requirement, honoringParty });
 			res.json(document);
 		}
 		catch(error) {
