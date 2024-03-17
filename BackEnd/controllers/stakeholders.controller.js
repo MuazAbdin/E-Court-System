@@ -18,7 +18,7 @@ class StakeholdersController {
 				throw new InvalidStakeholderTypeError
 			}
 			const stakeholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
-			Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } })
+			await Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } });
 			res.json(stakeholder);
 		}
 		catch(error) {
