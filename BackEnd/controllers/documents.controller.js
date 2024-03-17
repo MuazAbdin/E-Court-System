@@ -7,6 +7,7 @@ import GenericValidator from "../validators/generic.validate.js";
 class DocumentsController {
     async createDocument(req, res) {
 		const { caseId, partyId, title, uploadedBy, law, subject, requirement, honoringParty } = req.body
+		
 		try {
 			// TODO upload file to cloud and get it's info
 			DocumentsValidator.validateDocumentData({ caseId, partyId, title, uploadedBy, law, subject, requirement, honoringParty });
