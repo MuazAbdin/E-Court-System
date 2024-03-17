@@ -73,7 +73,8 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         }) 
         .skip(offset * limit)
         .limit(limit)
-        .populate("court")
+            .populate("court judge events")
+            .populate({ path: "parties", populate: { path: "lawyer client" } })
         .exec()
 
         return {
@@ -86,7 +87,8 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         const result = await this.find(dbMainQuery)
             .skip(offset * limit)
             .limit(limit)
-            .populate("court")
+            .populate("court judge events")
+            .populate({ path: "parties", populate: { path: "lawyer client" } })
             .exec()
 
         return {
