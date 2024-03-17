@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 function CaseCatalog() {
   const { pagesCount, currentPage, result } = useLoaderData();
+
   return (
     <Wrapper>
       <h3 className="title">browse cases</h3>
@@ -20,7 +21,7 @@ function CaseCatalog() {
             <td>
               <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
             </td>
-            <td>{r.court}</td>
+            <td>{`${r.court.name} - ${r.court.city}`}</td>
             <td>{r.title}</td>
             <td>{r.status}</td>
           </tr>

@@ -84,11 +84,11 @@ export default CaseForm;
 const HEADER_FIELDS = [
   { label: "Case Number", id: "caseNumber" },
   { label: "Status", id: "status" },
-  {
-    label: "Next Event",
-    id: "nextEvent",
-    icon: <EventNoteIcon />,
-  },
+  // {
+  //   label: "Next Event",
+  //   id: "nextEvent",
+  //   icon: <EventNoteIcon />,
+  // },
   {
     label: "Court",
     id: "court",

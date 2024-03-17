@@ -8,7 +8,7 @@ function Claim() {
   // console.log(courts);
   return (
     <StyledCaseForm
-      formID="case-form"
+      formID="claim-form"
       title="claim form"
       method="POST"
       buttonText="submit"

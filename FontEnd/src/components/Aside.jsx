@@ -41,18 +41,6 @@ function Aside() {
               { name: "add new", to: "courts/add-new" },
             ]}
           />
-          <Accordion.Item
-            id="nav-legal-entity"
-            title="Legal Entity"
-            Icon={BalanceIcon}
-            subsectoins={[
-              { name: "Party", to: "legal-entities/parties" },
-              {
-                name: "Stakeholder",
-                to: "legal-entities/stackholders",
-              },
-            ]}
-          />
         </Accordion>
       </nav>
     </Wrapper>

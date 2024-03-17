@@ -33,9 +33,9 @@ const StyledCaseForm = styled(CaseForm)`
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem 1rem;
 
-    fieldset:nth-child(3) {
+    /* fieldset:nth-child(3) {
       grid-column: 1/3;
-    }
+    } */
   }
 
   .parties {

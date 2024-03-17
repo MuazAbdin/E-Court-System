@@ -127,3 +127,14 @@ export const StyledEditDetailsForm = styled(StyledRegisterForm)`
     grid-column: 1;
   }
 `;
+
+export const StyledResponseForm = styled(StyledRegisterForm)`
+  background: none;
+  box-shadow: none;
+
+  fieldset {
+    grid-column: 1/3;
+    width: 60%;
+    justify-self: center;
+  }
+`;

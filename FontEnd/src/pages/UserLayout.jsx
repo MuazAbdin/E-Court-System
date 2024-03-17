@@ -11,7 +11,8 @@ function UserLayout() {
   return (
     <Wrapper>
       <Aside />
-      <PageHeader name={`${userData.firstName} ${userData.lastName}`} />
+      {/* <PageHeader name={`${userData.firstName} ${userData.lastName}`} /> */}
+      <PageHeader name="Muaz Abdin" />
       <section className="content">
         <Outlet context={{ userData }} />
       </section>

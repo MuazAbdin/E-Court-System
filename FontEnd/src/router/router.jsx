@@ -33,6 +33,8 @@ import {
   action as newCaseAction,
   loader as newCaseLoader,
 } from "../pages/cases/Claim";
+import { action as respondAction } from "../pages/cases/Respond";
+
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 import ViewCase from "../pages/ViewCase";
@@ -64,17 +66,17 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         loader: userLayoutLoader,
         children: [
-          { index: true, element: <Overview /> },
-          {
-            path: "edit-details",
-            element: <EditUserDetails />,
-            action: editUserDetailsAction,
-          },
-          {
-            path: "change-password",
-            element: <ChangeUserPassword />,
-            action: changePasswordAction,
-          },
+          // { index: true, element: <Overview /> },
+          // {
+          //   path: "edit-details",
+          //   element: <EditUserDetails />,
+          //   action: editUserDetailsAction,
+          // },
+          // {
+          //   path: "change-password",
+          //   element: <ChangeUserPassword />,
+          //   action: changePasswordAction,
+          // },
           {
             path: "cases",
             element: <Cases />,
@@ -95,7 +97,7 @@ const router = createBrowserRouter([
               {
                 path: "respond",
                 element: <Respond />,
-                // action: newCaseAction,
+                action: respondAction,
               },
               {
                 path: ":caseID",
