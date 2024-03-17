@@ -22,6 +22,7 @@ import {
   BrowseStackholders,
   AddNewStackholder,
   EditCase,
+  MyCases,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -92,9 +93,10 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <BrowseCases />,
-                loader: browseLoader,
-                action: browseAction,
+                element: <MyCases />,
+                // element: <BrowseCases />,
+                // loader: browseLoader,
+                // action: browseAction,
               },
               {
                 path: "add-new",

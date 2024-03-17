@@ -7,8 +7,6 @@ import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
 import { fetcher } from "../../utils/fetcher";
 import { DOCUMENT_FIELDS } from "../../utils/constants";
 
-
-
 export default function DocumentForm() {
   const [caseNum, setCaseNum] = useState("");
   const [honoringParty, setHonoringParty] = useState("");
@@ -39,15 +37,15 @@ export default function DocumentForm() {
       }
     }
   };
+
   return (
-   
     <>
       <StyledForms
         className={"document-form"}
         formID="document-form"
         title="Case Document"
         method="POST"
-        buttonText="SUBMIT"
+        buttonText="submit"
         fields={DOCUMENT_FIELDS}
       />
       <Toaster position="bottom-center" />
@@ -70,7 +68,7 @@ export async function action({ request }) {
       return null;
     }
   }
-  
+
   try {
     const response = await fetcher("/cases/", {
       method: request.method,

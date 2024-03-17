@@ -246,26 +246,26 @@ export const DOCUMENT_FIELDS = [
     icon: <GavelIcon />,
     required: true,
   },
-  {
-    label: "Select Case",
-    id: "caseNum",
-    type: "select",
-    required: true,
-  },
-  {
-    // label: "Date",
-    id: "date",
-    type: "date",
-    variant: "standard",
-    required: true,
-  },
-  {
-    // label: "Attach Document",
-    id: "attachDocument",
-    type: "file",
-    icon: <AttachFileIcon />,
-    required: true,
-  },
+  // {
+  //   label: "Select Case",
+  //   id: "caseNum",
+  //   type: "select",
+  //   required: true,
+  // },
+  // {
+  //   // label: "Date",
+  //   id: "date",
+  //   type: "date",
+  //   variant: "standard",
+  //   required: true,
+  // },
+  // {
+  //   // label: "Attach Document",
+  //   id: "attachDocument",
+  //   type: "file",
+  //   icon: <AttachFileIcon />,
+  //   required: true,
+  // },
 ];
 
 export const PARTY_DETAILS_FIELDS = EDIT_USER_FIELDS.map((f) =>

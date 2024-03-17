@@ -2,9 +2,36 @@ import { Form, useNavigation } from "react-router-dom";
 import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import GavelIcon from "@mui/icons-material/Gavel";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { PARTY_DETAILS_FIELDS } from "../../utils/constants";
 import Input from "../Input";
+
+const HEADER_FIELDS = [
+  { label: "Case Number", id: "caseNumber" },
+  { label: "Status", id: "status" },
+  {
+    label: "Next Event",
+    id: "nextEvent",
+    icon: <EventNoteIcon />,
+  },
+  {
+    label: "Court",
+    id: "court",
+    icon: <AccountBalanceIcon />,
+  },
+  {
+    label: "Judge",
+    id: "judge",
+    icon: <GavelIcon />,
+  },
+];
+
+const LAWYERS = [
+  { label: "Claimant Lawyer", id: "claimant Lawyer" },
+  { label: "Respondent Lawyer", id: "respondent Lawyer" },
+];
 
 function CaseForm({
   children,
@@ -25,46 +52,27 @@ function CaseForm({
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const handleGeneratePDF = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetcher("/generatePDF");
-
-      if (!response.ok) {
-        throw new Error("Failed to generate PDF");
-      }
-
-      const blob = await response.blob();
-
-      const link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = "Case Document.pdf";
-      link.click();
-    } catch (error) {
-      console.error(error.message);
-      toast.error("Error generating PDF");
-    }
-  };
-
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
 
-      {!isEdit ? (
+      {isEdit ? (
+        HEADER_FIELDS.map((f) => (
+          <Input
+            key={`${formID}-${f.id}`}
+            label={f.label}
+            type="text"
+            id={`${formID}-${f.id}`}
+            icon={f.icon}
+            readOnly={true}
+            prevValue={""}
+          />
+        ))
+      ) : (
         <StyledInputSelect
           id={`${formID}-court`}
           label="Court"
           menuItems={courtsData}
-        />
-      ) : (
-        <Input
-          key={`${formID}-court`}
-          label="Court"
-          type="text"
-          id={`${formID}-court`}
-          icon={<AccountBalanceIcon />}
-          readOnly={true}
-          prevValue={"Supreme Court - Jerusalem"}
         />
       )}
 
@@ -82,7 +90,7 @@ function CaseForm({
                 ref={null}
                 autoComplete={f.autoComplete ?? "off"}
                 validator={f.validator}
-                required={f.required}
+                required={!isEdit && f.required}
                 severErrorMsg={""}
                 multiline={f.multiline ?? false}
                 rows={f.rows ?? undefined}
@@ -102,7 +110,7 @@ function CaseForm({
         icon={null}
         ref={null}
         autoComplete="off"
-        required={true}
+        required={!isEdit}
         severErrorMsg={""}
         multiline={false}
         prevValue={""}
@@ -117,7 +125,7 @@ function CaseForm({
         icon={<EditNoteIcon />}
         ref={null}
         autoComplete="off"
-        required={true}
+        required={!isEdit}
         severErrorMsg={""}
         multiline={true}
         rows={7}
@@ -125,11 +133,30 @@ function CaseForm({
         isSubmitted={false}
       />
 
-      {children}
+      {isEdit && (
+        <Input
+          key={`${formID}-judgeNotes`}
+          label="Judge Notes"
+          type="text"
+          id={`${formID}-judgeNotes`}
+          icon={<EditNoteIcon />}
+          ref={null}
+          autoComplete="off"
+          required={!isEdit}
+          readOnly={isEdit}
+          severErrorMsg={""}
+          multiline={true}
+          rows={7}
+          prevValue={""}
+          isSubmitted={false}
+        />
+      )}
 
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
+
+      {children}
 
       <button type="button" className="btn pdf-btn" onClick={handleGeneratePDF}>
         <FaRegFilePdf />
@@ -139,6 +166,27 @@ function CaseForm({
 }
 
 export default CaseForm;
+
+async function handleGeneratePDF(event) {
+  event.preventDefault();
+  try {
+    const response = await fetcher("/generatePDF");
+
+    if (!response.ok) {
+      throw new Error("Failed to generate PDF");
+    }
+
+    const blob = await response.blob();
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "Case Document.pdf";
+    link.click();
+  } catch (error) {
+    console.error(error.message);
+    toast.error("Error generating PDF");
+  }
+}
 
 // import { useEffect, useState } from "react";
 // import {

@@ -14,6 +14,9 @@ export { default as PageHeader } from "./PageHeader";
 
 export { default as CardsDeck } from "./CardsDeck";
 export { default as Breakdown } from "./Breakdown";
+export { default as Input } from "./Input";
+export { default as InputSelect } from "./InputSelect";
+export { default as InputFileUpload } from "./InputFileUpload";
 
 export { default as Search } from "./Search";
 export { default as CaseForm } from "./customForms/CaseForm";

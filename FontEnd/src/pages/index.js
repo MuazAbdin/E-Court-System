@@ -9,6 +9,8 @@ export { default as EditUserDetails } from "./userProfile/EditUserDetails";
 export { default as ChangeUserPassword } from "./userProfile/ChangeUserPassword";
 
 export { default as Cases } from "./cases/Cases";
+export { default as MyCases } from "./cases/MyCases";
+
 export { default as BrowseCases } from "./cases/BrowseCases";
 export { default as AddNewCase } from "./cases/AddNewCase";
 export { default as EditCase } from "./cases/EditCase";

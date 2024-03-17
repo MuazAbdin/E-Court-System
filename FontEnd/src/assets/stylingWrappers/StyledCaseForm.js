@@ -26,6 +26,8 @@ const StyledCaseForm = styled(CaseForm)`
   }
 
   .parties {
+    border-top: 1px dashed;
+    padding-top: 1rem;
     grid-column: 1 / 3;
     display: flex;
     flex-wrap: wrap;
@@ -50,8 +52,23 @@ const StyledCaseForm = styled(CaseForm)`
     border: none;
   }
 
+  /* .MuiFormControl-root:has(textarea.Mui-readOnly) {
+    cursor: not-allowed;
+    background-color: var(--grey-200);
+  } */
+
   & > fieldset {
     grid-column: 1 / 3;
+  }
+
+  & > fieldset:nth-of-type(1),
+  & > fieldset:nth-of-type(4) {
+    grid-column: 1/2;
+  }
+
+  & > fieldset:nth-of-type(2),
+  & > fieldset:nth-of-type(5) {
+    grid-column: 2;
   }
 
   .btn {
@@ -71,28 +88,74 @@ const StyledCaseForm = styled(CaseForm)`
   }
 
   input:disabled,
-  input:read-only {
+  input:read-only,
+  textarea:disabled,
+  textarea:read-only {
     cursor: not-allowed;
     background-color: var(--grey-200);
   }
 
-  .btn-group {
+  .documents,
+  .stakeholders,
+  .events {
+    border-top: 1px dashed;
+    padding-top: 1rem;
     grid-column: 1 / 3;
-    padding: 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
     gap: 0.5rem;
-    border-top: 1px dashed var(--text-color);
-    border-bottom: 1px dashed var(--text-color);
 
-    .btn {
+    .section-title {
+      font-family: var(--main-font);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .add-doc,
+    .add-stakeholder,
+    .add-event {
+      gap: 0.5rem;
+      width: fit-content;
+      padding: 0.25rem 1rem;
+      font-size: 1rem;
       background-color: hsla(214, 32%, 91%, 0.75);
       color: rgba(0, 0, 0, 0.6);
       border-radius: 50px;
-      gap: 0.5rem;
 
       &:hover {
         box-shadow: 0 0 10px var(--highlight-color);
       }
     }
+
+    fieldset {
+      .MuiFormControl-root {
+        background-color: hsla(214, 32%, 91%, 0.75);
+        border-radius: var(--border-radius);
+
+        label,
+        input {
+          font-family: var(--main-font);
+          /* text-transform: capitalize; */
+        }
+
+        label > span {
+          color: var(--red-dark);
+        }
+
+        /* input, */
+        .MuiSvgIcon-root {
+          color: var(--primary-600);
+        }
+      }
+    }
+  }
+
+  .ant-upload-wrapper {
+    background-color: hsla(214, 32%, 91%, 0.75);
+    font-family: var(--main-font);
   }
 
   .pdf-btn {
