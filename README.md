@@ -77,6 +77,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location |
 | Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] |
 | Get Event | /events/:id | GET | | _id, case, type, date, description, location |
+| Get User Up-coming events | /parties/upcoming | GET | | [ _id, case, type, date, description, location ] |
 | Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location |
 | Delete Event | /events/ | DELETE | eventId | |
 
