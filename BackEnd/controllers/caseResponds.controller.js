@@ -11,11 +11,11 @@ import { CaseDoesNotExistError } from "../errors/case.error.js";
 class CaseRespondController {
     async createCaseRespond(req, res) {
         const userId = req.userId;
-        const { caseId } = req.body;
+        const { caseNumber } = req.body;
         try {
-            GenericValidator.validateObjectId(caseId);
+            GenericValidator.validateNotEmpty([ caseNumber ]);
 
-            const case_ = await Case.findById(caseId).populate("parties").exec();
+            const case_ = await Case.findOne({ caseNumber }).populate("parties").exec();
             if(case_ === null) {
                 throw new CaseDoesNotExistError();
             }
@@ -26,7 +26,7 @@ class CaseRespondController {
                 throw new RespondantPartyAlreadyHasALawyerError();
             }
 
-            await CaseRespond.create({ lawyer: userId, case: caseId });
+            await CaseRespond.create({ lawyer: userId, case: case_._id });
             res.sendStatus(StatusCodes.CREATED);
         }
         catch(error) {
