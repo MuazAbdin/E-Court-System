@@ -57,8 +57,8 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Case Respond Routes ( Respondant Lawyer applying to a case )
 | Title | Route | Type | Request | Response | Access |
 |-------|-------|------|---------|----------|--------|
-| Apply to Case as a Respondant Lawyer | /case-responds/ | POST | caseId | | Lawyer |
-| Get Respondant Lawyers Applying to Cases | /case-responds/ | GET | | Court Manager |
+| Apply to Case as a Respondant Lawyer | /case-responds/ | POST | caseNumber | | Lawyer |
+| Get Respondant Lawyers Applying to Cases | /case-responds/ | GET | | | Court Manager |
 | Approve Respondant Lawyer | /case-responds/review/ | PATCH | approve, caseRespondId | | Court Manager |
 
 ### Court Routes
