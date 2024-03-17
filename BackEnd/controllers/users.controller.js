@@ -35,6 +35,17 @@ class UserController {
         }
     }
 
+    async getUser(req, res) {
+        const userId = req.userId;
+        try {
+            const user = await User.findById(userId);
+            res.json(user);
+        }
+        catch (error) {
+            errorHandler.handleError(res, error);
+        }
+    }
+
     async getUsers(req, res) {
         try {
             const users = await User.find({});

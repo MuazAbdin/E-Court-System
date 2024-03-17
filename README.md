@@ -100,14 +100,15 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |
 
 ### User Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Get Judges | /users/judges | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] |
-| Get Lawyers | /users/lawyers | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] |
-| Get All Users | /users/ | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] |
-| Update User(Admin) | /users/ | PUT | IDcard, firstName, lastName, userType, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents |
-| Update User | /users/ | PATCH | firstName, lastName, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents |
-| Reset User Password | /users/password/ | PATCH | oldPassword, password, passwordConfirm | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents |
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Get Judges | /users/judges | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Lawyer, Judge, Court Manager
+| Get Lawyers | /users/lawyers | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Lawyer, Judge, Court Manager
+| Get All Users | /users/ | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Admin
+| Update User(Admin) | /users/ | PUT | IDcard, firstName, lastName, userType, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | Admin
+| Update User | /users/ | PATCH | firstName, lastName, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
+| Reset User Password | /users/password/ | PATCH | oldPassword, password, passwordConfirm | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
+| Get Logged in user data | /users/user/ | GET | | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
 
 ### Type Routes
 | Title | Route | Type | Request | Response |
