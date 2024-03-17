@@ -49,10 +49,13 @@ class EventsController {
 	}
 
     async getUpcomingEvents(req, res) {
-        // console.log(req);
-        const user = await User.findOne({ _id: req.userId });
-        // console.log(user);
-        res.status(StatusCodes.OK).send({ user });
+		try {
+			const events = await Event.find({ _id: req.userId, date: { $gte: Date.now() } });
+			res.send(events);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
     }
 
 	async getEventById(req, res) {
@@ -76,7 +79,7 @@ class EventsController {
 			if(updatedEvent === null) {
 				throw new EventDoesNotExistError();
 			}
-			res.json(updatedStackholder);
+			res.json(updatedEvent);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
