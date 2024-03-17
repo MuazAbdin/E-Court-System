@@ -42,17 +42,18 @@ I want to work on register form on the frontend:
 JWT-HTTP-Only-Cookie is set after a successful Register or Login
 
 ### Case Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
-| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
-| Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] |
-| Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
-| Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] |
-| Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt
-| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
-| Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
-| Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt |
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
+| Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] | Court Manager |
+| Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer |
+| Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Court Manager |
+| Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Lawyer |
+| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+| Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Judge |
+| Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+| Join Case as Respondant Lawyer | /cases/respond/ | PATCH | caseId | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
 
 ### Court Routes
 | Title | Route | Type | Request | Response |
