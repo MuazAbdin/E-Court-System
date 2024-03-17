@@ -1,5 +1,5 @@
 import twilio from "twilio";
-import Config from "../config";
+import Config from "../config.js";
 
 class TwilioMessagesManager {
     constructor() {
@@ -21,17 +21,17 @@ class TwilioMessagesManager {
         }
     }
 
-    sendWhatsapp(phoneNumber, message) {
+    async sendWhatsapp(phoneNumber, message) {
         try {
-            this.client.messages
+            await this.client.messages
             .create({
                 body: message,
-                from: "whatsapp:" + Config.TWILIO_PHONE_NUMBER,
+                from: "whatsapp:" + Config.TWILIO_WHATSAPP_PHONE_NUMBER,
                 to: "whatsapp:" + phoneNumber
             })
         }
         catch(error) {
-            console.log("Failed to send SMS:")
+            console.log("Failed to send Whatsapp:")
             console.log(error);
         };
     }

@@ -1,26 +1,26 @@
 import nodemailer from "nodemailer";
-import Config from '../config';
+import Config from '../config.js';
 
 class NodeMailerManager {
-    static async sendEmail(toEmail, subject, text) {
+    constructor() {
+        this.transporter = nodemailer.createTransport({
+            service: 'gmail', 
+            auth: {
+                user: Config.NODE_MAILER_EMAIL, 
+                pass: Config.NODE_MAILER_SECRET, 
+            },
+        });
+    }
+
+    async sendEmail(toEmail, subject, text) {
         try {
-            const transporter = nodemailer.createTransport({
-                service: 'gmail', 
-                auth: {
-                    user: Config.NODE_MAILER_EMAIL, 
-                    pass: Config.NODE_MAILER_SECRET, 
-                },
-            });
-    
             const mailOptions = {
                 from: Config.NODE_MAILER_EMAIL,
                 to: toEmail,
                 subject: subject,
                 text: text,
             };
-
-            await transporter.sendMail(mailOptions);
-            console.log(`Email sent to ${toEmail}`);
+            await this.transporter.sendMail(mailOptions);
         } catch (error) {
             console.error('Error sending email:');
             console.log(error);
@@ -28,4 +28,5 @@ class NodeMailerManager {
     }
 }
 
-module.exports = NodeMailerManager;
+const nodeMailerManager = new NodeMailerManager();
+export default nodeMailerManager;

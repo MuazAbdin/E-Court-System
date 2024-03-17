@@ -8,6 +8,9 @@ import { DBConfig } from "../config.js";
 import EventValidator from "../validators/events.validate.js";
 import Case from "../models/case.model.js";
 import Court from "../models/court.model.js";
+import notificationsManager from "../utils/notifications.utils.js";
+import { CaseDoesNotExistError } from "../errors/case.error.js";
+import { UserDoesNotExistError } from "../errors/user.error.js";
 
 class EventsController {
 	async createEvent(req, res) {
@@ -16,7 +19,25 @@ class EventsController {
 			EventValidator.validateEventData(req.body);
 
 			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
-			await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
+			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
+
+			if(case_ === null) {
+				await Event.findByIdAndDelete(newEvent._id);
+				throw new CaseDoesNotExistError();
+			}
+
+			const user = await User.findById(req.userId);
+			if(user === null) {
+				throw new UserDoesNotExistError();
+			}
+
+			notificationsManager.sendEventNotifications(
+				date, newEvent.type, case_.title, newEvent.location, 
+				{ 
+					email: user.email,
+					phoneNumber: user.phoneNumber
+				}
+			);
 
 			res.send(newEvent);
 		}
