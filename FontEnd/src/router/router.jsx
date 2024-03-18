@@ -24,7 +24,9 @@ import {
   EditCase,
 } from "../pages";
 
+import  AllUsers  from "../pages/users/AllUsers"
 import { loader as userLayoutLoader } from "../pages/UserLayout";
+import { loader as allUsersLoader } from "../pages/users/AllUsers";
 
 import { action as authAction } from "../pages/Authentication";
 // import { action as courtAction } from "../pages/CourtForm";
@@ -64,6 +66,11 @@ const router = createBrowserRouter([
         path: "auth/:page",
         element: <Authentication />,
         action: authAction,
+      },
+        {
+        path: "users",
+        element: <AllUsers />,
+        loader: allUsersLoader,
       },
       {
         path: "catalog",
