@@ -142,6 +142,7 @@ export const StyledResponseForm = styled(StyledRegisterForm)`
 export const StyledStakeholderForm = styled(StyledRegisterForm)`
   background: none;
   box-shadow: none;
+  padding-top: 0;
 
   fieldset {
     grid-column: unset;

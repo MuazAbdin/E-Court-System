@@ -7,6 +7,7 @@ const StyledEventForm = styled(EventForm)`
   gap: 1rem;
 
   padding: 2rem;
+  padding-top: 0;
   font-family: var(--main-font);
   font-size: 1.65rem;
   line-height: 1.2;

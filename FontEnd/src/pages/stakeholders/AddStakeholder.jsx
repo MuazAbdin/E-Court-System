@@ -3,29 +3,37 @@ import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { STAKEHOLDER_FIELDS } from "../../utils/constants";
 import { toast } from "react-toastify";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { FaAnglesLeft } from "react-icons/fa6";
 
 function AddStakeholder() {
+  const navigate = useNavigate();
+
   return (
-    <StyledStakeholderForm
-      formID="stakeholder-form"
-      title="add stakeholder"
-      method="POST"
-      buttonText="submit"
-      fields={STAKEHOLDER_FIELDS}
-    >
-      {[
-        <fieldset key="fs-stakeholderType">
-          <StyledInputSelect
-            id="stakeholder-form-type"
-            label="Type"
-            menuItems={[
-              { id: 1, value: "Witness", icon: <PersonSearchIcon /> },
-            ]}
-          />
-        </fieldset>,
-      ]}
-    </StyledStakeholderForm>
+    <>
+      <div className="back-btn c-flex" onClick={() => navigate("..")}>
+        <FaAnglesLeft /> view case
+      </div>
+      <StyledStakeholderForm
+        formID="stakeholder-form"
+        title="add stakeholder"
+        method="POST"
+        buttonText="submit"
+        fields={STAKEHOLDER_FIELDS}
+      >
+        {[
+          <fieldset key="fs-stakeholderType">
+            <StyledInputSelect
+              id="stakeholder-form-type"
+              label="Type"
+              menuItems={[
+                { id: 1, value: "Witness", icon: <PersonSearchIcon /> },
+              ]}
+            />
+          </fieldset>,
+        ]}
+      </StyledStakeholderForm>
+    </>
   );
 }
 

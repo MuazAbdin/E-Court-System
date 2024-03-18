@@ -69,17 +69,17 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         loader: userLayoutLoader,
         children: [
-          // { index: true, element: <Overview /> },
-          // {
-          //   path: "edit-details",
-          //   element: <EditUserDetails />,
-          //   action: editUserDetailsAction,
-          // },
-          // {
-          //   path: "change-password",
-          //   element: <ChangeUserPassword />,
-          //   action: changePasswordAction,
-          // },
+          { index: true, element: <Overview /> },
+          {
+            path: "edit-details",
+            element: <EditUserDetails />,
+            action: editUserDetailsAction,
+          },
+          {
+            path: "change-password",
+            element: <ChangeUserPassword />,
+            action: changePasswordAction,
+          },
           {
             path: "cases",
             element: <Cases />,

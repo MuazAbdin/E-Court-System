@@ -1,15 +1,23 @@
 import { toast } from "react-toastify";
 import StyledEventForm from "../../assets/stylingWrappers/StyledEventForm";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { FaAnglesLeft } from "react-icons/fa6";
 
 function AddEvent() {
+  const navigate = useNavigate();
+
   return (
-    <StyledEventForm
-      formID="event-form"
-      title="add event"
-      method="POST"
-      buttonText="submit"
-    ></StyledEventForm>
+    <>
+      <div className="back-btn c-flex" onClick={() => navigate("..")}>
+        <FaAnglesLeft /> view case
+      </div>
+      <StyledEventForm
+        formID="event-form"
+        title="add event"
+        method="POST"
+        buttonText="submit"
+      ></StyledEventForm>
+    </>
   );
 }
 

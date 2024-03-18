@@ -50,8 +50,9 @@ class CasesController {
 	}
 
 	async fileACase(req, res) {
-		const { title, description, court, parties } = req.body;
+		const { title, description, court, parties, claimantLawyerNotes } = req.body;
 		const userId = req.userId;
+		// console.log({ title, description, court, parties, claimantLawyerNotes });
 		// Saves created Documents to delete them on faliure/error
 		const savedDocs = [];
 		try {
@@ -60,7 +61,7 @@ class CasesController {
 			 	PartyValidator.validateFileACasePartyData(party);
 			}
 
-			const newCase = new Case({title, description, status: "Pending", court, judge: null});
+			const newCase = new Case({title, description, status: "Pending", court, judge: null, claimantLawyerNotes});
 
 			const newParties = [];
 			const clients = [ parties[0].client ];

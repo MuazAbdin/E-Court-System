@@ -15,6 +15,7 @@ function CaseForm({
   title,
   method,
   buttonText,
+  values,
   isEdit,
   courts,
 }) {
@@ -32,7 +33,7 @@ function CaseForm({
       <h3 className="title">{title}</h3>
 
       {isEdit ? (
-        <CaseHeader formID={formID} />
+        <CaseHeader formID={formID} values={values} />
       ) : (
         <StyledInputSelect
           id={`${formID}-court`}
@@ -47,7 +48,7 @@ function CaseForm({
         type="text"
         id={`${formID}-title`}
         required={!isEdit}
-        prevValue={""}
+        prevValue={isEdit ? values.title : ""}
       />
 
       <Input
@@ -58,13 +59,17 @@ function CaseForm({
         required={!isEdit}
         multiline={true}
         rows={5}
-        prevValue={""}
+        prevValue={isEdit ? values.description : ""}
         isSubmitted={false}
       />
 
-      <CaseParties formID={formID} isEdit={isEdit} />
+      <CaseParties
+        formID={formID}
+        isEdit={isEdit}
+        values={values?.parties || []}
+      />
 
-      <CaseNotes formID={formID} />
+      <CaseNotes formID={formID} isEdit={isEdit} values={values} />
 
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
@@ -101,7 +106,13 @@ const HEADER_FIELDS = [
   },
 ];
 
-function CaseHeader(formID) {
+function CaseHeader({ formID, values }) {
+  const { caseNumber, status, judge } = values;
+  const court = values
+    ? `${values.court.name} - ${values.court.city}`
+    : undefined;
+  const fieldValues = { caseNumber, status, court, judge };
+
   return (
     <section className="case-header">
       {HEADER_FIELDS.map((f) => (
@@ -112,69 +123,81 @@ function CaseHeader(formID) {
           id={`${formID}-${f.id}`}
           icon={f.icon}
           readOnly={true}
-          prevValue={""}
+          prevValue={fieldValues?.[f.id] || ""}
         />
       ))}
     </section>
   );
 }
 
-function CaseParties(formID, isEdit) {
+function CaseParties({ formID, isEdit, values }) {
+  // console.log(values);
   return (
     <section className="parties">
-      {["claimant", "respondent"].map((party) => (
-        <section key={party} className={party}>
-          <h5 className="title">{party}</h5>
-          <div className="client">
-            {PARTY_DETAILS_FIELDS.map((f) => (
+      {["claimant", "respondent"].map((party) => {
+        const partyDetails = values.find(
+          (p) => p.name.toLowerCase() === party.toLowerCase()
+        );
+
+        return (
+          <section key={party} className={party}>
+            <h5 className="title">{party}</h5>
+            <div className="client">
+              {PARTY_DETAILS_FIELDS.map((f) => (
+                <Input
+                  key={`${formID}-${party}_${f.id}`}
+                  label={f.label}
+                  type="text"
+                  id={`${formID}-${party}_${f.id}`}
+                  icon={f.icon}
+                  ref={null}
+                  autoComplete={f.autoComplete ?? "off"}
+                  validator={f.validator}
+                  readOnly={isEdit && f.id === "idNumber"}
+                  required={!isEdit && f.required}
+                  severErrorMsg={""}
+                  multiline={f.multiline ?? false}
+                  rows={f.rows ?? undefined}
+                  prevValue={partyDetails?.client[f.id] || ""}
+                  isSubmitted={false}
+                />
+              ))}
+            </div>
+            <div className="lawyer">
               <Input
-                key={`${formID}-${party}_${f.id}`}
-                label={f.label}
+                key={`${formID}-${party}_lawyer`}
+                label="Lawyer"
                 type="text"
-                id={`${formID}-${party}_${f.id}`}
-                icon={f.icon}
-                ref={null}
-                autoComplete={f.autoComplete ?? "off"}
-                validator={f.validator}
-                required={!isEdit && f.required}
-                severErrorMsg={""}
-                multiline={f.multiline ?? false}
-                rows={f.rows ?? undefined}
-                prevValue={""}
-                isSubmitted={false}
+                id={`${formID}-${party}_lawyer`}
+                readOnly={true}
+                prevValue={
+                  partyDetails
+                    ? `${partyDetails.lawyer.firstName} ${partyDetails.lawyer.lastName}`
+                    : ""
+                }
               />
-            ))}
-          </div>
-          <div className="lawyer">
-            <Input
-              key={`${formID}-${party}_lawyer`}
-              label="Lawyer"
-              type="text"
-              id={`${formID}-${party}_lawyer`}
-              readOnly={true}
-              prevValue={""}
-            />
-          </div>
-        </section>
-      ))}
+            </div>
+          </section>
+        );
+      })}
     </section>
   );
 }
 
-function CaseNotes(formID) {
+function CaseNotes({ formID, isEdit, values }) {
   return (
     <section className="notes">
       <h5 className="title">Notes</h5>
       {["Claimant Lawyer", "Respondent Lawyer", "Judge"].map((side) => (
         <Input
-          key={`${formID}-${side}Notes`}
+          key={`${formID}-${side.split(" ").join("")}Notes`}
           label={`${side} Notes`}
           type="text"
-          id={`${formID}-${side}Notes`}
+          id={`${formID}-${side.split(" ").join("")}Notes`}
           severErrorMsg={""}
           multiline={true}
           rows={5}
-          prevValue={""}
+          prevValue={isEdit ? values[`${side.split(" ").join("")}Notes`] : ""}
           isSubmitted={false}
         />
       ))}

@@ -7,16 +7,20 @@ import firebaseFilesManager from "../services/firebase.service.js";
 import stream from 'stream';
 import Party from "../models/party.model.js";
 import { PartyDoesNotExistError } from "../errors/party.error.js";
+import { decode } from "base64-arraybuffer";
 
 class DocumentsController {
     async createDocument(req, res) {
-		const { caseId, title, law, subject, requirement, honoringParty } = req.body
+		const { caseId, title, law, subject, requirement, honoringParty, fileData } = req.body
+		// console.log(decode(fileData.buffer));
 		const uploadedBy = req.userId;
 		try {
 			DocumentsValidator.validateDocumentData({ caseId, title, uploadedBy, law, subject, requirement, honoringParty });
-			if(!req.file) {
+			if (!fileData) {
 				throw new NoDocumentFileWasUploadedError();
 			}
+
+			fileData.buffer = decode(fileData.buffer);
 
 			const party = await Party.findOne({ lawyer: uploadedBy, case: caseId });
 			if(party === null) {
@@ -24,10 +28,10 @@ class DocumentsController {
 			}
 
 			const file = {
-				type: req.file.mimetype,
-				buffer: req.file.buffer
+				type: fileData.mimetype,
+				buffer: fileData.buffer
 			}
-			const fileName = req.file.originalname;
+			const fileName = fileData.originalname;
 			const fileLocation = await firebaseFilesManager.uploadFile(file);
 			
 			const document = await Document.create({ case: caseId, party: party._id, title, uploadedBy , fileLocation, fileName, law, subject, requirement, honoringParty });

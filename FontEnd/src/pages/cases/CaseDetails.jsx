@@ -9,7 +9,7 @@ import { MdEventNote } from "react-icons/md";
 
 function CaseDetails() {
   const { caseID } = useParams();
-  const caseData = useLoaderData(caseID);
+  const { caseData } = useLoaderData(caseID);
   console.log(caseData);
   return (
     <StyledCaseForm
@@ -17,6 +17,7 @@ function CaseDetails() {
       title="view case"
       method="PATCH"
       buttonText="save"
+      values={caseData}
       isEdit={true}
       courts={[]}
     >
@@ -88,7 +89,7 @@ export default CaseDetails;
 export async function loader({ params }) {
   try {
     const { caseID } = params;
-    console.log(params);
+    // console.log(params);
     const response = await fetcher(`/cases/${caseID}`);
     if (!response.ok) throw response;
     const caseData = await response.json();

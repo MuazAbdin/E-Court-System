@@ -1,7 +1,7 @@
-import toast, { Toaster } from "react-hot-toast";
 import { redirect, useLoaderData } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
+import { toast } from "react-toastify";
 
 function Claim() {
   const courts = useLoaderData();
@@ -12,6 +12,8 @@ function Claim() {
       title="claim form"
       method="POST"
       buttonText="submit"
+      values={[]}
+      isEdit={false}
       courts={courts}
     />
   );
@@ -40,12 +42,30 @@ export async function action({ request }) {
   );
 
   // console.log(data);
-  const { court, title, description } = data;
-  const claimant = getPartyDetails("claimant", data);
-  const respondent = getPartyDetails("respondent", data);
+  const {
+    court,
+    title,
+    description,
+    ClaimantLawyerNotes: claimantLawyerNotes,
+    RespondentLawyerNotes: respondentLawyerNotes,
+    JudgeNotes: judgeNotes,
+  } = data;
+  console.log(data);
+  // return null;
+  const claimant = getPartyDetails("claimant_", data);
+  const respondent = getPartyDetails("respondent_", data);
   // console.log(claimant, respondent);
 
-  const reqBody = { court, title, description, parties: [] };
+  const reqBody = {
+    court,
+    title,
+    description,
+    claimantLawyerNotes,
+    respondentLawyerNotes,
+    judgeNotes,
+    parties: [],
+  };
+
   if (claimant)
     reqBody.parties.push({
       client: { ...claimant },
@@ -65,7 +85,6 @@ export async function action({ request }) {
   // }
 
   try {
-    console.log("...");
     const response = await fetcher("/cases/file-a-case", {
       method: request.method,
       body: JSON.stringify(reqBody),
@@ -92,7 +111,7 @@ function getPartyDetails(party, data) {
     if (!k.includes(party)) continue;
     details[k.split("_")[1]] = data[k];
   }
-  details.phoneNumber = details.mobile;
+  // details.phoneNumber = details.mobile;
   const { mobile, ...rest } = details;
   const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
   return filledKeys.length > 0 ? rest : null;
