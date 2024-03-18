@@ -15,9 +15,9 @@ export default class UserValidator {
 	}
 
 	static validateUpdateUserData(data) {
-		GenericValidator.validateObjectId(data._id);
 		Object.keys(data).forEach((key) =>
 			GenericValidator.validateNotEmpty(data[key]));
+		GenericValidator.validateEmail(data.email);
 		GenericValidator.validatePhoneNumber(data.phoneNumber);
 	}
 	

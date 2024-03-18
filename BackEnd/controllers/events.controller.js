@@ -8,6 +8,9 @@ import { DBConfig } from "../config.js";
 import EventValidator from "../validators/events.validate.js";
 import Case from "../models/case.model.js";
 import Court from "../models/court.model.js";
+import notificationsManager from "../utils/notifications.utils.js";
+import { CaseDoesNotExistError } from "../errors/case.error.js";
+import { UserDoesNotExistError } from "../errors/user.error.js";
 
 class EventsController {
 	async createEvent(req, res) {
@@ -16,7 +19,27 @@ class EventsController {
 			EventValidator.validateEventData(req.body);
 
 			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
-			await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true });
+			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true })
+			.populate({ path: "parties", populate: { path: "lawyer client stakeholders" } }).exec();
+
+			if(case_ === null) {
+				await Event.findByIdAndDelete(newEvent._id);
+				throw new CaseDoesNotExistError();
+			}
+
+			const notifiedUsers = [];
+			for(const party of case_.parties) {
+				users.push({ type: "Lawyer", email: party.lawyer.email, phoneNumber: party.lawyer.phoneNumber });
+				users.push({ type: "client", email: party.client.email, phoneNumber: party.client.phoneNumber });
+				for(const stakeholder of party.stakeholders) {
+					users.push({ type: "stakeholder", email: stakeholder.email, phoneNumber: stakeholder.phoneNumber });
+				}
+			}
+
+			notificationsManager.sendEventNotifications(
+				date, newEvent.type, case_.title, newEvent.location, 
+				notifiedUsers
+			);
 
 			res.send(newEvent);
 		}
@@ -26,10 +49,13 @@ class EventsController {
 	}
 
     async getUpcomingEvents(req, res) {
-        // console.log(req);
-        const user = await User.findOne({ _id: req.userId });
-        // console.log(user);
-        res.status(StatusCodes.OK).send({ user });
+		try {
+			const events = await Event.find({ _id: req.userId, date: { $gte: Date.now() } });
+			res.send(events);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
     }
 
 	async getEventById(req, res) {
@@ -53,7 +79,7 @@ class EventsController {
 			if(updatedEvent === null) {
 				throw new EventDoesNotExistError();
 			}
-			res.json(updatedStackholder);
+			res.json(updatedEvent);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);

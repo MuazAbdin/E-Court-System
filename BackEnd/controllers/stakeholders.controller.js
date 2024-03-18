@@ -13,12 +13,12 @@ class StakeholdersController {
 	async createStakeholder(req, res) {
 		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phone: phoneNumber, city, street } = req.body;
 		try {
-			StackholderValidator.validateStackholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
+			StakeholderValidator.validateStakeholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			if(stakeholderType === DBConfig.STAKEHOLDER_TYPES[0]) {
 				throw new InvalidStakeholderTypeError
 			}
 			const stakeholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
-			Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } })
+			await Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } });
 			res.json(stakeholder);
 		}
 		catch(error) {
