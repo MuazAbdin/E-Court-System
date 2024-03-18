@@ -1,8 +1,9 @@
+import axios from "axios";
 import Config from "../config.js";
 
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage"
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 
 class FirebaseFilesManager {
     constructor() {
@@ -31,9 +32,19 @@ class FirebaseFilesManager {
         return fileName;
     }
 
-    downloadFile() {
-
+    async downloadFile(fileName) {
+        const downloadUrl = await this.#getFileDownloadUrl(fileName);
+        const file = await axios.get(downloadUrl, { responseType: 'arraybuffer' })
+        const fileContents = Buffer.from(file.data, "base64");
+        return fileContents;
     }
+
+    // Function to get download URL
+    async #getFileDownloadUrl(fileName) {
+        const fileRef = ref(this.storage, `files/${fileName}`);
+        const downloadUrl = await getDownloadURL(fileRef);
+        return downloadUrl;
+}
 }
 
 const firebaseFilesManager = new FirebaseFilesManager();

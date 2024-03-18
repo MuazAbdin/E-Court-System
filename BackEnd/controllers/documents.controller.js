@@ -4,6 +4,7 @@ import errorHandler from "../errors/errorHandler.js";
 import DocumentsValidator from "../validators/documents.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
 import firebaseFilesManager from "../services/firebase.service.js";
+import stream from 'stream';
 
 class DocumentsController {
     async createDocument(req, res) {
@@ -93,6 +94,26 @@ class DocumentsController {
 				throw new DocumentDoesNotExistError();
 			}
 			res.json(updatedDocument);
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
+	async downloadDocument(req, res) {
+		const { documentId } = req.params;
+		try {
+			const document = await Document.findById(documentId);
+			if(document === null) {
+				throw new DocumentDoesNotExistError();
+			}
+			const fileContents = await firebaseFilesManager.downloadFile(document.fileLocation);
+
+			const readStream = new stream.PassThrough();
+			readStream.end(fileContents);
+
+			res.set('Content-disposition', 'attachment; filename=' + document.fileName);
+			readStream.pipe(res);
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
