@@ -17,6 +17,9 @@ const caseSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: "Party" }],
         default: []
     },
+    judgeNote: { type: String, default: "" },
+    claimantLawyerNote: { type: String, default: "" },
+    respondantLawyerNote: { type: String, default: "" },
     public: { type: Boolean, default: false }
 }, { timestamps: true })
 
@@ -73,7 +76,8 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         }) 
         .skip(offset * limit)
         .limit(limit)
-        .populate("court")
+            .populate("court judge events")
+            .populate({ path: "parties", populate: { path: "lawyer client" } })
         .exec()
 
         return {
@@ -86,7 +90,8 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         const result = await this.find(dbMainQuery)
             .skip(offset * limit)
             .limit(limit)
-            .populate("court")
+            .populate("court judge events")
+            .populate({ path: "parties", populate: { path: "lawyer client" } })
             .exec()
 
         return {
