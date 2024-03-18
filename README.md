@@ -31,83 +31,95 @@ I want to work on register form on the frontend:
 
 
 ## API Routes
-#### Data Definitions:
-##### StakeholderData: { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
-##### Stakeholder: { _id, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street }
-##### Party: { name, lawyer, caseId, [ Stakeholder ] }
-##### UserData: { password, confirmPassword, idNumber, firstName, LastName, userType, email, phoneNumber, city, street, licenseNumber? }
-##### User: { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street }
-##### Event: {_id, caseId, eventType, date, description }
-##### Document: { _id, caseId, title, uploadedBy, fileName }
-##### Case: { _id, title, description ,status, court, judge, creationDate, lastUpdatedDate }
-##### Court: { _id, name, city, street, phoneNumber, email }
 
 ### Authentication Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Register | /auth/register/ | POST | UserData | firstName, lastName |
-| Login | /auth/login/ | POST | email, password | firstName, lastName |
+| Register | /auth/register/ | POST | password, passwordConfirm, IDcard, firstName, lastName, userType, email, mobile, city, street, licenseNumber | firstName, lastName, userType |
+| Login | /auth/login/ | POST | IDcard, password | firstName, lastName, userType |
 | Logout | /auth/logout/ | POST | | |
+| Log in with google | /auth/google | POST | credential, client_id | 
 JWT-HTTP-Only-Cookie is set after a successful Register or Login
 
 ### Case Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Case | /cases/ | POST | title, decription, status, court, judge? | Case |
-| Get All Cases | /cases/?query | GET | | [ Case ] |
-| Get Case | /cases/:id | GET | | CASE
-| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | Case |
-| Update Case Status | /cases/status/ | PATCH | _id, status | CASE |
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
+| Get All Cases | /cases/?query | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] | Court Manager |
+| Get User Cases | /cases/user | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer |
+| Get Pending Cases | /cases/pending | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Court Manager |
+| Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Lawyer |
+| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+| Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Judge |
+| Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+
+### Case Respond Routes ( Respondant Lawyer applying to a case )
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Apply to Case as a Respondant Lawyer | /case-responds/ | POST | caseNumber | | Lawyer |
+| Get Respondant Lawyers Applying to Cases | /case-responds/ | GET | | | Court Manager |
+| Approve Respondant Lawyer | /case-responds/review/ | PATCH | approve, caseRespondId | | Court Manager |
 
 ### Court Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Court | /courts/ | POST | courtName, city, street, phoneNumber, email | Court |
-| Get Court | /court/:id | GET | | Court |
-| Update Court | /court/ | Patch | id, name, phoneNumber, email | Court
+| Create Court | /courts/ | POST | courtName, city, street, mobile, email, judges? | _id, name, city, street, phoneNumber, judges, email |
+| Get Court | /court/:id | GET | | _id, name, city, street, phoneNumber, judges, email |
+| Update Court | /court/ | Patch | id, name, phoneNumber, email | _id, name, city, street, phoneNumber, judges, email
 
 ### Document Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Document | /documents/ | POST | caseId, title, uploadedBy, documentFile | _id, caseId, title, uploadedBy |
-| Get Document | /documents/:id | GET | | Document |
-| Get User Documents | /documents/user/:id | GET | | Document |
-| Get Party Documents | /documents/party/:id | GET | | Document |
-| Get Case Documents | /documents/case/:id | GET | | Document |
-| Update Document Title | /documents/ | PATCH | id, title | Document |
+| Create Document | /documents/ | POST | caseId, title, uploadedBy, law, subject, requirement, honoringParty, documentFile | _id, caseId, title, uploadedBy |
+| Get Document | /documents/:id | GET | | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
+| Get User Documents | /documents/user/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Get Party Documents | /documents/party/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Get Case Documents | /documents/case/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
+| Update Document Title | /documents/ | PATCH | id, title | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
 
 ### Event Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Event | /events/ | POST | caseId, eventType, date, description | Event |
-| Get Case Events | /events/case/:id | GET | | [ Event ] |
-| Get Event | /events/:id | GET | | Event |
-| Update Event | /events/ | PATCH | eventId, date, description | Event |
+| Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location |
+| Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] |
+| Get Event | /events/:id | GET | | _id, case, type, date, description, location |
+| Get User Up-coming events | /parties/upcoming | GET | | [ _id, case, type, date, description, location ] |
+| Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location |
 | Delete Event | /events/ | DELETE | eventId | |
 
 ### Party Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Party | /parties/ | POST | partyName, lawyer?, caseId, [ StakeholderData ] | Party |
-| Get Case Parties | /parties/case/:id | GET | | [ Party ] |
-| Get Party | /parties/:id | GET | | Party |
-| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | Party |
+| Create Party | /parties/ | POST | lawyer, caseId, client: (idNumber, firstName, lastName, email, phone, city, street) [ stakeholderType, idNumber, firstName, lastName, email, phone, city, street ] | _id, name, lawyer, stakeholders, case, client |
+| Get Case Parties | /parties/case/:id | GET | | [ _id, name, lawyer, stakeholders, case, client ] |
+| Get Party | /parties/:id | GET | | _id, name, lawyer, stakeholders, case, client |
+| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | _id, name, lawyer, stakeholders, case, client |
 | Delete Party | /parties/ | DELETE | partyId | |
 
 ### Stakeholder Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Create Stakeholder | /stakeholders/ | POST | StakeholderData | Stakeholder |
-| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ Stakeholder ] |
-| Get Stakeholders | /stakeholders/:id | GET |  | Stakeholder |
-| Update Stakeholder | /stakeholders/ | PUT | Stakeholder | Stakeholder |
+| Create Stakeholder | /stakeholders/ | POST | stakeholderType, partyId, idNumber, firstName, lastName, email, phone, city, street | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
+| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ _id, type, party, idNumber, firstName, lastName, email, phoneNumber ] |
+| Get Stakeholders | /stakeholders/:id | GET |  | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
+| Update Stakeholder | /stakeholders/ | PUT | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
 | Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |
 
 ### User Routes
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Get Judges | /users/judges | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Lawyer, Judge, Court Manager
+| Get Lawyers | /users/lawyers | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Lawyer, Judge, Court Manager
+| Get All Users | /users/ | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Admin
+| Update User(Admin) | /users/ | PUT | IDcard, firstName, lastName, userType, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | Admin
+| Update User | /users/ | PATCH | firstName, lastName, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
+| Reset User Password | /users/password/ | PATCH | oldPassword, password, passwordConfirm | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
+| Get Logged in user data | /users/user/ | GET | | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
+
+### Type Routes
 | Title | Route | Type | Request | Response |
 |-------|-------|------|---------|----------|
-| Get Judges | /users/judges | GET | | [ User ] |
-| Get Lawyers | /users/lawyers | GET | | [ User ] |
-| Get All Users | /users/ | GET | | [ User ] |
-| Update User(Admin) | /users/ | PUT | User | User |
-| Update User | /users/ | PATCH | phoneNumber, city, street | User |
+| Get User Types | /types/user-types/ | GET | | [ userType ] |
+| Get Case Status Types | /case-status-types/ | GET | | [ caseStatusType ] |
+| Get Event Types | /event-types/ | GET | | [ eventType ] |

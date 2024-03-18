@@ -61,7 +61,8 @@ export const StyledRegisterForm = styled(AuthForm)`
     background-color: var(--grey-500);
   }
 
-  input:disabled {
+  input:disabled,
+  input:read-only {
     cursor: not-allowed;
     background-color: var(--grey-200);
   }
@@ -110,5 +111,19 @@ export const StyledLoginForm = styled(StyledRegisterForm)`
   fieldset {
     width: 70%;
     justify-self: center;
+  }
+`;
+
+export const StyledEditDetailsForm = styled(StyledRegisterForm)`
+  background: none;
+  box-shadow: none;
+
+  fieldset,
+  fieldset:nth-of-type(3) {
+    grid-column: unset;
+  }
+
+  fieldset:nth-of-type(2) {
+    grid-column: 1;
   }
 `;

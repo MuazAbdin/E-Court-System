@@ -26,7 +26,6 @@ export async function action({ request }) {
     // console.log(response);
     if (!response.ok) {
       const data = await response.text();
-      console.log(data);
       // return { msg: "register failed" };
       throw new Error(data);
     }
@@ -42,28 +41,27 @@ export async function action({ request }) {
 
 function getFormMetadata(fields) {
   const fieldsKeys = Object.keys(fields);
-  console.log(fields);
   switch (fieldsKeys.length) {
     case 2: // login
       return {
         name: "login",
         url: "/auth/login",
         successMessage: "Logged in successfully",
-        redirectPath: "/dashboard",
+        redirectPath: "/user",
       };
     case 3:
       return {
         name: "changePassword",
-        url: "",
+        url: "/users/password",
         successMessage: "Changed successfully",
-        redirectPath: "/login",
+        redirectPath: "",
       };
     case 7:
       return {
         name: "editDetails",
-        url: "",
+        url: "/users",
         successMessage: "Updated successfully",
-        redirectPath: "/dashboard",
+        redirectPath: "/user",
       };
     default:
       return {

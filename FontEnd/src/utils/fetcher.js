@@ -5,7 +5,7 @@ export function fetcher(URL, options) {
     ...options,
     credentials: "include",
     headers: {
-      Accept: "application/json",
+      Accept: ["application/json", "application/pdf"],
       "Content-Type": "application/json",
     },
   });

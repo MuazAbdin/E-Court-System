@@ -47,6 +47,7 @@ const Wrapper = styled.main`
       gap: 0.75rem;
       border-radius: 1rem;
       padding: 0.5rem 1.25rem;
+      width: fit-content;
     }
   }
 

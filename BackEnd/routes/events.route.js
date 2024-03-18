@@ -5,7 +5,7 @@ export const router = Router();
 
 router.post("/", eventsController.createEvent);
 router.get("/upcoming", eventsController.getUpcomingEvents);
-router.get("/:caseId", eventsController.getEventsByCaseId);
+router.get("/case/:caseId", eventsController.getEventsByCaseId);
 router.get("/:id", eventsController.getEventById);
 router.patch("/", eventsController.updateEvent);
 router.delete("/", eventsController.deleteEvent);

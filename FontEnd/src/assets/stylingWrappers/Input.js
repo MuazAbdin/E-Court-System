@@ -8,13 +8,14 @@ const Wrapper = styled.fieldset`
     label,
     input {
       font-family: var(--main-font);
+      /* text-transform: capitalize; */
     }
 
     label > span {
       color: var(--red-dark);
     }
 
-    input,
+    /* input, */
     .MuiSvgIcon-root {
       color: var(--primary-600);
     }

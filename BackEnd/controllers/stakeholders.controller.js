@@ -11,14 +11,14 @@ import Party from "../models/party.model.js";
 class StakeholdersController {
 	
 	async createStakeholder(req, res) {
-		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phoneNumber, city, street } = req.body;
+		const { stakeholderType, partyId, idNumber, firstName, lastName, email, phone: phoneNumber, city, street } = req.body;
 		try {
-			StakeholderValidator.validateStakeholderData(req.body);
+			StakeholderValidator.validateStakeholderData({ partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
 			if(stakeholderType === DBConfig.STAKEHOLDER_TYPES[0]) {
 				throw new InvalidStakeholderTypeError
 			}
 			const stakeholder = await Stakeholder.create({ type: stakeholderType, party: partyId, idNumber, firstName, lastName, email, phoneNumber, city, street });
-			Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } })
+			await Party.findByIdAndUpdate(partyId, { $push: { stakeholders: stakeholder } });
 			res.json(stakeholder);
 		}
 		catch(error) {

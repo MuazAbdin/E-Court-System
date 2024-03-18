@@ -25,4 +25,11 @@ export default class AuthDataValidator {
     );
     GenericValidator.validateIdNumber(data.idNumber);
   }
+
+  static validateChangePasswordData(data) {
+    Object.keys(data).forEach((key) =>
+      GenericValidator.validateNotEmpty(data[key])
+    );
+    this.validatePasswordConfirm(data.password, data.confirmPassword);
+  }
 }

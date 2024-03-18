@@ -1,40 +1,34 @@
 import mongoose from "mongoose";
 import errorHandler from "../errors/errorHandler.js";
-import {
-  EmailAlreadyUsedError,
-  IdNumberAlreadyUsedError,
-  InvalidUserTypeError,
-  UserDoesNotExistError,
-} from "../errors/user.error.js";
+import { IdNumberAlreadyUsedError, InvalidUserTypeError, UserDoesNotExistError } from "../errors/user.error.js";
 import { InvalidCredintialsError } from "../errors/userAuth.error.js";
 import User from "../models/user.model.js";
 import UserAuth from "../models/userAuth.model.js";
 import authUtils from "../utils/auth.utils.js";
 import AuthDataValidator from "../validators/auth.validate.js";
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client();
 
 class AuthController {
     async register(req, res) {
-        console.log(req.body);
         const {
-            password, passwordConfirm: confirmPassword, IDcard: idNumber, 
-            firstName, lastName, userType, email, mobile: phoneNumber, 
-            city, street, licenseNumber 
+        password, passwordConfirm: confirmPassword, 
+        IDcard: idNumber, firstName, lastName, userType, email, 
+        mobile: phoneNumber, city, street, licenseNumber
         } = req.body;
 
         try {
-            const userData = { password, confirmPassword,
-                idNumber, firstName, lastName, userType, email, 
-                phoneNumber, city, street
+            const userData = { password, confirmPassword, 
+                idNumber, firstName, lastName, userType, 
+                email, phoneNumber, city, street,
             };
-            // TODO add check for userType instead of licenseNumber value
-            if (licenseNumber) {
-                userData.licenseNumber = licenseNumber;
-            }
+            // if (userType === "Lawyer" || userType === "Judge") {
+            //     userData.licenseNumber = licenseNumber;
+            // }
 
             AuthDataValidator.validateRegisterData(userData);
 
             const foundUser = await User.findOne({ idNumber });
-            console.log(foundUser)
             if (foundUser) throw new IdNumberAlreadyUsedError();
 
             const user = new User(userData);
@@ -46,9 +40,8 @@ class AuthController {
             const payload = { userId: user._id };
             const tokenCookie = authUtils.createTokenCookie(payload);
             res.setHeader("Set-Cookie", tokenCookie);
-            res.json({ firstName: user.firstName, lastName: user.lastName });
-        }
-        catch (error) {
+            res.json({ firstName: user.firstName, lastName: user.lastName, userType: user.userType });
+        } catch (error) {
             if (error instanceof mongoose.Error.ValidationError) {
                 if (error.errors.userType) {
                     return errorHandler.handleError(res, new InvalidUserTypeError());
@@ -75,15 +68,44 @@ class AuthController {
             const payload = { userId: user._id };
             const tokenCookie = authUtils.createTokenCookie(payload);
             res.setHeader("Set-Cookie", tokenCookie);
-            res.json({ firstName: user.firstName, lastName: user.lastName });
-        } 
-        catch (error) {
+            res.json({ firstName: user.firstName, lastName: user.lastName, userType: user.userType });
+        } catch (error) {
             errorHandler.handleError(res, error);
         }
     }
 
     logout(req, res) {
         res.clearCookie("token").sendStatus(204);
+    }
+
+    async loginWithGoogle(req, res) {
+        const { credential, client_id } = req.body;
+        try {
+            const ticket = await client.verifyIdToken({
+                idToken: credential,
+                audience: client_id,
+            });
+            const payload = ticket.getPayload();
+            const {
+                sub: userGID,
+                given_name: firstName,
+                family_name: lastName,
+                email,
+                email_verified,
+            } = payload;
+            if (!email_verified) throw new InvalidCredintialsError();
+            // console.log(payload);
+            // console.log({ userGID, firstName, lastName, email });
+            const jwtPayload = { userGID, firstName, lastName, email, visitor: true };
+            const tokenCookie = authUtils.createTokenCookie(jwtPayload);
+            res.setHeader("Set-Cookie", tokenCookie);
+            res.json({
+                msg: "logged in successfully",
+                payload: { userGID, firstName, lastName, email },
+            });
+        } catch (error) {
+            errorHandler.handleError(res, error);
+        }
     }
 }
 

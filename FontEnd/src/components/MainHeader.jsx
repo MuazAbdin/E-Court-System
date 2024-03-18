@@ -11,26 +11,34 @@ import {
 } from "react-icons/fa6";
 import Logo from "./Logo.jsx";
 import ToggleTheme from "./ToggleTheme.jsx";
+import { useState } from "react";
 
 function MainHeader({ isDark, themeToggle }) {
+  const [display, setDisplay] = useState("none");
+
+  const toggleDisplay = () => {
+    setDisplay((prev) => (prev === "none" ? "flex" : "none"));
+  };
+
   return (
-    <Wrapper>
+    <Wrapper display={display}>
       <Link to="/">
         <Logo />
       </Link>
       <nav>
         <menu>
           <li>
-            <FaHouse/>
+            <FaHouse />
             <Link to="/">Home</Link>
           </li>
           {/* <li>
             <FaFile />
             <Link to="dashboard/cases">Cases</Link>
           </li> */}
-          <li>
+          <li onClick={toggleDisplay}>
             <FaScaleBalanced />
-            <Link to="dashboard">Services</Link>
+            <span>Services</span>
+            <ServicesList />
           </li>
           <li>
             <FaEnvelope />
@@ -46,3 +54,24 @@ function MainHeader({ isDark, themeToggle }) {
 }
 
 export default MainHeader;
+
+const SERVICES = [
+  { id: 1, name: "case catalog", link: "/catalog" },
+  { id: 2, name: "case filing", link: "/user/cases/add-new" },
+  { id: 3, name: "case judgment", link: "/" },
+  { id: 4, name: "case managment", link: "/" },
+];
+
+function ServicesList() {
+  return (
+    <section className="services-list">
+      <menu>
+        {SERVICES.map((service) => (
+          <li key={service.id}>
+            <Link to={service.link}>{service.name}</Link>
+          </li>
+        ))}
+      </menu>
+    </section>
+  );
+}

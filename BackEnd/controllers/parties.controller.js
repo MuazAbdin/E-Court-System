@@ -84,10 +84,10 @@ class PartiesController {
 	}
 
 	async updateParty(req, res) {
-		const { partyId, partyName, lawyer } = req.body
+		const { partyId, lawyer } = req.body
 		try {
 			PartyValidator.validateUpdatePartyData(req.body);
-			const updatedParty = await Party.findByIdAndUpdate(partyId, {$set: { name:partyName, lawyer  }}, { new: true });
+			const updatedParty = await Party.findByIdAndUpdate(partyId, {$set: { lawyer  }}, { new: true });
 			if(updatedParty === null) {
 				throw new PartyDoesNotExistError();
 			}

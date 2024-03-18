@@ -1,31 +1,47 @@
-import { UserDoesNotExistError, NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError, InvalidUserTypeError } from '../errors/user.error.js';
-import errorHandler from "../errors/errorHandler.js"; 
+import { UserDoesNotExistError, NoUsersFoundError, NoJudgesFoundError, NoLawyersFoundError } from "../errors/user.error.js";
+import errorHandler from "../errors/errorHandler.js";
 import User from "../models/user.model.js";
 import { DBConfig } from "../config.js";
 import UserValidator from "../validators/users.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
+import UserAuth from "../models/userAuth.model.js";
+import authUtils from "../utils/auth.utils.js";
+import AuthDataValidator from "../validators/auth.validate.js";
 
 class UserController {
     async getJudges(req, res) {
         try {
-            const judges = await User.find({userType: 'Judge' });
+            const judges = await User.find({ userType: "Judge" });
             if (judges.length === 0) {
                 throw new NoJudgesFoundError();
             }
             res.json(judges);
-        } catch (error) {
+        }
+        catch (error) {
             errorHandler.handleError(res, error);
         }
     }
 
     async getLawyers(req, res) {
         try {
-            const lawyers = await User.find({userType: 'Lawyer' });
+            const lawyers = await User.find({ userType: "Lawyer" });
             if (lawyers.length === 0) {
                 throw new NoLawyersFoundError();
             }
             res.json(lawyers);
-        } catch (error) {
+        }
+        catch (error) {
+            errorHandler.handleError(res, error);
+        }
+    }
+
+    async getUser(req, res) {
+        const userId = req.userId;
+        try {
+            const user = await User.findById(userId);
+            res.json(user);
+        }
+        catch (error) {
             errorHandler.handleError(res, error);
         }
     }
@@ -34,10 +50,11 @@ class UserController {
         try {
             const users = await User.find({});
             if (users.length === 0) {
-                throw new NoUsersFoundError(); 
+                throw new NoUsersFoundError();
             }
             res.json(users);
-        } catch (error) {
+        }
+        catch (error) {
             errorHandler.handleError(res, error);
         }
     }
@@ -50,38 +67,66 @@ class UserController {
         }
     }
 
-   async updateAllUserData(req, res) {
-          const { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street } = req.body;
-		try {
+    async updateAllUserData(req, res) {
+        const { _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street } = req.body;
+        try {
             GenericValidator.validateObjectId(_id);
-			UserValidator.validateUserData({ idNumber, firstName, lastName, userType, email, phoneNumber, city, street });
-			const updatedUser = await User.findByIdAndUpdate(_id,
-				{$set: { idNumber, firstName, lastName, userType, email, phoneNumber, city, street }},
-				{ new: true });
-			if(updatedUser === null) {
-				throw new UserDoesNotExistError();
-			}
-			res.json(updatedUser);
-		}
-		catch(error) {
-			errorHandler.handleError(res, error);
-		}
-    }
-    
+            UserValidator.validateUserData({ idNumber, firstName, lastName, userType, email, phoneNumber, city, street });
+            const updatedUser = await User.findByIdAndUpdate(
+                _id,
+                { $set: { idNumber, firstName, lastName, userType, email, phoneNumber, city, street } },
+                { new: true }
+            );
 
-   async updateUser(req, res) {
-       const { _id, phoneNumber, city, street } = req.body
-		try {
-			UserValidator.validateUpdateUserData({ phoneNumber, city, street });
-			const updatedUser = await User.findByIdAndUpdate(_id, {$set: { phoneNumber, city, street }}, { new: true });
-			if(updatedUser === null) {
-				throw new UserDoesNotExistError();
-			}
-			res.json(updatedUser);
-		}
-		catch(error) {
-			errorHandler.handleError(res, error);
-		}
+            if (updatedUser === null) {
+                throw new UserDoesNotExistError();
+            }
+            res.json(updatedUser);
+        }
+        catch (error) {
+            errorHandler.handleError(res, error);
+        }
+    }
+
+    async updateUser(req, res) {
+        const { firstName, lastName, email, mobile: phoneNumber, city, street } = req.body;
+        try {
+            UserValidator.validateUpdateUserData({ firstName, lastName, email, phoneNumber, city, street });
+            const updatedUser = await User.findByIdAndUpdate(
+                req.userId,
+                { $set: { firstName, lastName, email, phoneNumber, city, street } },
+                { new: true }
+            );
+            if (updatedUser === null) {
+                throw new UserDoesNotExistError();
+            }
+            res.json(updatedUser);
+        }
+        catch (error) {
+            errorHandler.handleError(res, error);
+        }
+    }
+
+    async changePassword(req, res) {
+        const { oldPassword, password, passwordConfirm: confirmPassword } = req.body;
+        try {
+            AuthDataValidator.validateChangePasswordData({ oldPassword, password, confirmPassword });
+            const userAuth = await UserAuth.findOne({ user: req.userId });
+            if(!userAuth) {
+                throw new UserDoesNotExistError();
+            }
+
+            const userHashedPassword = userAuth.hashedPassword;
+            authUtils.verifyPassword(oldPassword, userHashedPassword);
+
+            userAuth.hashedPassword = password;
+            await userAuth.save();
+
+            res.json({ msg: "password updated successfully" });
+        }
+        catch (error) {
+            errorHandler.handleError(res, error);
+        }
     }
 }
 
