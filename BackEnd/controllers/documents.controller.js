@@ -5,23 +5,32 @@ import DocumentsValidator from "../validators/documents.validate.js";
 import GenericValidator from "../validators/generic.validate.js";
 import firebaseFilesManager from "../services/firebase.service.js";
 import stream from 'stream';
+import Party from "../models/party.model.js";
+import { PartyDoesNotExistError } from "../errors/party.error.js";
 
 class DocumentsController {
     async createDocument(req, res) {
-		const { caseId, partyId, title, uploadedBy, law, subject, requirement, honoringParty } = req.body
+		const { caseId, title, law, subject, requirement, honoringParty } = req.body
+		const uploadedBy = req.userId;
 		try {
+			DocumentsValidator.validateDocumentData({ caseId, title, uploadedBy, law, subject, requirement, honoringParty });
 			if(!req.file) {
 				throw new NoDocumentFileWasUploadedError();
 			}
+
+			const party = await Party.findOne({ lawyer: uploadedBy, case: caseId });
+			if(party === null) {
+				throw new PartyDoesNotExistError();
+			}
+
 			const file = {
 				type: req.file.mimetype,
 				buffer: req.file.buffer
 			}
 			const fileName = req.file.originalname;
 			const fileLocation = await firebaseFilesManager.uploadFile(file);
-
-			DocumentsValidator.validateDocumentData({ caseId, partyId, title, uploadedBy, law, subject, requirement, honoringParty });
-			const document = await Document.create({ case: caseId, party: partyId, title, uploadedBy , fileLocation, fileName, law, subject, requirement, honoringParty });
+			
+			const document = await Document.create({ case: caseId, party: party._id, title, uploadedBy , fileLocation, fileName, law, subject, requirement, honoringParty });
 			res.json(document);
 		}
 		catch(error) {
