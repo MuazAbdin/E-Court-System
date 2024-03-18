@@ -77,6 +77,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Get Party Documents | /documents/party/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
 | Get Case Documents | /documents/case/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
 | Update Document Title | /documents/ | PATCH | id, title | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
+| Download Document File | /documents/download/:documentId | GET | | Doucment File | 
 
 ### Event Routes
 | Title | Route | Type | Request | Response |
