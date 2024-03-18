@@ -47,7 +47,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
 | File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
 | Get All Cases | /cases/?offset&limit&query&start&end&status | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] | Court Manager |
-| Get User Cases | /cases/user/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer |
+| Get User Cases | /cases/user/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer, Judge |
 | Get Pending Cases | /cases/pending/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Court Manager |
 | Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Lawyer |
 | Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
@@ -62,50 +62,50 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Approve Respondant Lawyer | /case-responds/review/ | PATCH | approve, caseRespondId | | Court Manager |
 
 ### Court Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Court | /courts/ | POST | courtName, city, street, mobile, email, judges? | _id, name, city, street, phoneNumber, judges, email |
-| Get Court | /court/:id | GET | | _id, name, city, street, phoneNumber, judges, email |
-| Update Court | /court/ | Patch | id, name, phoneNumber, email | _id, name, city, street, phoneNumber, judges, email
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Court | /courts/ | POST | courtName, city, street, mobile, email, judges? | _id, name, city, street, phoneNumber, judges, email | Court Manager |
+| Get Court | /court/:id | GET | | _id, name, city, street, phoneNumber, judges, email | Lawyer, Judge , Court Manager |
+| Update Court | /court/ | Patch | id, name, phoneNumber, email | _id, name, city, street, phoneNumber, judges, email | Court Manager |
 
 ### Document Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Document | /documents/ | POST | caseId, title, law, subject, requirement, honoringParty, file | _id, caseId, title, uploadedBy |
-| Get Document | /documents/:id | GET | | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
-| Get User Documents | /documents/user/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
-| Get Party Documents | /documents/party/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
-| Get Case Documents | /documents/case/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] |
-| Update Document Title | /documents/ | PATCH | id, title | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty |
-| Download Document File | /documents/download/:documentId | GET | | Doucment File | 
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Document | /documents/ | POST | caseId, title, law, subject, requirement, honoringParty, file | _id, caseId, title, uploadedBy | Lawyer |
+| Get Document | /documents/:id | GET | | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty | Lawyer, Judge , Court Manager |
+| Get User Documents | /documents/user/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] | Court Manager |
+| Get Party Documents | /documents/party/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] | Lawyer, Judge , Court Manager |
+| Get Case Documents | /documents/case/:id | GET | | [ _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty ] | Lawyer, Judge , Court Manager |
+| Update Document Title | /documents/ | PATCH | id, title | _id, case, party, uploadedBy, title, fileName, law, subject, requirement, honoringParty | Lawyer, Court Manager |
+| Download Document File | /documents/download/:documentId | GET | | Doucment File | Lawyer, Judge , Court Manager |
 
 ### Event Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location |
-| Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] |
-| Get Event | /events/:id | GET | | _id, case, type, date, description, location |
-| Get User Up-coming events | /parties/upcoming | GET | | [ _id, case, type, date, description, location ] |
-| Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location |
-| Delete Event | /events/ | DELETE | eventId | |
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location | Court Manager |
+| Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] | Lawyer, Judge , Court Manager |
+| Get Event | /events/:id | GET | | _id, case, type, date, description, location | Lawyer, Judge , Court Manager |
+| Get User Up-coming events | /parties/upcoming | GET | | [ _id, case, type, date, description, location ] | Lawyer, Judge
+| Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location | Court Manager |
+| Delete Event | /events/ | DELETE | eventId | | Court Manager |
 
 ### Party Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Party | /parties/ | POST | lawyer, caseId, client: (idNumber, firstName, lastName, email, phone, city, street) [ stakeholderType, idNumber, firstName, lastName, email, phone, city, street ] | _id, name, lawyer, stakeholders, case, client |
-| Get Case Parties | /parties/case/:id | GET | | [ _id, name, lawyer, stakeholders, case, client ] |
-| Get Party | /parties/:id | GET | | _id, name, lawyer, stakeholders, case, client |
-| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | _id, name, lawyer, stakeholders, case, client |
-| Delete Party | /parties/ | DELETE | partyId | |
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Party | /parties/ | POST | lawyer, caseId, client: (idNumber, firstName, lastName, email, phone, city, street) [ stakeholderType, idNumber, firstName, lastName, email, phone, city, street ] | _id, name, lawyer, stakeholders, case, client | Court Manager |
+| Get Case Parties | /parties/case/:id | GET | | [ _id, name, lawyer, stakeholders, case, client ] | Lawyer, Judge , Court Manager |
+| Get Party | /parties/:id | GET | | _id, name, lawyer, stakeholders, case, client | Lawyer, Judge , Court Manager |
+| Update Party | /parties/ | PATCH | partyId, partyName, lawyer | _id, name, lawyer, stakeholders, case, client | Court Manager |
+| Delete Party | /parties/ | DELETE | partyId | | Court Manager |
 
 ### Stakeholder Routes
-| Title | Route | Type | Request | Response |
-|-------|-------|------|---------|----------|
-| Create Stakeholder | /stakeholders/ | POST | stakeholderType, partyId, idNumber, firstName, lastName, email, phone, city, street | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
-| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ _id, type, party, idNumber, firstName, lastName, email, phoneNumber ] |
-| Get Stakeholders | /stakeholders/:id | GET |  | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
-| Update Stakeholder | /stakeholders/ | PUT | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | _id, type, party, idNumber, firstName, lastName, email, phoneNumber |
-| Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | |
+| Title | Route | Type | Request | Response | Access |
+|-------|-------|------|---------|----------|--------|
+| Create Stakeholder | /stakeholders/ | POST | stakeholderType, partyId, idNumber, firstName, lastName, email, phone, city, street | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | Court Manager |
+| Get Stakeholders By Party | /stakeholders/party/:id | GET |  | [ _id, type, party, idNumber, firstName, lastName, email, phoneNumber ] | Lawyer, Judge , Court Manager |
+| Get Stakeholders | /stakeholders/:id | GET |  | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | Lawyer, Judge , Court Manager |
+| Update Stakeholder | /stakeholders/ | PUT | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | _id, type, party, idNumber, firstName, lastName, email, phoneNumber | Court Manager |
+| Delete Stakeholder | /stakeholder/ | DELETE | stakeholderId | | Court Manager |
 
 ### User Routes
 | Title | Route | Type | Request | Response | Access |
@@ -114,9 +114,9 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Get Lawyers | /users/lawyers | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Lawyer, Judge, Court Manager
 | Get All Users | /users/ | GET | | [ _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents ] | Admin
 | Update User(Admin) | /users/ | PUT | IDcard, firstName, lastName, userType, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | Admin
-| Update User | /users/ | PATCH | firstName, lastName, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
-| Reset User Password | /users/password/ | PATCH | oldPassword, password, passwordConfirm | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
-| Get Logged in user data | /users/user/ | GET | | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | All
+| Update User | /users/ | PATCH | firstName, lastName, email, mobile, city, street | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | Lawyer, Judge , Court Manager |
+| Reset User Password | /users/password/ | PATCH | oldPassword, password, passwordConfirm | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | Lawyer, Judge , Court Manager
+| Get Logged in user data | /users/user/ | GET | | _id, idNumber, firstName, lastName, userType, email, phoneNumber, city, street, licenseNumber, documents | Lawyer, Judge , Court Manager |
 
 ### Type Routes
 | Title | Route | Type | Request | Response |
