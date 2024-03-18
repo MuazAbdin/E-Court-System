@@ -32,7 +32,7 @@ function CaseDetails() {
           </tr>
         </Table>
         <div className="btn add-doc c-flex">
-          <Link to="">
+          <Link to="docments">
             <FaFileCirclePlus />
             add new document
           </Link>
@@ -51,7 +51,7 @@ function CaseDetails() {
           </tr>
         </Table>
         <div className="btn add-stakeholder c-flex">
-          <Link to="">
+          <Link to="stakeholders">
             <RiUserAddFill />
             add new stakeholder
           </Link>
@@ -72,7 +72,7 @@ function CaseDetails() {
           </tr>
         </Table>
         <div className="btn add-event c-flex">
-          <Link to="">
+          <Link to="events">
             <MdEventNote />
             add new event
           </Link>

@@ -138,3 +138,26 @@ export const StyledResponseForm = styled(StyledRegisterForm)`
     justify-self: center;
   }
 `;
+
+export const StyledStakeholderForm = styled(StyledRegisterForm)`
+  background: none;
+  box-shadow: none;
+
+  fieldset {
+    grid-column: unset;
+  }
+
+  fieldset:first-of-type {
+    grid-column: 1 / 3;
+    width: 50%;
+    justify-self: center;
+
+    & > .MuiFormControl-root {
+      width: 100%;
+    }
+  }
+
+  fieldset:nth-of-type(3) {
+    grid-column: 1;
+  }
+`;

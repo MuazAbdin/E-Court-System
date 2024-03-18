@@ -25,5 +25,3 @@ export { default as CourtForm } from "./customForms/CourtForm";
 
 export { default as DocumentForm } from "./customForms/DocumentForm";
 export { default as EventForm } from "./customForms/EventForm";
-export { default as PartyForm } from "./customForms/PartyForm";
-export { default as StakeholderForm } from "./customForms/StakeholderForm";
