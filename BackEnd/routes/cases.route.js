@@ -12,3 +12,4 @@ router.get("/:id", casesController.getCaseById);
 router.patch("/", casesController.updateCase);
 router.patch("/status", casesController.updateCaseStatus);
 router.patch("/resolve-pending", casesController.resolvePendingCase);
+router.patch("/note", casesController.updateNote);
