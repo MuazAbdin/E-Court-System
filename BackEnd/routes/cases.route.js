@@ -1,16 +1,18 @@
 import { Router } from "express";
 import casesController from "../controllers/cases.controller.js";
+import { permissionsMiddleWare } from "../middlewares/userPermissions.middleware.js";
 
 export const router = Router();
 
-router.post("/", casesController.createCase);
-router.post("/file-a-case", casesController.fileACase);
-router.get("/", casesController.getCases);
-router.get("/pending", casesController.getPendingCases);
-router.get("/user", casesController.getUserCases);
-router.get("/:id", casesController.getCaseById);
+router.post("/", permissionsMiddleWare, casesController.createCase);
+router.post("/file-a-case", permissionsMiddleWare, casesController.fileACase);
+router.get("/", permissionsMiddleWare, casesController.getCases);
+router.get("/pending", permissionsMiddleWare, casesController.getPendingCases);
+router.get("/user", permissionsMiddleWare, casesController.getUserCases);
+router.get("/:id", permissionsMiddleWare, casesController.getCaseById);
 router.get("/pdf/:id", casesController.getCasePDF);
-router.patch("/", casesController.updateCase);
-router.patch("/status", casesController.updateCaseStatus);
-router.patch("/resolve-pending", casesController.resolvePendingCase);
-router.patch("/note", casesController.updateNote);
+router.patch("/", permissionsMiddleWare, casesController.updateCase);
+router.patch("/status", permissionsMiddleWare, casesController.updateCaseStatus);
+router.patch("/resolve-pending", permissionsMiddleWare, casesController.resolvePendingCase);
+router.patch("/note", permissionsMiddleWare, casesController.updateNote);
+

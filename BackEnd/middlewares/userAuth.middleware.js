@@ -7,6 +7,7 @@ export function authorizationMiddleWare(req, res, next) {
     try {
         const payload = jwt.verify(token, Config.JWT_SECRET_KEY);
         if(payload.visitor) {
+            req.userType = "Visitor";
             req.userGID = payload.userGID;
             req.firstName = payload.firstName;
             req.lastName = payload.lastName;
