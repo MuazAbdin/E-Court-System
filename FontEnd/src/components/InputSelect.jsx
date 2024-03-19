@@ -8,10 +8,10 @@ import {
 import { useState } from "react";
 
 function InputSelect({ className, id, label, menuItems }) {
-  const [age, setAge] = useState("");
+  const [optionValue, setOptionValue] = useState(menuItems?.[0].value || "");
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setOptionValue(event.target.value);
   };
 
   return (
@@ -21,12 +21,12 @@ function InputSelect({ className, id, label, menuItems }) {
         labelId={`${id}-label`}
         id={id}
         name={id}
-        value={age}
+        value={optionValue}
         label={label}
         onChange={handleChange}
       >
         {menuItems.map((item) => (
-          <MenuItem key={item.id} value={item.id}>
+          <MenuItem key={item.id} value={item.value}>
             {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
             {item.value}
           </MenuItem>
