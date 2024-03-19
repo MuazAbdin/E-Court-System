@@ -1,5 +1,5 @@
-import { StatusCodes } from "http-status-codes";
-import AccessConfig from "../config.js";
+// import { StatusCodes } from "http-status-codes";
+// import AccessConfig from "../config.js";
 import User from "../models/user.model.js";
 import errorHandler from "../errors/errorHandler.js";
 import { UserDoesNotExistError } from "../errors/user.error.js";
@@ -94,24 +94,34 @@ const PERMISSIONS_TABLE = {
 export async function permissionsMiddleWare(req, res, next) {
     const userId = req.userId;
     try {
-        let url = req.originalUrl;
-        Object.keys(req.params)
-            .forEach(p => {
-                url = url.replace(req.params[p], "param")
-            });
-
-        const user = await User.findById(userId);
-        if(user === null) {
+        const user = req.userType ? null : await User.findById(userId);
+        if(!req.userType && user === null) {
             res.clearCookie("token");
             throw new UserDoesNotExistError();
         }
+        else if(!req.userType) {
+            req.userType = user.userType;
+        }
+        const userType = req.userType;
 
-        if(!PERMISSIONS_TABLE[req.method][url].includes(user.userType)) {
+        const url = createUrl(req.originalUrl, req.params);
+
+        if(!PERMISSIONS_TABLE[req.method][url].includes(userType)) {
             throw new NotAuthorizedError();
         }
-
         next();
     } catch (error) {
         errorHandler.handleError(res, error);
     }
+}
+
+function createUrl(url, params) {
+    Object.keys(params)
+        .forEach(p => {
+            url = url.replace(params[p], "param")
+        });
+    if(url.slice(-1) !== "/") {
+        url += "/";
+    }
+    return url;
 }
