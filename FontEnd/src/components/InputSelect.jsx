@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 
 function InputSelect({ className, id, label, menuItems }) {
-  const [optionValue, setOptionValue] = useState(menuItems?.[0]?.value || "");
+  const [optionValue, setOptionValue] = useState(menuItems?.[0]?.id || "");
 
   const handleChange = (event) => {
     setOptionValue(event.target.value);

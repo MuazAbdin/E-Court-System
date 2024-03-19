@@ -28,7 +28,6 @@ function CaseForm({
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
-  console.log(courtsData);
 
   return (
     <Form method={method} id={formID} className={className} noValidate>
