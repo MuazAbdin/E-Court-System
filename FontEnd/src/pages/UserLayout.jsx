@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/UserLayout";
 import { Aside, PageHeader } from "../components";
 import { toast } from "react-toastify";
@@ -23,7 +23,9 @@ export default UserLayout;
 
 export async function loader() {
   try {
+    console.log("WHY")
     const response = await fetcher("/users/user");
+    if(response.status === 401) return redirect("/")
     if (!response.ok) throw response;
     const data = await response.json();
     // console.log(data);
