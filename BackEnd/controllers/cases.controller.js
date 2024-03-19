@@ -169,12 +169,12 @@ class CasesController {
 	}
 
 	async getCaseById(req, res) {
-        const { id } = req.params;
-        try {
-            const case_ = await Case.findById(id)
-			.populate("court judge events")
-            .populate({ path: "parties", populate: { path: "lawyer client" } })
-			.exec();
+			const { id } = req.params;
+			try {
+					const case_ = await Case.findById(id)
+							.populate("court judge events")
+							.populate({ path: "parties", populate: { path: "lawyer client stakeholders" } })
+							.exec();
 			if(!case_) {
 				throw new CaseDoesNotExistError();
 			}

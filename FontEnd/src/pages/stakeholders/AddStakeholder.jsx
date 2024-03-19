@@ -3,8 +3,9 @@ import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { STAKEHOLDER_FIELDS } from "../../utils/constants";
 import { toast } from "react-toastify";
-import { redirect, useNavigate } from "react-router-dom";
+import { redirect, useLoaderData, useNavigate } from "react-router-dom";
 import { FaAnglesLeft } from "react-icons/fa6";
+import { fetcher } from "../../utils/fetcher";
 
 function AddStakeholder() {
   const navigate = useNavigate();
@@ -39,7 +40,9 @@ function AddStakeholder() {
 
 export default AddStakeholder;
 
-export async function action({ request }) {
+export async function action({ params, request }) {
+  const { partyId } = params;
+
   const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
@@ -47,7 +50,7 @@ export async function action({ request }) {
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
 
-  console.log(data);
+  // console.log({ partyId, ...data });
 
   // for (const key in data) {
   //   if (!data[key]) {
@@ -57,17 +60,15 @@ export async function action({ request }) {
   // }
 
   try {
-    //   const response = await fetcher("/cases/", {
-    //     method: request.method,
-    //     body: JSON.stringify(data),
-    //   });
+    const response = await fetcher("/stakeholders", {
+      method: request.method,
+      body: JSON.stringify({ partyId, ...data }),
+    });
 
-    //   console.log(response);
-    //   if (!response.ok) {
-    //     const data = await response.text();
-    //     console.log(data);
-    //     throw new Error(data);
-    //   }
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
 
     toast.success("Created Successfully!");
     return redirect("..");

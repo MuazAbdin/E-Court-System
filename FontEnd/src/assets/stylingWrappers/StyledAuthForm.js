@@ -144,6 +144,10 @@ export const StyledStakeholderForm = styled(StyledRegisterForm)`
   box-shadow: none;
   padding-top: 0;
 
+  .title {
+    font-size: 2.1rem;
+  }
+
   fieldset {
     grid-column: unset;
   }

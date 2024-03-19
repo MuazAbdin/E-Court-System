@@ -115,7 +115,7 @@ const router = createBrowserRouter([
                     action: documentAction,
                   },
                   {
-                    path: "stakeholders",
+                    path: "stakeholders/:partyId",
                     element: <AddStakeholder />,
                     action: stakeholderAction,
                   },

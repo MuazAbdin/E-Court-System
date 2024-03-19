@@ -9,8 +9,8 @@ import { MdEventNote } from "react-icons/md";
 
 function CaseDetails() {
   const { caseID } = useParams();
-  const { caseData } = useLoaderData(caseID);
-  console.log(caseData);
+  const { caseData, docsData } = useLoaderData(caseID);
+  console.log({ caseData, docsData });
   return (
     <StyledCaseForm
       formID="case-form"
@@ -21,16 +21,45 @@ function CaseDetails() {
       isEdit={true}
       courts={[]}
     >
+      <section className="stakeholders">
+        <h5 className="section-title">witnesses</h5>
+        <Table tableHeader={["", "name", "party", ""]}>
+          {caseData.parties.map((p) => {
+            const partyName = p.name;
+            const witnesses = p.stakeholders
+              .filter((s) => s.type === "Witness")
+              .map((s) => `${s.firstName} ${s.lastName}`);
+            return witnesses.map((w) => (
+              <tr key={w}>
+                <td>{w}</td>
+                <td>{partyName}</td>
+                <td>
+                  <FaTrashCan />
+                </td>
+              </tr>
+            ));
+          })}
+        </Table>
+        {/* <div className="btn add-stakeholder c-flex">
+          <Link to="stakeholders">
+            <RiUserAddFill />
+            add new stakeholder
+          </Link>
+        </div> */}
+      </section>
+
       <section className="documents">
         <h5 className="section-title">documents</h5>
         <Table tableHeader={["", "party", "title", ""]}>
-          <tr>
-            <td>party 1</td>
-            <td>doc 1</td>
-            <td>
-              <FaTrashCan />
-            </td>
-          </tr>
+          {docsData.map((d) => (
+            <tr key={d._id}>
+              <td>{d.party.name}</td>
+              <td>{d.title}</td>
+              <td>
+                <FaTrashCan />
+              </td>
+            </tr>
+          ))}
         </Table>
         <div className="btn add-doc c-flex">
           <Link to="docments">
@@ -40,37 +69,19 @@ function CaseDetails() {
         </div>
       </section>
 
-      <section className="stakeholders">
-        <h5 className="section-title">stakeholders</h5>
-        <Table tableHeader={["", "name", "party", ""]}>
-          <tr>
-            <td>name 1</td>
-            <td>party 1</td>
-            <td>
-              <FaTrashCan />
-            </td>
-          </tr>
-        </Table>
-        <div className="btn add-stakeholder c-flex">
-          <Link to="stakeholders">
-            <RiUserAddFill />
-            add new stakeholder
-          </Link>
-        </div>
-      </section>
-
       <section className="events">
         <h5 className="section-title">events</h5>
-        <Table tableHeader={["", "date", "time", "location", "type", ""]}>
-          <tr>
-            <td>date 1</td>
-            <td>time 1</td>
-            <td>loc 1</td>
-            <td>type 1</td>
-            <td>
-              <FaTrashCan />
-            </td>
-          </tr>
+        <Table tableHeader={["", "date", "location", "type", ""]}>
+          {caseData.events.map((e) => (
+            <tr key={e._id}>
+              <td>{e.date}</td>
+              <td>{e.location}</td>
+              <td>{e.type}</td>
+              <td>
+                <FaTrashCan />
+              </td>
+            </tr>
+          ))}
         </Table>
         <div className="btn add-event c-flex">
           <Link to="events">
@@ -90,10 +101,18 @@ export async function loader({ params }) {
   try {
     const { caseID } = params;
     // console.log(params);
-    const response = await fetcher(`/cases/${caseID}`);
-    if (!response.ok) throw response;
-    const caseData = await response.json();
-    return { caseData };
+    const caseResponse = await fetcher(`/cases/${caseID}`);
+    if (!caseResponse.ok) throw caseResponse;
+    const caseData = await caseResponse.json();
+    const docsResponse = await fetcher(`/documents/case/${caseID}`);
+    if (!docsResponse.ok) throw docsResponse;
+    // {
+    //   const message = docsResponse.text();
+    //   if (message !== "No documents found!") throw docsResponse;
+    // }
+    const docsData = await docsResponse.json();
+    // console.log(docsData);
+    return { caseData, docsData };
   } catch (error) {
     toast.error(error.message);
     return error;

@@ -74,11 +74,12 @@ class DocumentsController {
 		const { id } = req.params;
 		try {
 			GenericValidator.validateObjectId(id)
-			const document = await Document.find({ case: id });               
-			if( document.length === 0){
-				throw new NoDocumentsFoundError()
+			const documents = await Document.find({ case: id }).populate("party").exec();               
+			if( documents.length === 0){
+				// throw new NoDocumentsFoundError()
+				return res.json([])
 			}
-			res.json(document);
+			res.json(documents);
 		} catch(error) {
 			return errorHandler.handleError(res, error)
 		}

@@ -1,4 +1,4 @@
-import { Form, useNavigation } from "react-router-dom";
+import { Form, Link, useNavigation } from "react-router-dom";
 import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -7,6 +7,7 @@ import GavelIcon from "@mui/icons-material/Gavel";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { PARTY_DETAILS_FIELDS } from "../../utils/constants";
 import Input from "../Input";
+import { RiUserAddFill } from "react-icons/ri";
 
 function CaseForm({
   children,
@@ -176,6 +177,16 @@ function CaseParties({ formID, isEdit, values }) {
                     : ""
                 }
               />
+            </div>
+            <div
+              className={`btn add-stakeholder c-flex ${
+                partyDetails ? "" : "disabled-link"
+              }`}
+            >
+              <Link to={partyDetails ? `stakeholders/${partyDetails._id}` : ""}>
+                <RiUserAddFill />
+                add new witness
+              </Link>
             </div>
           </section>
         );

@@ -110,6 +110,44 @@ const StyledCaseForm = styled(CaseForm)`
     background-color: var(--grey-200);
   }
 
+  .add-doc,
+  .add-stakeholder,
+  .add-event {
+    /* margin: 0 auto 0 0; */
+    gap: 0.5rem;
+    width: fit-content;
+    padding: 0.25rem 1rem;
+    font-size: 1rem;
+    background-color: hsla(214, 32%, 91%, 0.75);
+    color: rgba(0, 0, 0, 0.6);
+    border-radius: 50px;
+
+    &:hover {
+      box-shadow: 0 0 10px var(--highlight-color);
+    }
+
+    a {
+      display: flex;
+      /* justify-content: center; */
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .disabled-link {
+    cursor: not-allowed;
+    &:hover {
+      box-shadow: none;
+    }
+
+    & > a {
+      color: rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+      text-decoration: none;
+    }
+  }
+
   .documents,
   .stakeholders,
   .events {
@@ -133,25 +171,6 @@ const StyledCaseForm = styled(CaseForm)`
     .add-stakeholder,
     .add-event {
       margin: 0 auto 0 0;
-      gap: 0.5rem;
-      width: fit-content;
-      padding: 0.25rem 1rem;
-      font-size: 1rem;
-      background-color: hsla(214, 32%, 91%, 0.75);
-      color: rgba(0, 0, 0, 0.6);
-      border-radius: 50px;
-
-      &:hover {
-        box-shadow: 0 0 10px var(--highlight-color);
-      }
-
-      a {
-        display: flex;
-        /* justify-content: center; */
-        align-items: center;
-        gap: 0.5rem;
-        color: rgba(0, 0, 0, 0.6);
-      }
     }
 
     fieldset {
