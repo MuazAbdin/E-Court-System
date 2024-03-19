@@ -1,13 +1,13 @@
 import { Form, Link, useNavigation } from "react-router-dom";
 import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import EventNoteIcon from "@mui/icons-material/EventNote";
 import GavelIcon from "@mui/icons-material/Gavel";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { PARTY_DETAILS_FIELDS } from "../../utils/constants";
 import Input from "../Input";
 import { RiUserAddFill } from "react-icons/ri";
+import { toast } from "react-toastify";
+import { fetcher } from "../../utils/fetcher";
 
 function CaseForm({
   children,
@@ -78,9 +78,15 @@ function CaseForm({
 
       {children}
 
-      <button type="button" className="btn pdf-btn" onClick={handleGeneratePDF}>
-        <FaRegFilePdf />
-      </button>
+      {isEdit && (
+        <button
+          type="button"
+          className="btn pdf-btn"
+          onClick={(event) => handleGeneratePDF(event, values._id)}
+        >
+          <FaRegFilePdf />
+        </button>
+      )}
     </Form>
   );
 }
@@ -164,30 +170,36 @@ function CaseParties({ formID, isEdit, values }) {
                 />
               ))}
             </div>
-            <div className="lawyer">
-              <Input
-                key={`${formID}-${party}_lawyer`}
-                label="Lawyer"
-                type="text"
-                id={`${formID}-${party}_lawyer`}
-                readOnly={true}
-                prevValue={
-                  partyDetails
-                    ? `${partyDetails.lawyer.firstName} ${partyDetails.lawyer.lastName}`
-                    : ""
-                }
-              />
-            </div>
-            <div
-              className={`btn add-stakeholder c-flex ${
-                partyDetails ? "" : "disabled-link"
-              }`}
-            >
-              <Link to={partyDetails ? `stakeholders/${partyDetails._id}` : ""}>
-                <RiUserAddFill />
-                add new witness
-              </Link>
-            </div>
+            {isEdit && (
+              <div className="lawyer">
+                <Input
+                  key={`${formID}-${party}_lawyer`}
+                  label="Lawyer"
+                  type="text"
+                  id={`${formID}-${party}_lawyer`}
+                  readOnly={true}
+                  prevValue={
+                    partyDetails
+                      ? `${partyDetails.lawyer.firstName} ${partyDetails.lawyer.lastName}`
+                      : ""
+                  }
+                />
+              </div>
+            )}
+            {isEdit && (
+              <div
+                className={`btn add-stakeholder c-flex ${
+                  partyDetails ? "" : "disabled-link"
+                }`}
+              >
+                <Link
+                  to={partyDetails ? `stakeholders/${partyDetails._id}` : ""}
+                >
+                  <RiUserAddFill />
+                  add new witness
+                </Link>
+              </div>
+            )}
           </section>
         );
       })}
@@ -216,23 +228,19 @@ function CaseNotes({ formID, isEdit, values }) {
   );
 }
 
-async function handleGeneratePDF(event) {
+async function handleGeneratePDF(event, caseId) {
   event.preventDefault();
   try {
-    const response = await fetcher("/generatePDF");
+    const response = await fetcher(`/cases/pdf/${caseId}`);
 
     if (!response.ok) {
       throw new Error("Failed to generate PDF");
     }
 
     const blob = await response.blob();
-
-    const link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
-    link.download = "Case Document.pdf";
-    link.click();
+    const fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, "_blank");
   } catch (error) {
-    console.error(error.message);
-    toast.error("Error generating PDF");
+    toast.error(error.message);
   }
 }

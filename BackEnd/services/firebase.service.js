@@ -23,7 +23,7 @@ class FirebaseFilesManager {
     async uploadFile(file) {
         await signInWithEmailAndPassword(this.auth, Config.FIREBASE_USER, Config.FIREBASE_AUTH);
         const dateTime = Date.now();
-        const fileName = `${dateTime}`;
+        const fileName = `files/${dateTime}`;
         const storageRef = ref(this.storage, fileName);
         const metadata = {
             contentType: file.type,

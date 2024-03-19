@@ -9,6 +9,7 @@ router.get("/", casesController.getCases);
 router.get("/pending", casesController.getPendingCases);
 router.get("/user", casesController.getUserCases);
 router.get("/:id", casesController.getCaseById);
+router.get("/pdf/:id", casesController.getCasePDF);
 router.patch("/", casesController.updateCase);
 router.patch("/status", casesController.updateCaseStatus);
 router.patch("/resolve-pending", casesController.resolvePendingCase);
