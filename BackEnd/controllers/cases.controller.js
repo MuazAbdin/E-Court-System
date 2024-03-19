@@ -290,7 +290,7 @@ class CasesController {
 
 			buildCasePDF(pdfDoc, case_);
 
-      pdfDoc.pipe(fs.createWriteStream(filePath)); // save copy on the server: optional
+      // pdfDoc.pipe(fs.createWriteStream(filePath)); // save copy on the server: optional
       pdfDoc.pipe(res);
 			pdfDoc.end();
 
