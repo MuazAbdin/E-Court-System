@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import StyledEventForm from "../../assets/stylingWrappers/StyledEventForm";
 import { redirect, useNavigate } from "react-router-dom";
 import { FaAnglesLeft } from "react-icons/fa6";
+import { fetcher } from "../../utils/fetcher";
 
 function AddEvent() {
   const navigate = useNavigate();
@@ -33,27 +34,53 @@ export async function action({ request }) {
 
   console.log(data);
 
-  // for (const key in data) {
-  //   if (!data[key]) {
-  //     toast.error(`${key} cannot be empty!`);
-  //     return null;
-  //   }
-  // }
-
   try {
-    //   const response = await fetcher("/cases/", {
-    //     method: request.method,
-    //     body: JSON.stringify(data),
-    //   });
+    // Create event
+    const responseCreate = await fetcher("/events", { 
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-    //   console.log(response);
-    //   if (!response.ok) {
-    //     const data = await response.text();
-    //     console.log(data);
-    //     throw new Error(data);
-    //   }
+    if (!responseCreate.ok) {
+      throw new Error("Failed to create event"); 
+    }
 
-    toast.success("Created Successfully!");
+    const eventData = await responseCreate.json();
+
+    // Get upcoming events
+    const responseUpcoming = await fetcher("/events/upcoming");
+    const upcomingEventData = await responseUpcoming.json();
+
+    // Get events by case ID 
+    const responseByCaseId = await fetcher(`/events/case/${data.caseId}`);
+    const byCaseIdData = await responseByCaseId.json();
+
+    // Get event by ID 
+    const responseById = await fetcher(`/events/${data.eventId}`);
+    const byIdData = await responseById.json();
+
+    // Update event 
+    const responseUpdate = await fetcher(`/events`, { 
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ eventId: data.eventId, newData: "updatedData" })
+    });
+
+    // Delete event 
+    const responseDelete = await fetcher(`/events`, { 
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ eventId: data.eventId })
+    });
+
+    toast.success("Action completed successfully!");
     return redirect("..");
   } catch (error) {
     toast.error(error.message);
