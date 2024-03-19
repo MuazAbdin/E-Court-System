@@ -1,10 +1,13 @@
-import { Form, useNavigation } from "react-router-dom";
+import { Form, Link, useNavigation } from "react-router-dom";
 import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import GavelIcon from "@mui/icons-material/Gavel";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { PARTY_DETAILS_FIELDS } from "../../utils/constants";
 import Input from "../Input";
+import { RiUserAddFill } from "react-icons/ri";
 
 function CaseForm({
   children,
@@ -13,6 +16,7 @@ function CaseForm({
   title,
   method,
   buttonText,
+  values,
   isEdit,
   courts,
 }) {
@@ -25,88 +29,27 @@ function CaseForm({
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const handleGeneratePDF = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetcher("/generatePDF");
-
-      if (!response.ok) {
-        throw new Error("Failed to generate PDF");
-      }
-
-      const blob = await response.blob();
-
-      const link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = "Case Document.pdf";
-      link.click();
-    } catch (error) {
-      console.error(error.message);
-      toast.error("Error generating PDF");
-    }
-  };
-
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
 
-      {!isEdit ? (
+      {isEdit ? (
+        <CaseHeader formID={formID} values={values} />
+      ) : (
         <StyledInputSelect
           id={`${formID}-court`}
           label="Court"
           menuItems={courtsData}
         />
-      ) : (
-        <Input
-          key={`${formID}-court`}
-          label="Court"
-          type="text"
-          id={`${formID}-court`}
-          icon={<AccountBalanceIcon />}
-          readOnly={true}
-          prevValue={"Supreme Court - Jerusalem"}
-        />
       )}
-
-      <div className="parties">
-        {["claimant", "respondent"].map((party) => (
-          <section key={party} className={party}>
-            <h5 className="title">{party}</h5>
-            {PARTY_DETAILS_FIELDS.map((f) => (
-              <Input
-                key={`${formID}-${party}_${f.id}`}
-                label={f.label}
-                type="text"
-                id={`${formID}-${party}_${f.id}`}
-                icon={f.icon}
-                ref={null}
-                autoComplete={f.autoComplete ?? "off"}
-                validator={f.validator}
-                required={f.required}
-                severErrorMsg={""}
-                multiline={f.multiline ?? false}
-                rows={f.rows ?? undefined}
-                prevValue={""}
-                isSubmitted={false}
-              />
-            ))}
-          </section>
-        ))}
-      </div>
 
       <Input
         key={`${formID}-title`}
         label="Title"
         type="text"
         id={`${formID}-title`}
-        icon={null}
-        ref={null}
-        autoComplete="off"
-        required={true}
-        severErrorMsg={""}
-        multiline={false}
-        prevValue={""}
-        isSubmitted={false}
+        required={!isEdit}
+        prevValue={isEdit ? values.title : ""}
       />
 
       <Input
@@ -114,22 +57,26 @@ function CaseForm({
         label="Description"
         type="text"
         id={`${formID}-description`}
-        icon={<EditNoteIcon />}
-        ref={null}
-        autoComplete="off"
-        required={true}
-        severErrorMsg={""}
+        required={!isEdit}
         multiline={true}
-        rows={7}
-        prevValue={""}
+        rows={5}
+        prevValue={isEdit ? values.description : ""}
         isSubmitted={false}
       />
 
-      {children}
+      <CaseParties
+        formID={formID}
+        isEdit={isEdit}
+        values={values?.parties || []}
+      />
+
+      <CaseNotes formID={formID} isEdit={isEdit} values={values} />
 
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
       </button>
+
+      {children}
 
       <button type="button" className="btn pdf-btn" onClick={handleGeneratePDF}>
         <FaRegFilePdf />
@@ -140,179 +87,153 @@ function CaseForm({
 
 export default CaseForm;
 
-// import { useEffect, useState } from "react";
-// import {
-//   InputLabel,
-//   ListItemIcon,
-//   MenuItem,
-//   Select,
-// } from "@mui/material";
-// import toast, { Toaster } from "react-hot-toast";
-// import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
-// import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-// import Person3Icon from "@mui/icons-material/Person3";
-// import { fetcher } from "../../utils/fetcher";
-// import { CASE_FIELDS, CLIENT_CASE_FIELDS } from "../../utils/constants";
+const HEADER_FIELDS = [
+  { label: "Case Number", id: "caseNumber" },
+  { label: "Status", id: "status" },
+  // {
+  //   label: "Next Event",
+  //   id: "nextEvent",
+  //   icon: <EventNoteIcon />,
+  // },
+  {
+    label: "Court",
+    id: "court",
+    icon: <AccountBalanceIcon />,
+  },
+  {
+    label: "Judge",
+    id: "judge",
+    icon: <GavelIcon />,
+  },
+];
 
-// export default function CaseForm() {
-//   // const addParty = (e) => {
-//   //   e.preventDefault();
-//   //   if (newParty.trim() !== "") {
-//   //     setParties((parties) => [...parties, newParty]);
-//   //     setNewParty("");
-//   //   }
-//   // };
+function CaseHeader({ formID, values }) {
+  const { caseNumber, status, judge } = values;
+  const court = values
+    ? `${values.court.name} - ${values.court.city}`
+    : undefined;
+  const fieldValues = { caseNumber, status, court, judge };
 
-//   const [courts, setCourts] = useState([]);
-//   const [selectedCourt, setSelectedCourt] = useState("");
-//   const [judges, setJudges] = useState({});
+  return (
+    <section className="case-header">
+      {HEADER_FIELDS.map((f) => (
+        <Input
+          key={`${formID}-${f.id}`}
+          label={f.label}
+          type="text"
+          id={`${formID}-${f.id}`}
+          icon={f.icon}
+          readOnly={true}
+          prevValue={fieldValues?.[f.id] || ""}
+        />
+      ))}
+    </section>
+  );
+}
 
-//   useEffect(() => {
-//     const getCourts = async () => {
-//       try {
-//         const courtResponse = await fetcher("/courts");
-//         if (courtResponse.ok) {
-//           const courtsData = await courtResponse.json();
-//           setCourts(courtsData);
-//         } else {
-//           throw new Error("Failed to fetch courts");
-//         }
-//       } catch (error) {
-//         toast.error(error.message);
-//       }
-//     };
-//     getCourts();
-//   }, []);
+function CaseParties({ formID, isEdit, values }) {
+  // console.log(values);
+  return (
+    <section className="parties">
+      {["claimant", "respondent"].map((party) => {
+        const partyDetails = values.find(
+          (p) => p.name.toLowerCase() === party.toLowerCase()
+        );
 
-//   const handleCourtsJudges = async (event) => {
-//     const value = event.target.value;
-//     setSelectedCourt(value);
+        return (
+          <section key={party} className={party}>
+            <h5 className="title">{party}</h5>
+            <div className="client">
+              {PARTY_DETAILS_FIELDS.map((f) => (
+                <Input
+                  key={`${formID}-${party}_${f.id}`}
+                  label={f.label}
+                  type="text"
+                  id={`${formID}-${party}_${f.id}`}
+                  icon={f.icon}
+                  ref={null}
+                  autoComplete={f.autoComplete ?? "off"}
+                  validator={f.validator}
+                  readOnly={isEdit && f.id === "idNumber"}
+                  required={!isEdit && f.required}
+                  severErrorMsg={""}
+                  multiline={f.multiline ?? false}
+                  rows={f.rows ?? undefined}
+                  prevValue={partyDetails?.client[f.id] || ""}
+                  isSubmitted={false}
+                />
+              ))}
+            </div>
+            { isEdit && <div className="lawyer">
+              <Input
+                key={`${formID}-${party}_lawyer`}
+                label="Lawyer"
+                type="text"
+                id={`${formID}-${party}_lawyer`}
+                readOnly={true}
+                prevValue={
+                  partyDetails
+                    ? `${partyDetails.lawyer.firstName} ${partyDetails.lawyer.lastName}`
+                    : ""
+                }
+                /> 
+              </div>
+            }
+            <div
+              className={`btn add-stakeholder c-flex ${
+                partyDetails ? "" : "disabled-link"
+              }`}
+            >
+              <Link to={partyDetails ? `stakeholders/${partyDetails._id}` : ""}>
+                <RiUserAddFill />
+                add new witness
+              </Link>
+            </div>
+          </section>
+        );
+      })}
+    </section>
+  );
+}
 
-//     try {
-//       const judgeResponse = await fetcher(
-//         `/users/judges?court=${selectedCourt}`
-//       );
-//       if (judgeResponse.ok) {
-//         const judgeData = await judgeResponse.json();
-//         setJudges(judgeData);
-//       } else {
-//         throw new Error("Failed to fetch judges");
-//       }
-//     } catch (error) {
-//       toast.error(error.message);
-//     }
-//   };
+function CaseNotes({ formID, isEdit, values }) {
+  return (
+    <section className="notes">
+      <h5 className="title">Notes</h5>
+      {["Claimant Lawyer", "Respondent Lawyer", "Judge"].map((side) => (
+        <Input
+          key={`${formID}-${side.split(" ").join("")}Notes`}
+          label={`${side} Notes`}
+          type="text"
+          id={`${formID}-${side.split(" ").join("")}Notes`}
+          severErrorMsg={""}
+          multiline={true}
+          rows={5}
+          prevValue={isEdit ? values[`${side.split(" ").join("")}Notes`] : ""}
+          isSubmitted={false}
+        />
+      ))}
+    </section>
+  );
+}
 
-// const handleGeneratePDF = async () => {
-//   try {
-//     const response = await fetcher("/generatePDF", {
-//       method: "GET",
-//       headers: {
-//         Accept: "application/pdf",
-//       },
-//     });
+async function handleGeneratePDF(event) {
+  event.preventDefault();
+  try {
+    const response = await fetcher("/generatePDF");
 
-//     if (!response.ok) {
-//       throw new Error("Failed to generate PDF");
-//     }
+    if (!response.ok) {
+      throw new Error("Failed to generate PDF");
+    }
 
-//     const blob = await response.blob();
+    const blob = await response.blob();
 
-//     const link = document.createElement("a");
-//     link.href = window.URL.createObjectURL(blob);
-//     link.download = "Case Document.pdf";
-//     link.click();
-//   } catch (error) {
-//     console.error(error.message);
-//     toast.error("Error generating PDF");
-//   }
-// };
-//   return (
-//     <>
-//       <StyledForms
-//         className={"case-form"}
-//         formID="case-form"
-//         title="Legal Case Information Form"
-//         method="POST"
-//         buttonText="SUBMIT"
-//         fields={[...CASE_FIELDS, ...CLIENT_CASE_FIELDS]}
-//       >
-//         <div className="court-judge">
-//           <InputLabel id="court-dropdown-label">Court</InputLabel>
-//           <Select
-//             labelId="court-dropdown-label"
-//             id="court-dropdown"
-//             variant="standard"
-//             value={selectedCourt}
-//             onChange={handleCourtsJudges}
-//           >
-//             <MenuItem value={10}>
-//               {" "}
-//               <ListItemIcon>
-//                 <AccountBalanceIcon />
-//               </ListItemIcon>
-//               court 1
-//             </MenuItem>
-
-//             <MenuItem value={120}>
-//               <ListItemIcon>
-//                 <AccountBalanceIcon />
-//               </ListItemIcon>
-//               court 2
-//             </MenuItem>
-//             {courts.map((court) => (
-//               <MenuItem key={court._id} value={court._id}>
-//                 <ListItemIcon>
-//                   <AccountBalanceIcon />
-//                 </ListItemIcon>
-//                 {court.name}
-//               </MenuItem>
-//             ))}
-//           </Select>
-//         </div>
-//         <div className="court-judge">
-//           <InputLabel id="judge-dropdown-label">Judge</InputLabel>
-//           <Select
-//             labelId="judge-dropdown-label"
-//             id="judge-dropdown"
-//             variant="standard"
-//             value={judges}
-//             onChange={(e) => setJudges(e.target.value)}
-//           >
-//             <MenuItem value={10}>
-//               <ListItemIcon>
-//                 <Person3Icon />
-//               </ListItemIcon>
-//               Judge 1
-//             </MenuItem>
-//             <MenuItem value={20}>
-//               <ListItemIcon>
-//                 <Person3Icon />
-//               </ListItemIcon>
-//               Judge 2
-//             </MenuItem>
-//             <MenuItem value={30}>
-//               <ListItemIcon>
-//                 <Person3Icon />
-//               </ListItemIcon>
-//               Judge 3
-//             </MenuItem>
-
-//             {Object.keys(judges).map((judge) => (
-//               <MenuItem key={judge.idNumber} value={judge.idNumber}>
-//                 <ListItemIcon>
-//                   <Person3Icon />
-//                 </ListItemIcon>
-//                 {judge.name}
-//               </MenuItem>
-//             ))}
-//           </Select>
-//         </div>
-// <button className="pdf-btn" onClick={handleGeneratePDF}>
-//   Generate PDF
-// </button>
-//       </StyledForms>
-//       <Toaster position="bottom-center" />
-//     </>
-//   // )
-// }
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "Case Document.pdf";
+    link.click();
+  } catch (error) {
+    console.error(error.message);
+    toast.error("Error generating PDF");
+  }
+}

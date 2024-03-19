@@ -68,6 +68,25 @@ const Wrapper = styled.main`
       font-family: var(--subtitle-font);
       margin-bottom: 0.5rem;
     }
+
+    .back-btn {
+      gap: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      width: fit-content;
+      padding: 0.25rem 1rem;
+      background-color: hsla(214, 32%, 91%, 0.75);
+      color: rgba(0, 0, 0, 0.6);
+      border-radius: 50px;
+      margin: 1rem 0 0 2rem;
+      border: 2px solid;
+      box-shadow: 0 0 3px;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0 0 10px;
+      }
+    }
   }
 `;
 

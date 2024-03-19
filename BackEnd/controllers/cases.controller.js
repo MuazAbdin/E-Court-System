@@ -7,6 +7,8 @@ import Party from "../models/party.model.js";
 import Stakeholder from "../models/stakeholder.model.js";
 import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
+import GenericValidator from "../validators/generic.validate.js";
+import { NotAuthorizedError } from "../errors/userAuth.error.js";
 
 class CasesController {
 	async createCase(req, res) {
@@ -48,8 +50,9 @@ class CasesController {
 	}
 
 	async fileACase(req, res) {
-		const { title, description, court, parties } = req.body;
+		const { title, description, court, parties, claimantLawyerNotes } = req.body;
 		const userId = req.userId;
+		// console.log({ title, description, court, parties, claimantLawyerNotes });
 		// Saves created Documents to delete them on faliure/error
 		const savedDocs = [];
 		try {
@@ -58,7 +61,7 @@ class CasesController {
 			 	PartyValidator.validateFileACasePartyData(party);
 			}
 
-			const newCase = new Case({title, description, status: "Pending", court, judge: null});
+			const newCase = new Case({title, description, status: "Pending", court, judge: null, claimantLawyerNotes});
 
 			const newParties = [];
 			const clients = [ parties[0].client ];
@@ -166,13 +169,12 @@ class CasesController {
 	}
 
 	async getCaseById(req, res) {
-        const { id } = req.params;
-		console.log(req.params)
-        try {
-            const case_ = await Case.findById(id)
-			.populate("court judge events")
-            .populate({ path: "parties", populate: { path: "lawyer client" } })
-			.exec();
+			const { id } = req.params;
+			try {
+					const case_ = await Case.findById(id)
+							.populate("court judge events")
+							.populate({ path: "parties", populate: { path: "lawyer client stakeholders" } })
+							.exec();
 			if(!case_) {
 				throw new CaseDoesNotExistError();
 			}
@@ -206,7 +208,7 @@ class CasesController {
 	}
 
 	async updateCaseStatus(req, res) {	
-			const { _id, status } = req.body
+		const { _id, status } = req.body
 		try{
 			CaseValidator.validateUpdateCaseStatusData({ _id, status });
 			const updatedCase = await Case.findByIdAndUpdate(_id, {$set: { status }}, { new: true });
@@ -214,7 +216,42 @@ class CasesController {
 				throw new CaseDoesNotExistError();
 			}
 			res.json(updatedCase);
-		} catch(error) {
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
+	async updateNote(req, res) {
+		const { caseId, note } = req.body;
+		const userId = req.userId;
+		try {
+			GenericValidator.validateObjectId(caseId);
+			GenericValidator.validateNotEmpty([note]);
+
+			const case_ = await Case.findById(caseId)
+				.populate("parties").exec();
+			if(case_ === null) {
+				throw new CaseDoesNotExistError();
+			}
+
+			if(userId == case_.judge) {
+				case_.judgeNote = note;
+			}
+			else if(case_.parties.length && userId == case_.parties[0]) {
+				case_.claimantLawyerNote = note;
+			}
+			else if(case_.parties.length === 2 && userId == case_.parties[1]) {
+				case_.respondantLawyerNote = note;
+			}
+			else {
+				throw new NotAuthorizedError();
+			}
+			
+			case_.save();
+			res.send(case_);
+		}
+		catch(error) {
 			errorHandler.handleError(res, error);
 		}
 	}

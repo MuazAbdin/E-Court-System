@@ -44,15 +44,16 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 ### Case Routes
 | Title | Route | Type | Request | Response | Access |
 |-------|-------|------|---------|----------|--------|
-| Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
-| File a Case | /cases/file-a-case | POST | title, description, court, parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Lawyer |
-| Get All Cases | /cases/?offset&limit&query&start&end&status | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] ] | Court Manager |
-| Get User Cases | /cases/user/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Lawyer, Judge |
-| Get Pending Cases | /cases/pending/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt ] | Court Manager |
-| Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Lawyer |
-| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
-| Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager, Judge |
-| Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, createdAt, updatedAt | Court Manager |
+| Create Case | /cases/ | POST | title, description, status, court, judge, parties: [ { lawyer, client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Court Manager |
+| File a Case | /cases/file-a-case | POST | title, description, court,  parties: [ { client: { idNumber, firstName, lastName, email, phoneNumber } } ] | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Lawyer |
+| Get All Cases | /cases/?offset&limit&query&start&end&status | GET | | [ [ _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt ] ] | Court Manager |
+| Get User Cases | /cases/user/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt ] | Lawyer, Judge |
+| Get Pending Cases | /cases/pending/?offset&limit&query&start&end&status | GET | | [ _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt ] | Court Manager |
+| Get Case | /cases/:id | GET | | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Court Manager, Lawyer |
+| Update Case | /cases/ | PATCH | caseId, title, description, status, court, judge | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Court Manager |
+| Update Case Status | /cases/status/ | PATCH | _id, status | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Court Manager, Judge |
+| Update Case Note | /cases/note/ | PATCH | caseId, note | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Lawyer, Judge |
+| Resolve/Review Pending Case | /cases/resolve-pending | PATCH | caseId, status, judge | _id, status, title, description, court, judge, events, parties, caseNumber, judgeNote, claimantLawyerNote, respondantLawyerNote, createdAt, updatedAt | Court Manager |
 
 ### Case Respond Routes ( Respondant Lawyer applying to a case )
 | Title | Route | Type | Request | Response | Access |

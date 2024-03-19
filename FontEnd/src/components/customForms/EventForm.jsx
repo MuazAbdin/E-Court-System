@@ -1,67 +1,74 @@
-import toast, { Toaster } from "react-hot-toast";
+import { Form, useNavigation } from "react-router-dom";
+import { Input } from "../../components";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useState } from "react";
+import dayjs from "dayjs";
+import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
 
-import { redirect } from "react-router-dom";
+function EventForm({
+  children,
+  className,
+  formID,
+  title,
+  method,
+  buttonText,
+  values,
+}) {
+  const [eventDate, setEventDate] = useState(dayjs());
 
-import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
-import { fetcher } from "../../utils/fetcher";
-import { EVENT_FIELDS } from "../../utils/constants";
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
-export default function EventForm() {
   return (
-    <>
-      <StyledForms
-        className={"event-form"}
-        formID="event-form"
-        title="Legal Events Log Form"
-        method="POST"
-        buttonText="ADD EVENT"
-        fields={EVENT_FIELDS}
+    <Form method={method} id={formID} className={className} noValidate>
+      <h3 className="title">{title}</h3>
+      <fieldset key="fs-eventType">
+        <StyledInputSelect
+          id={`${formID}-type`}
+          label="Type"
+          menuItems={[
+            { id: 1, value: "General" },
+            { id: 2, value: "Hearing" },
+            { id: 3, value: "Trial" },
+            { id: 4, value: "Appeal" },
+          ]}
+        />
+      </fieldset>
+
+      <fieldset>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            margin="normal"
+            disableFuture
+            id={`${formID}-date`}
+            label="Date"
+            name={`${formID}-date`}
+            value={eventDate}
+            onChange={(newValue) => setEventDate(newValue)}
+            format="DD-MM-YYYY"
+            slotProps={{ textField: { size: "small", variant: "filled" } }}
+          />
+        </LocalizationProvider>
+      </fieldset>
+
+      <Input
+        key={`${formID}-decription`}
+        label="Decription"
+        type="text"
+        id={`${formID}-decription`}
+        multiline={true}
+        rows={7}
+        prevValue={""}
       />
-      <Toaster position="bottom-center" />
-    </>
+
+      <button name="submit" className="btn" disabled={isSubmitting}>
+        {isSubmitting ? "submitting ..." : `${buttonText}`}
+      </button>
+
+      {children}
+    </Form>
   );
 }
-export async function action({ request }) {
-  const fd = await request.formData();
-  const data = Object.fromEntries(
-    [...fd.entries()]
-      .filter((entry) => entry[0] !== "submit")
-      .map((entry) => [entry[0].split("-")[2], entry[1]])
-  );
-  console.log(data);
 
-  for (const key in data) {
-    if (!data[key]) {
-      toast.error(`${key} cannot be empty!`);
-      return null;
-    }
-  }
-
-  try {
-    const response = await fetcher("/cases/", {
-      method: request.method,
-      body: JSON.stringify(data),
-    });
-
-    console.log(response);
-
-    for (const key in data) {
-      if (!data[key]) {
-        toast.error(`${key} cannot be empty!`);
-        return null;
-      }
-    }
-
-    if (!response.ok) {
-      const data = await response.text();
-      console.log(data);
-      throw new Error(data);
-    }
-
-    toast.success("Created Successfully!");
-    return redirect("");
-  } catch (error) {
-    toast.error(error.message);
-    return error;
-  }
-}
+export default EventForm;

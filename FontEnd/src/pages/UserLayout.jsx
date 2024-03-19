@@ -23,11 +23,11 @@ export default UserLayout;
 
 export async function loader() {
   try {
-    const response = await fetcher("/events/upcoming");
+    const response = await fetcher("/users/user");
     if (!response.ok) throw response;
     const data = await response.json();
     // console.log(data);
-    const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data.user;
+    const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data;
     const userData = { IDcard, mobile, ...rest };
     // console.log(userData);
     return { userData };

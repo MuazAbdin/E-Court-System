@@ -8,10 +8,10 @@ import {
 import { useState } from "react";
 
 function InputSelect({ className, id, label, menuItems }) {
-  const [age, setAge] = useState("");
+  const [optionValue, setOptionValue] = useState(menuItems?.[0]?.id || "");
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setOptionValue(event.target.value);
   };
 
   return (
@@ -21,7 +21,7 @@ function InputSelect({ className, id, label, menuItems }) {
         labelId={`${id}-label`}
         id={id}
         name={id}
-        value={age}
+        value={optionValue}
         label={label}
         onChange={handleChange}
       >

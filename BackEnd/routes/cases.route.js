@@ -13,3 +13,4 @@ router.get("/:id", permissionsMiddleWare, casesController.getCaseById);
 router.patch("/", permissionsMiddleWare, casesController.updateCase);
 router.patch("/status", permissionsMiddleWare, casesController.updateCaseStatus);
 router.patch("/resolve-pending", permissionsMiddleWare, casesController.resolvePendingCase);
+router.patch("/note", permissionsMiddleWare, casesController.updateNote);
