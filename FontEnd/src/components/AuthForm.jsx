@@ -15,7 +15,6 @@ function AuthForm({
   fields,
   values,
 }) {
-  // console.log(values);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const insertedPassword = useRef(null);

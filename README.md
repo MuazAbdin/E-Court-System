@@ -65,8 +65,8 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Title | Route | Type | Request | Response | Access |
 |-------|-------|------|---------|----------|--------|
 | Create Court | /courts/ | POST | courtName, city, street, mobile, email, judges? | _id, name, city, street, phoneNumber, judges, email | Court Manager |
-| Get Court | /court/:id | GET | | _id, name, city, street, phoneNumber, judges, email | Lawyer, Judge , Court Manager |
-| Update Court | /court/ | Patch | id, name, phoneNumber, email | _id, name, city, street, phoneNumber, judges, email | Court Manager |
+| Get Court | /courts/:id | GET | | _id, name, city, street, phoneNumber, judges, email | Lawyer, Judge , Court Manager |
+| Update Court | /courts/ | Patch | id, name, phoneNumber, email | _id, name, city, street, phoneNumber, judges, email | Court Manager |
 
 ### Document Routes
 | Title | Route | Type | Request | Response | Access |
@@ -85,7 +85,7 @@ JWT-HTTP-Only-Cookie is set after a successful Register or Login
 | Create Event | /events/ | POST | caseId, eventType, date, description | _id, case, type, date, description, location | Court Manager |
 | Get Case Events | /events/case/:caseId | GET | | [ _id, case, type, date, description, location ] | Lawyer, Judge , Court Manager |
 | Get Event | /events/:id | GET | | _id, case, type, date, description, location | Lawyer, Judge , Court Manager |
-| Get User Up-coming events | /parties/upcoming | GET | | [ _id, case, type, date, description, location ] | Lawyer, Judge
+| Get User Up-coming events | /events/upcoming | GET | | [ _id, case, type, date, description, location ] | Lawyer, Judge
 | Update Event | /events/ | PATCH | eventId, date, description | _id, case, type, date, description, location | Court Manager |
 | Delete Event | /events/ | DELETE | eventId | | Court Manager |
 

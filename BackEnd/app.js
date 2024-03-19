@@ -17,6 +17,7 @@ import { router as typesRoutes } from "./routes/types.route.js"
 import { router as caseRespondsRoutes } from "./routes/caseResponds.route.js"
 
 import { authorizationMiddleWare } from "./middlewares/userAuth.middleware.js";
+import { permissionsMiddleWare } from "./middlewares/userPermissions.middleware.js";
 
 const app = express();
 
@@ -37,8 +38,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/users", authorizationMiddleWare, usersRoutes);
-app.use("/cases", authorizationMiddleWare, casesRoutes);
+app.use("/users", [authorizationMiddleWare], usersRoutes);
+app.use("/cases", [authorizationMiddleWare], casesRoutes);
 app.use("/courts", authorizationMiddleWare, courtsRoutes);
 app.use("/documents", authorizationMiddleWare, documentsRoutes);
 app.use("/events", authorizationMiddleWare, eventsRoutes);
