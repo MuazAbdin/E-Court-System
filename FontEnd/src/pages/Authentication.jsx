@@ -67,11 +67,22 @@ function Authentication() {
                   type="radio"
                   id="court"
                   name="register-form-userType"
-                  value="Court"
+                  value="Court Manager"
                   onChange={changeSelection}
-                  checked={radioValue === "Court"}
+                  checked={radioValue === "Court Manager"}
                 />
-                <label htmlFor="court">Court</label>
+                <label htmlFor="court">Court Manager</label>
+              </div>
+              <div className="d-selector">
+                <input
+                  type="radio"
+                  id="admin"
+                  name="register-form-userType"
+                  value="Admin"
+                  onChange={changeSelection}
+                  checked={radioValue === "Admin"}
+                />
+                <label htmlFor="court">Admin</label>
               </div>
             </fieldset>
             <div

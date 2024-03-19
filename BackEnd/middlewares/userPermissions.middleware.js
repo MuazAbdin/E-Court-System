@@ -123,5 +123,8 @@ function createUrl(url, params) {
     if(url.slice(-1) !== "/") {
         url += "/";
     }
+    const queryIdx = url.indexOf("?");
+    if(queryIdx !== -1)
+        url = url.slice(0, queryIdx);
     return url;
 }
