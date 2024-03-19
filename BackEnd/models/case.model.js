@@ -17,6 +17,9 @@ const caseSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: "Party" }],
         default: []
     },
+    judgeNote: { type: String, default: "" },
+    claimantLawyerNote: { type: String, default: "" },
+    respondantLawyerNote: { type: String, default: "" },
     public: { type: Boolean, default: false }
 }, { timestamps: true })
 
