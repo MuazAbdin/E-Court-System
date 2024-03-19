@@ -164,7 +164,7 @@ function CaseParties({ formID, isEdit, values }) {
                 />
               ))}
             </div>
-            <div className="lawyer">
+            { isEdit && <div className="lawyer">
               <Input
                 key={`${formID}-${party}_lawyer`}
                 label="Lawyer"
@@ -176,8 +176,9 @@ function CaseParties({ formID, isEdit, values }) {
                     ? `${partyDetails.lawyer.firstName} ${partyDetails.lawyer.lastName}`
                     : ""
                 }
-              />
-            </div>
+                /> 
+              </div>
+            }
             <div
               className={`btn add-stakeholder c-flex ${
                 partyDetails ? "" : "disabled-link"

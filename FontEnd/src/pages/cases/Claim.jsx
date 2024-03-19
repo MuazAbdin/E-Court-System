@@ -24,6 +24,7 @@ export default Claim;
 export async function loader({ params, request }) {
   try {
     const response = await fetcher("/courts");
+    if(!response.ok) return [];
     const data = await response.json();
 
     return data;
