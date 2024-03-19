@@ -82,7 +82,7 @@ function Authentication() {
                   onChange={changeSelection}
                   checked={radioValue === "Admin"}
                 />
-                <label htmlFor="court">Admin</label>
+                <label htmlFor="admin">Admin</label>
               </div>
             </fieldset>
             <div
