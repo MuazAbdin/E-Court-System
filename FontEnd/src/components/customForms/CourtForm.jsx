@@ -1,11 +1,7 @@
-
 import { Toaster } from "react-hot-toast";
 import { StyledForms } from "../../assets/stylingWrappers/StyledForms";
 import { COURT_FIELDS } from "../../utils/constants";
-// import { StyledForms } from "../assets/stylingWrappers/StyledForms";
 export default function CourtForm() {
-
-  
   return (
     <>
       <StyledForms

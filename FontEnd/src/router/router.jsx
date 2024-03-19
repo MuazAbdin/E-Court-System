@@ -9,19 +9,16 @@ import {
   ChangeUserPassword,
   Overview,
   Cases,
-  BrowseCases,
-  AddNewCase,
   BrowseCourts,
   AddNewCourt,
   Courts,
-  LegalEntities,
-  Parties,
-  BrowseParties,
-  AddNewParty,
-  Stackholders,
-  BrowseStackholders,
-  AddNewStackholder,
-  EditCase,
+  MyCases,
+  Claim,
+  Respond,
+  AddDocument,
+  CaseDetails,
+  AddStakeholder,
+  AddEvent,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -33,23 +30,20 @@ import { action as authAction } from "../pages/Authentication";
 // import { action as eventCreation } from "../pages/EventForm";
 
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
-import { loader as catalogLoader } from "../pages/CaseCatalog";
+import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 
-import {
-  action as browseAction,
-  loader as browseLoader,
-} from "../pages/cases/BrowseCases";
+import { loader as catalogLoader } from "../pages/CaseCatalog";
 import { loader as caseDetailsLoader } from "../pages/cases/CaseDetails";
 import {
-  action as newCaseAction,
-  loader as newCaseLoader,
-} from "../pages/cases/AddNewCase";
+  action as claimAction,
+  loader as claimLoader,
+} from "../pages/cases/Claim";
+import { action as respondAction } from "../pages/cases/Respond";
+import { action as documentAction } from "../pages/documents/AddDocument";
+import { action as stakeholderAction } from "../pages/stakeholders/AddStakeholder";
+import { action as eventAction } from "../pages/events/AddEvent";
+
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
-import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
-import ViewCase from "../pages/ViewCase";
-import { EventForm, PartyForm, StakeholderForm } from "../components";
-import CaseDetails from "../pages/cases/CaseDetails";
-import StyledPartyForm from "../assets/stylingWrappers/PartyForm";
 
 const router = createBrowserRouter([
   {
@@ -92,20 +86,20 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <BrowseCases />,
-                loader: browseLoader,
-                action: browseAction,
+                element: <MyCases />,
+                // loader: browseLoader,
+                // action: browseAction,
               },
               {
-                path: "add-new",
-                element: <AddNewCase />,
-                loader: newCaseLoader,
-                action: newCaseAction,
+                path: "claim",
+                element: <Claim />,
+                loader: claimLoader,
+                action: claimAction,
               },
               {
-                path: "edit",
-                element: <EditCase />,
-                // action: newCaseAction,
+                path: "respond",
+                element: <Respond />,
+                action: respondAction,
               },
               {
                 path: ":caseID",
@@ -116,44 +110,19 @@ const router = createBrowserRouter([
                     loader: caseDetailsLoader,
                   },
                   {
-                    path: "party",
-                    // element: ,
-                    children: [
-                      { path: "add-new", element: <PartyForm /> },
-                      {
-                        path: ":partyId",
-                        // element: ,
-                        children: [
-                          // { index: true, element: <ViewParty />},
-                          // { path: "edit", element: <PartyEditForm />},
-                          {
-                            path: "stakeholder",
-                            children: [
-                              { path: "add-new", element: <StakeholderForm /> },
-                              {
-                                path: ":stakeholderId",
-                                children: [
-                                  // { path: "edit", element: <EditStakeholderForm /> }
-                                ],
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
+                    path: "docments",
+                    element: <AddDocument />,
+                    action: documentAction,
                   },
                   {
-                    path: "event",
-                    children: [
-                      // { index: true, element: <BrowseEvenets /> },
-                      { path: "add-new", element: <EventForm /> },
-                      {
-                        path: ":eventID",
-                        children: [
-                          // { path: "edit", element: <EventEditForm /> }
-                        ],
-                      },
-                    ],
+                    path: "stakeholders/:partyId",
+                    element: <AddStakeholder />,
+                    action: stakeholderAction,
+                  },
+                  {
+                    path: "events",
+                    element: <AddEvent />,
+                    action: eventAction,
                   },
                 ],
               },

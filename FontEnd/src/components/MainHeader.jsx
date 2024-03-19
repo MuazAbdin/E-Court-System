@@ -57,9 +57,10 @@ export default MainHeader;
 
 const SERVICES = [
   { id: 1, name: "case catalog", link: "/catalog" },
-  { id: 2, name: "case filing", link: "/user/cases/add-new" },
-  { id: 3, name: "case judgment", link: "/" },
-  { id: 4, name: "case managment", link: "/" },
+  { id: 2, name: "file a claim", link: "/user/cases/claim" },
+  { id: 3, name: "file a response", link: "/user/cases/respond" },
+  // { id: 4, name: "case judgment", link: "/" },
+  // { id: 5, name: "case managment", link: "/" },
 ];
 
 function ServicesList() {
