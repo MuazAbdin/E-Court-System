@@ -29,7 +29,7 @@ class FirebaseFilesManager {
             contentType: file.type,
         }
         await uploadBytesResumable(storageRef, file.buffer, metadata);
-        return fileName;
+        return dateTime;
     }
 
     async downloadFile(fileName) {
