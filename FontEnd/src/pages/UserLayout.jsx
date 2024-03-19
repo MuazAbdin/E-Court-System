@@ -23,7 +23,6 @@ export default UserLayout;
 
 export async function loader() {
   try {
-    console.log("WHY")
     const response = await fetcher("/users/user");
     if(response.status === 401) return redirect("/")
     if (!response.ok) throw response;
