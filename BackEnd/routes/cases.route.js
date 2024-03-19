@@ -10,7 +10,9 @@ router.get("/", permissionsMiddleWare, casesController.getCases);
 router.get("/pending", permissionsMiddleWare, casesController.getPendingCases);
 router.get("/user", permissionsMiddleWare, casesController.getUserCases);
 router.get("/:id", permissionsMiddleWare, casesController.getCaseById);
+router.get("/pdf/:id", casesController.getCasePDF);
 router.patch("/", permissionsMiddleWare, casesController.updateCase);
 router.patch("/status", permissionsMiddleWare, casesController.updateCaseStatus);
 router.patch("/resolve-pending", permissionsMiddleWare, casesController.resolvePendingCase);
 router.patch("/note", permissionsMiddleWare, casesController.updateNote);
+

@@ -92,7 +92,6 @@ function CaseDetails() {
       </section>
     </StyledCaseForm>
   );
-  // return <ViewCase case={caseData} />;
 }
 
 export default CaseDetails;

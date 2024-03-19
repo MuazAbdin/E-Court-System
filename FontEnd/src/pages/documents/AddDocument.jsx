@@ -71,10 +71,8 @@ export async function action({ params, request }) {
       body: JSON.stringify(reqData),
     });
 
-    console.log(response);
     if (!response.ok) {
       const data = await response.text();
-      console.log(data);
       throw new Error(data);
     }
 
