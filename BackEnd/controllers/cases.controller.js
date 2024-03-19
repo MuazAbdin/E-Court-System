@@ -9,6 +9,11 @@ import { DBConfig } from "../config.js";
 import dbUtils from "../utils/db.utils.js";
 import GenericValidator from "../validators/generic.validate.js";
 import { NotAuthorizedError } from "../errors/userAuth.error.js";
+import PDFDocument from "pdfkit";
+import fs from 'fs';
+import buildCasePDF from "../utils/casePDF.utils.js";
+import path, { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
 class CasesController {
 	async createCase(req, res) {
@@ -252,6 +257,44 @@ class CasesController {
 			res.send(case_);
 		}
 		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
+	async getCasePDF(req, res) {
+		const { id } = req.params;
+		try {
+			const case_ = await Case.findById(id)
+				.populate("court judge events")
+				.populate({ path: "parties", populate: { path: "lawyer client stakeholders" } })
+				.exec();
+
+			if (!case_) throw new CaseDoesNotExistError();
+
+			const fileName = `case-${id}.pdf`
+			const __filename = fileURLToPath(import.meta.url);
+			const __dirname = dirname(__filename);
+			const filePath = path.join(resolve(__dirname, ".."), 'pdf', fileName);
+
+      const pdfDoc = new PDFDocument({
+				size: "A4",
+				margin: "24",
+				font: "fonts/Ubuntu-Regular.ttf",
+				info: {Title: `case-${id}.pdf`, Author: "E-Court-System"}
+			});
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+				`inline; filename=${fileName}`
+      );
+
+			buildCasePDF(pdfDoc, case_);
+
+      // pdfDoc.pipe(fs.createWriteStream(filePath)); // save copy on the server: optional
+      pdfDoc.pipe(res);
+			pdfDoc.end();
+
+		} catch(error) {
 			errorHandler.handleError(res, error);
 		}
 	}
