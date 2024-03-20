@@ -43,6 +43,7 @@ import { action as respondAction } from "../pages/cases/Respond";
 import { action as documentAction } from "../pages/documents/AddDocument";
 import { action as stakeholderAction } from "../pages/stakeholders/AddStakeholder";
 import { action as eventAction } from "../pages/events/AddEvent";
+import { action as breakdownAction } from "../pages/userProfile/Overview";
 
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         loader: userLayoutLoader,
         children: [
-          { index: true, element: <Overview /> },
+          { index: true, element: <Overview />, action: breakdownAction },
           {
             path: "edit-details",
             element: <EditUserDetails />,

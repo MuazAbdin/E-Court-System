@@ -15,6 +15,8 @@ import buildCasePDF from "../utils/casePDF.utils.js";
 import path, { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import User from "../models/user.model.js";
+import { Types } from "mongoose";
+
 
 class CasesController {
 	async createCase(req, res) {
@@ -173,6 +175,39 @@ class CasesController {
 			}
 			res.json(cases);
 		} catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
+	async breakdown(req, res) {
+		const userId = req.userId;
+		const {start, end} = req.body;
+		try {
+			const user = await User.findById(userId);
+			let result = []
+			if (user.userType === "Lawyer") {
+				result = await Party.find({ lawyer: userId }, {_id: 0, case: 1})
+														.populate({ path: "case",
+    																		match: { createdAt: { $gte: start, $lte: end } }})
+														.exec();
+														
+			} else if (user.userType === "Judge") {
+				result = await Case.find({judge: userId});
+			}
+			// console.log(result);
+			if (!result) result = [];
+			const counter = {};
+			let total = 0;
+			result.forEach((c)=> {
+				const status = c.case?.status;
+				if (!status) return;
+				total++;
+				counter[status] = counter[status] ? counter[status] + 1 : 1
+			});
+
+			res.json({ counter, total });
+		}
+		catch(error) {
 			errorHandler.handleError(res, error);
 		}
 	}
