@@ -3,6 +3,7 @@ import { Table } from "../../components";
 import { Link, useLoaderData } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
 function MyCases() {
   const { pagesCount, currentPage, cases } = useLoaderData();
@@ -12,22 +13,26 @@ function MyCases() {
       <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
       <Table
         tableCaption=""
-        tableHeader={["", "#", "Title", "Status", "Judge", "Last Update"]}
+        tableHeader={["", "#", "Title", "Status", "Court", "Judge", "Last Update"]}
       >
         {cases.map((r) => (
           <tr key={r.number}>
-            <td>
-              <Link>{r.caseNumber}</Link>
-            </td>
-            <td>{r.title}</td>
-            <td>{r.status}</td>
-            <td>{r.judge ? r.judge.firstName + " " + r.judge.lastName : ""}</td>
-            <td>{r.updatedAt}</td>
+              <td>
+                <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
+              </td>
+              <td>
+                <Link to={`/user/cases/${r._id}`}>{r.title}</Link>
+              </td>
+              <td>{r.status}</td>
+              <td>{r.court.name}</td>
+              <td>{r.judge ? r.judge.firstName + " " + r.judge.lastName : ""}</td>
+              <td>{dayjs(r.updatedAt).format("DD MMM YYYY - HH:mm")}</td>
           </tr>
         ))}
       </Table>
     </div>
   );
+  dayjs()
 }
 
 export default MyCases;
