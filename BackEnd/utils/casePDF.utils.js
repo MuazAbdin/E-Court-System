@@ -39,20 +39,20 @@ export default function buildCasePDF(pdfDoc, caseData) {
 
   pdfDoc.text("Client", 80, 310);
   pdfDoc.text(`${caseData.parties[0]?.client.idNumber || ""}`, 180, 310);
-  pdfDoc.text(`${caseData.parties[1]?.client.idNumber || ""}`, 270, 310);
+  pdfDoc.text(`${caseData.parties[1]?.client.idNumber || ""}`, 370, 310);
 
   pdfDoc.text(`${caseData.parties[0]?.client.firstName || ""} ${caseData.parties[0]?.client.lastName || ""}`, 180, 330);
-  pdfDoc.text(`${caseData.parties[1]?.client.firstName || ""} ${caseData.parties[1]?.client.lastName || ""}`, 270, 330);
+  pdfDoc.text(`${caseData.parties[1]?.client.firstName || ""} ${caseData.parties[1]?.client.lastName || ""}`, 370, 330);
 
   pdfDoc.text(`${caseData.parties[0]?.client.phoneNumber || ""}`, 180, 350);
-  pdfDoc.text(`${caseData.parties[1]?.client.phoneNumber || ""}`, 270, 350);
+  pdfDoc.text(`${caseData.parties[1]?.client.phoneNumber || ""}`, 370, 350);
 
   pdfDoc.text(`${caseData.parties[0]?.client.email || ""}`, 180, 370);
-  pdfDoc.text(`${caseData.parties[1]?.client.email || ""}`, 270, 370);
+  pdfDoc.text(`${caseData.parties[1]?.client.email || ""}`, 370, 370);
 
   pdfDoc.text("Lawyer", 80, 390);
   pdfDoc.text(`${caseData.parties[0]?.lawyer.firstName || ""} ${caseData.parties[0]?.lawyer.lastName || ""}`, 180, 390);
-  pdfDoc.text(`${caseData.parties[1]?.lawyer.firstName || ""} ${caseData.parties[1]?.lawyer.lastName || ""}`, 270, 390);
+  pdfDoc.text(`${caseData.parties[1]?.lawyer?.firstName || ""} ${caseData.parties[1]?.lawyer?.lastName || ""}`, 370, 390);
   pdfDoc.text("", 50, 400).moveDown(2);
 
   pdfDoc.font("fonts/Ubuntu-Bold.ttf")

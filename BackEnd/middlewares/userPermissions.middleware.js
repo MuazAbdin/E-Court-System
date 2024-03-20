@@ -15,8 +15,8 @@ const PERMISSIONS_TABLE = {
         /* ----- Case Respond routes ----- */
         "/case-responds/": ["Court Manager", "Admin"],
         /* ----- Courts routes ----- */
-        "/court/": ["Lawyer", "Judge", "Court Manager", "Admin"],
-        "/court/param/": ["Lawyer", "Judge", "Court Manager", "Admin"],
+        "/courts/": ["Lawyer", "Judge", "Court Manager", "Admin"],
+        "/courts/param/": ["Lawyer", "Judge", "Court Manager", "Admin"],
         /* ----- Document routes ----- */
         "/documents/param/": ["Lawyer", "Judge", "Court Manager", "Admin"],
         "/documents/user/param/": ["Court Manager", "Admin"],
@@ -54,7 +54,7 @@ const PERMISSIONS_TABLE = {
         /* ----- Party routes ----- */
         "/parties/": ["Court Manager", "Admin"],
         /* ----- Stakeholder routes ----- */
-        "/stakeholders/": ["Court Manager", "Admin"],
+        "/stakeholders/": ["Court Manager", "Admin", "Lawyer"],
     },
     "PATCH": {
         /* ----- Case routes ----- */
@@ -105,7 +105,6 @@ export async function permissionsMiddleWare(req, res, next) {
         const userType = req.userType;
 
         const url = createUrl(req.originalUrl, req.params);
-
         if(!PERMISSIONS_TABLE[req.method][url].includes(userType)) {
             throw new NotAuthorizedError();
         }

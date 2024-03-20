@@ -110,6 +110,10 @@ const StyledCaseForm = styled(CaseForm)`
     background-color: var(--grey-200);
   }
 
+  .MuiInputBase-input {
+    font-family: var(--main-font);
+  }
+
   .add-doc,
   .add-stakeholder,
   .add-event {
@@ -179,7 +183,8 @@ const StyledCaseForm = styled(CaseForm)`
         border-radius: var(--border-radius);
 
         label,
-        input {
+        input,
+        textarea {
           font-family: var(--main-font);
           /* text-transform: capitalize; */
         }

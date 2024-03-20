@@ -28,7 +28,7 @@ function AddStakeholder() {
               id="stakeholder-form-type"
               label="Type"
               menuItems={[
-                { id: 1, value: "Witness", icon: <PersonSearchIcon /> },
+                { id: "Witness", value: "Witness", icon: <PersonSearchIcon /> },
               ]}
             />
           </fieldset>,

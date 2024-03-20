@@ -1,4 +1,9 @@
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
@@ -6,18 +11,20 @@ import { Table } from "../../components";
 import { FaFileCirclePlus, FaTrashCan } from "react-icons/fa6";
 import { RiUserAddFill } from "react-icons/ri";
 import { MdEventNote } from "react-icons/md";
+import dayjs from "dayjs";
 
 function CaseDetails() {
   const { caseID } = useParams();
   const { caseData, docsData } = useLoaderData(caseID);
-  console.log({ caseData, docsData });
+  const { userData } = useOutletContext();
+  console.log({ caseData, docsData, userData });
   return (
     <StyledCaseForm
       formID="case-form"
       title="view case"
       method="PATCH"
       buttonText="save"
-      values={caseData}
+      values={{ caseData, userData }}
       isEdit={true}
       courts={[]}
     >
@@ -71,10 +78,11 @@ function CaseDetails() {
 
       <section className="events">
         <h5 className="section-title">events</h5>
-        <Table tableHeader={["", "date", "location", "type", ""]}>
+        <Table tableHeader={["", "date", "Time", "location", "type", ""]}>
           {caseData.events.map((e) => (
             <tr key={e._id}>
-              <td>{e.date}</td>
+              <td>{dayjs(e.date).format("DD MMM YYYY")}</td>
+              <td>{dayjs.utc(e.date).format("HH:mm")}</td>
               <td>{e.location}</td>
               <td>{e.type}</td>
               <td>

@@ -2,6 +2,10 @@ import { toast } from "react-toastify";
 import StyledEventForm from "../../assets/stylingWrappers/StyledEventForm";
 import { redirect, useNavigate } from "react-router-dom";
 import { FaAnglesLeft } from "react-icons/fa6";
+import { fetcher } from "../../utils/fetcher";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 function AddEvent() {
   const navigate = useNavigate();
@@ -23,7 +27,8 @@ function AddEvent() {
 
 export default AddEvent;
 
-export async function action({ request }) {
+export async function action({ params, request }) {
+  const { caseID } = params;
   const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
@@ -31,7 +36,13 @@ export async function action({ request }) {
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
 
-  console.log(data);
+  const reqData = {
+    caseId: caseID,
+    eventType: data.type,
+    date: dayjs.utc(data.date, "DD MMM YYYY - HH:mm"),
+    description: data.description,
+    location: "Jerusalem", // for now
+  };
 
   // for (const key in data) {
   //   if (!data[key]) {
@@ -41,17 +52,15 @@ export async function action({ request }) {
   // }
 
   try {
-    //   const response = await fetcher("/cases/", {
-    //     method: request.method,
-    //     body: JSON.stringify(data),
-    //   });
+    const response = await fetcher(`/events`, {
+      method: request.method,
+      body: JSON.stringify(reqData),
+    });
 
-    //   console.log(response);
-    //   if (!response.ok) {
-    //     const data = await response.text();
-    //     console.log(data);
-    //     throw new Error(data);
-    //   }
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
 
     toast.success("Created Successfully!");
     return redirect("..");

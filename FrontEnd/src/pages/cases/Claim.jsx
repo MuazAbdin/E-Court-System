@@ -24,7 +24,7 @@ export default Claim;
 export async function loader({ params, request }) {
   try {
     const response = await fetcher("/courts");
-    if(!response.ok) return [];
+    if (!response.ok) return [];
     const data = await response.json();
 
     return data;
@@ -42,7 +42,6 @@ export async function action({ request }) {
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
 
-  // console.log(data);
   const {
     court,
     title,
@@ -51,8 +50,7 @@ export async function action({ request }) {
     RespondentLawyerNotes: respondentLawyerNotes,
     JudgeNotes: judgeNotes,
   } = data;
-  console.log(data);
-  // return null;
+
   const claimant = getPartyDetails("claimant_", data);
   const respondent = getPartyDetails("respondent_", data);
   // console.log(claimant, respondent);
@@ -91,10 +89,8 @@ export async function action({ request }) {
       body: JSON.stringify(reqBody),
     });
 
-    console.log(response);
     if (!response.ok) {
       const data = await response.text();
-      console.log(data);
       throw new Error(data);
     }
 
