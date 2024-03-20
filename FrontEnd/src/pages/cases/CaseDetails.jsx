@@ -6,6 +6,7 @@ import { Table } from "../../components";
 import { FaFileCirclePlus, FaTrashCan } from "react-icons/fa6";
 import { RiUserAddFill } from "react-icons/ri";
 import { MdEventNote } from "react-icons/md";
+import dayjs from "dayjs";
 
 function CaseDetails() {
   const { caseID } = useParams();
@@ -71,10 +72,11 @@ function CaseDetails() {
 
       <section className="events">
         <h5 className="section-title">events</h5>
-        <Table tableHeader={["", "date", "location", "type", ""]}>
+        <Table tableHeader={["", "date", "Time", "location", "type", ""]}>
           {caseData.events.map((e) => (
             <tr key={e._id}>
-              <td>{e.date}</td>
+              <td>{dayjs(e.date).format("DD MMM YYYY")}</td>
+              <td>{dayjs.utc(e.date).format("HH:mm")}</td>
               <td>{e.location}</td>
               <td>{e.type}</td>
               <td>

@@ -1,10 +1,10 @@
 import { Form, useNavigation } from "react-router-dom";
 import { Input } from "../../components";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
-import dayjs from "dayjs";
 import StyledInputSelect from "../../assets/stylingWrappers/StyledInputSelect";
+import dayjs from "dayjs";
 
 function EventForm({
   children,
@@ -28,35 +28,37 @@ function EventForm({
           id={`${formID}-type`}
           label="Type"
           menuItems={[
-            { id: 1, value: "General" },
-            { id: 2, value: "Hearing" },
-            { id: 3, value: "Trial" },
-            { id: 4, value: "Appeal" },
+            { id: "General", value: "General" },
+            { id: "Hearing", value: "Hearing" },
+            { id: "Trial", value: "Trial" },
+            { id: "Appeal", value: "Appeal" },
           ]}
         />
       </fieldset>
 
       <fieldset>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
+          <DateTimePicker
             margin="normal"
             id={`${formID}-date`}
-            label="Date"
+            label="Date & Time"
             name={`${formID}-date`}
             value={eventDate}
             onChange={(newValue) => setEventDate(newValue)}
-            minDate={dayjs()}
-            format="DD-MM-YYYY"
+            disablePast
+            // minDateTime={dayjs()}
+            ampm={false}
+            format="DD MMM YYYY - HH:mm"
             slotProps={{ textField: { size: "small", variant: "filled" } }}
           />
         </LocalizationProvider>
       </fieldset>
 
       <Input
-        key={`${formID}-decription`}
-        label="Decription"
+        key={`${formID}-description`}
+        label="Description"
         type="text"
-        id={`${formID}-decription`}
+        id={`${formID}-description`}
         multiline={true}
         rows={7}
         prevValue={""}

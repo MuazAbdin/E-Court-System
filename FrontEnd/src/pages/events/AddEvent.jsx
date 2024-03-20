@@ -2,6 +2,12 @@ import { toast } from "react-toastify";
 import StyledEventForm from "../../assets/stylingWrappers/StyledEventForm";
 import { redirect, useNavigate } from "react-router-dom";
 import { FaAnglesLeft } from "react-icons/fa6";
+import { fetcher } from "../../utils/fetcher";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 function AddEvent() {
   const navigate = useNavigate();
@@ -31,9 +37,15 @@ export async function action({ params, request }) {
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
-
-  console.log(data);
-  console.log(caseID);
+  // console.log(dayjs().locale());
+  const reqData = {
+    caseId: caseID,
+    eventType: data.type,
+    date: dayjs.utc(data.date, "DD MMM YYYY - HH:mm"),
+    description: data.description,
+    location: "Jerusalem", // for now
+  };
+  // return null;
 
   // for (const key in data) {
   //   if (!data[key]) {
@@ -43,17 +55,12 @@ export async function action({ params, request }) {
   // }
 
   try {
-    const response = await fetcher("/events/case/:id", {
+    const response = await fetcher(`/events`, {
       method: request.method,
-      body: JSON.stringify(data),
+      body: JSON.stringify(reqData),
     });
 
-    console.log(response);
-    if (!response.ok) {
-      const data = await response.text();
-      console.log(data);
-      throw new Error(data);
-    }
+    if (!response.ok) throw response;
 
     toast.success("Created Successfully!");
     return redirect("..");

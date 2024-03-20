@@ -18,6 +18,8 @@ class EventsController {
 		try {
 			EventValidator.validateEventData(req.body);
 
+			// by userid if it is court extract the location, for now I will send it in req.body
+
 			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
 			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true })
 			.populate({ path: "parties", populate: { path: "lawyer client stakeholders" } }).exec();
@@ -29,10 +31,10 @@ class EventsController {
 
 			const notifiedUsers = [];
 			for(const party of case_.parties) {
-				users.push({ type: "Lawyer", email: party.lawyer.email, phoneNumber: party.lawyer.phoneNumber });
-				users.push({ type: "client", email: party.client.email, phoneNumber: party.client.phoneNumber });
+				notifiedUsers.push({ type: "Lawyer", email: party.lawyer.email, phoneNumber: party.lawyer.phoneNumber });
+				notifiedUsers.push({ type: "client", email: party.client.email, phoneNumber: party.client.phoneNumber });
 				for(const stakeholder of party.stakeholders) {
-					users.push({ type: "stakeholder", email: stakeholder.email, phoneNumber: stakeholder.phoneNumber });
+					notifiedUsers.push({ type: "stakeholder", email: stakeholder.email, phoneNumber: stakeholder.phoneNumber });
 				}
 			}
 
@@ -99,7 +101,8 @@ class EventsController {
         try {
             const events = await Event.find({ case: caseId });
             if (events.length === 0) {
-                throw new NoEventsFoundError();
+							return [];
+                // throw new NoEventsFoundError();
             }
             res.json(events);
         } catch (error) {
