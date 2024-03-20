@@ -64,7 +64,6 @@ export async function loader({ params, request }) {
     const response = await fetcher(`/cases/?${serverSearchParams}`);
     if (!response.ok) throw response;
     const { pagesCount, result } = await response.json();
-    console.log({ pagesCount, result });
     return { pagesCount, currentPage: page, result };
   } catch (error) {
     toast.error(error.message);

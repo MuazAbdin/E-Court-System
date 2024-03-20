@@ -74,7 +74,7 @@ caseSchema.statics.query = async function(queries, mainQuery) {
         const result = await this.find({
             $and: dbQuery 
         }) 
-        .skip(offset * limit)
+        .skip(offset)
         .limit(limit)
             .populate("court judge events")
             .populate({ path: "parties", populate: { path: "lawyer client" } })
@@ -88,7 +88,7 @@ caseSchema.statics.query = async function(queries, mainQuery) {
     else {
         const pagesCount = Math.ceil((await this.countDocuments(dbMainQuery)) / limit);
         const result = await this.find(dbMainQuery)
-            .skip(offset * limit)
+            .skip(offset)
             .limit(limit)
             .populate("court judge events")
             .populate({ path: "parties", populate: { path: "lawyer client" } })
