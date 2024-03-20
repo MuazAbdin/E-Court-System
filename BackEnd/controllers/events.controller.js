@@ -56,7 +56,7 @@ class EventsController {
 		const userType = req.userType;
 		try {
 			const caseIds = userType === "Judge" ?
-				(await Case.find({ judge: userId })).map(c => c.case) :
+				(await Case.find({ judge: userId })).map(c => c._id) :
 				(await Party.find({ lawyer: userId })).map(p => p.case);
 
 			const events = await Event.find({ case: { $in: caseIds }, date: { $gte: Date.now() } }).sort({ date: 1 });
