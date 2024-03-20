@@ -133,7 +133,9 @@ class CasesController {
 		const userId = req.userId;
 		const userType = req.userType;
 		try {
-			const caseIds = (await Party.find({ lawyer: userId })).map(p => p.case);
+			const caseIds = userType === "Lawyer" ? 
+				(await Party.find({ lawyer: userId })).map(p => p.case) :
+				[];
 
 			const cases = userType === "Judge" ? 
 				await Case.query(req.query, { judge: userId }) :
