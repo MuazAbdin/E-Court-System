@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 
 function ReviewClaims() {
   const { pagesCount, currentPage, cases } = useLoaderData();
-  console.log({ pagesCount, currentPage, cases })
 
   return (
     <div>
@@ -38,7 +37,6 @@ function ReviewClaims() {
 export default ReviewClaims
 
 export async function loader({ request }) {
-  console.log("WY")
   const url = new URL(request.url);
   const searchQuery = {};
   const query = url.searchParams.get("query") || "";
