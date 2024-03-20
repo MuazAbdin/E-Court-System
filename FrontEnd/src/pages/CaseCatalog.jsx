@@ -50,15 +50,12 @@ export async function loader({ params, request }) {
   if (end.trim() !== "") searchQuery.end = end;
   const limit = 10;
   const offset = (page - 1) * limit;
-  // console.log({ query, location, status, page, offset, limit });
 
   const serverSearchParams = new URLSearchParams({
     ...searchQuery,
     offset,
     limit,
   });
-  // console.log(serverSearchParams.toString());
-  // console.log(`/cases/?${serverSearchParams}`);
 
   try {
     const response = await fetcher(`/cases/?${serverSearchParams}`);

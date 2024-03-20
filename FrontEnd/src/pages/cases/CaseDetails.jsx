@@ -18,7 +18,6 @@ function CaseDetails() {
   const { caseID } = useParams();
   const { userData } = useOutletContext();
   const { caseData, docsData, judges, statusTypes } = useLoaderData(caseID);
-  console.log({ caseData, docsData, userData });
   return (
     <StyledCaseForm
       formID="case-form"
@@ -171,8 +170,6 @@ export async function action({ params, request }) {
     reqBody.parties.push({
       client: { ...respondent },
     });
-
-  console.log(reqBody);
 
   try {
     const response = await fetcher("/cases", {

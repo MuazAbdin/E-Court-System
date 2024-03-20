@@ -143,8 +143,6 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
     value: st
   }})
 
-  console.log(statusTypesData, judgesData)
-
   return (
     <section className="case-header">
       {HEADER_FIELDS.map((f) => (

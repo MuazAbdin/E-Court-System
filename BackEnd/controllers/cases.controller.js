@@ -58,7 +58,6 @@ class CasesController {
 	async fileACase(req, res) {
 		const { title, description, court, parties, claimantLawyerNotes } = req.body;
 		const userId = req.userId;
-		// console.log({ title, description, court, parties, claimantLawyerNotes });
 		// Saves created Documents to delete them on faliure/error
 		const savedDocs = [];
 		try {
@@ -207,13 +206,11 @@ class CasesController {
 		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes } = req.body;
 		try 
 		{
-			console.log({ status, judge, title, description })
 			const updateData = { status, judge, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
 
 			const updatedCase = await Case.findById(caseId)
 			.populate("parties").exec();
-			console.log(userId, updatedCase);
 			if(updatedCase === null) {
 				throw new CaseDoesNotExistError();
 			}
@@ -332,35 +329,3 @@ class CasesController {
 
 const casesController = new CasesController();
 export default casesController;
-
-
-function statusAndJudgeUpdate(caseId, status, judge, user) {
-	if (!["Court Manager", "Admin"].includes(user.userType)) return {}
-	CaseValidator.validateResolvePendingCaseData({ caseId, status, judge });
-	return { status, judge };
-}
-
-function titleAndDescriptionUpdate(caseId, title, description,) {
-	CaseValidator.validateUpdateCaseData({ caseId, title, description });
-	return { title, description };
-}
-
-function NotesUpdate(claimantLawyerNotes, respondentLawyerNotes, judgeNotes, parties, user) {
-	console.log(!["Lawyer", "Judge"].includes(user.userType));
-	if (!["Lawyer", "Judge"].includes(user.userType)) return {};
-	console.log(user.userType)
-	console.log(user._id)
-	console.log(parties)
-	console.log(parties?.[0]?.lawyer?._id)
-	if (user.userType === "Lawyer" && user._id == parties?.[0]?.lawyer?._id) {
-		return { claimantLawyerNotes };
-	}
-	console.log(user._id)
-	console.log(parties?.[1]?.lawyer?._id)
-	if (user.userType === "Lawyer" && user._id == parties?.[1]?.lawyer?._id) {
-		return { respondentLawyerNotes };
-	}
-
-	if (user.userType === "Judge") return { judgeNotes };
-	return {};
-}

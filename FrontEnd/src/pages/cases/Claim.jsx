@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 function Claim() {
   const courts = useLoaderData();
   const { userData } = useOutletContext();
-  // console.log(courts);
   return (
     <StyledCaseForm
       formID="claim-form"
@@ -54,7 +53,6 @@ export async function action({ request }) {
 
   const claimant = getPartyDetails("claimant_", data);
   const respondent = getPartyDetails("respondent_", data);
-  // console.log(claimant, respondent);
 
   const reqBody = {
     court,
@@ -74,8 +72,6 @@ export async function action({ request }) {
     reqBody.parties.push({
       client: { ...respondent },
     });
-
-  console.log(reqBody);
 
   // for (const key in data) {
   //   if (!data[key]) {
