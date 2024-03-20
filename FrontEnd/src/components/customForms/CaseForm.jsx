@@ -224,7 +224,7 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   ref={null}
                   autoComplete={f.autoComplete ?? "off"}
                   validator={f.validator}
-                  readOnly={isEdit && (f.id === "idNumber" || !isPartyLawyer)}
+                  readOnly={true || isEdit && (f.id === "idNumber" || !isPartyLawyer)}
                   required={!isEdit && f.required}
                   severErrorMsg={""}
                   multiline={f.multiline ?? false}

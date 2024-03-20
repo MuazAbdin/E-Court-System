@@ -16,8 +16,8 @@ import dayjs from "dayjs";
 
 function CaseDetails() {
   const { caseID } = useParams();
-  const { caseData, docsData, judges, statusTypes } = useLoaderData(caseID);
   const { userData } = useOutletContext();
+  const { caseData, docsData, judges, statusTypes } = useLoaderData(caseID);
   console.log({ caseData, docsData, userData });
   return (
     <StyledCaseForm
