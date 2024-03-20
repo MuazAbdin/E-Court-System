@@ -29,6 +29,8 @@ import { action as authAction } from "../pages/Authentication";
 // import { action as stakeholderCreation } from "../pages/StakeholderForm";
 // import { action as eventCreation } from "../pages/EventForm";
 
+import { loader as myCasesLoader } from "../pages/cases/MyCases";
+
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 
@@ -87,7 +89,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <MyCases />,
-                // loader: browseLoader,
+                loader: myCasesLoader,
                 // action: browseAction,
               },
               {

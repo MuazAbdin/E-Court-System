@@ -1,42 +1,28 @@
-import React from "react";
 import StyledSearchBar from "../../assets/stylingWrappers/SearchBar";
 import { Table } from "../../components";
-import { Link } from "react-router-dom";
-
-const COURT_CASES = [
-  {
-    number: 451,
-    title: "case 1",
-    status: "pending",
-    judge: "judge 1",
-    DLU: "3/16/2024",
-  },
-  {
-    number: 336,
-    title: "case 2",
-    status: "active",
-    judge: "judge 2",
-    DLU: "3/10/2024",
-  },
-];
+import { Link, useLoaderData } from "react-router-dom";
+import { fetcher } from "../../utils/fetcher";
+import { toast } from "react-toastify";
 
 function MyCases() {
+  const casesData = useLoaderData();
+
   return (
     <div>
-      <StyledSearchBar pagesCount={1} currentPage={1} />
+      <StyledSearchBar pagesCount={casesData.pagesCount} currentPage={1} />
       <Table
         tableCaption=""
-        tableHeader={["", "#", "title", "status", "judge", "DLU"]}
+        tableHeader={["", "#", "Title", "Status", "Judge", "Last Update"]}
       >
-        {COURT_CASES.map((r) => (
+        {casesData.result.map((r) => (
           <tr key={r.number}>
             <td>
               <Link>{r.number}</Link>
             </td>
             <td>{r.title}</td>
             <td>{r.status}</td>
-            <td>{r.judge}</td>
-            <td>{r.DLU}</td>
+            <td>{r.judge ? r.judge.firstName + " " + r.judge.lastName : ""}</td>
+            <td>{r.updatedAt}</td>
           </tr>
         ))}
       </Table>
@@ -45,3 +31,18 @@ function MyCases() {
 }
 
 export default MyCases;
+
+
+export async function loader() {
+  try {
+    const response = await fetcher("/cases/user/");
+    if(!response.ok) throw response;
+    const cases = await response.json();
+    return cases;
+  }
+  catch(error) {
+    toast.error(error.statusText);
+    console.log(error);
+    return [];
+  }
+}
