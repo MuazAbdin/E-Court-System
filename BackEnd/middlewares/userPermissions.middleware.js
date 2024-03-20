@@ -58,7 +58,7 @@ const PERMISSIONS_TABLE = {
     },
     "PATCH": {
         /* ----- Case routes ----- */
-        "/cases/": ["Court Manager", "Admin"],
+        "/cases/": ["Court Manager", "Admin", "Judge", "Lawyer"],
         "/cases/status/": ["Court Manager", "Judge", "Admin"],
         "/cases/resolve-pending/": ["Court Manager", "Admin"],
         /* ----- Case Respond routes ----- */

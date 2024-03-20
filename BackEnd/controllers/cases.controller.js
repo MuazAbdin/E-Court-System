@@ -14,6 +14,7 @@ import fs from 'fs';
 import buildCasePDF from "../utils/casePDF.utils.js";
 import path, { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import User from "../models/user.model.js";
 
 class CasesController {
 	async createCase(req, res) {
@@ -202,14 +203,23 @@ class CasesController {
     }
 
 	async updateCase(req, res) {
-		const { caseId, title, description, status, court, judge } = req.body
-		try{
-			CaseValidator.validateUpdateCaseData({ caseId, title, description, status, court, judge });
-			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: { title, description, status, court, judge }}, { new: true });
-			if(updatedCase === null) {
-				throw new CaseDoesNotExistError();
-			}
+		const { caseId, status, judge, title, description } = req.body
+						// claimantLawyerNotes, respondentLawyerNotes, judgeNotes,
+					  // parties } = req.body
+
+		try {
+			// const user = await User.findById(req.userId);
+
+			// let updateData = { caseId };
+			// console.log(NotesUpdate(claimantLawyerNotes, respondentLawyerNotes, judgeNotes, parties, user));
+			// updateData = {...updateData, ...statusAndJudgeUpdate(caseId, status, judge, user)};
+			// updateData = {...updateData, ...titleAndDescriptionUpdate(caseId, title, description)};
+			// updateData = {...updateData, ...NotesUpdate(claimantLawyerNotes, respondentLawyerNotes, judgeNotes, parties, user)};
+
+			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: updateData}, { new: true });
+			if (updatedCase === null) throw new CaseDoesNotExistError();
 			res.json(updatedCase);
+
 		} catch(error) {
 			errorHandler.handleError(res, error);
 		}
@@ -305,3 +315,35 @@ class CasesController {
 
 const casesController = new CasesController();
 export default casesController;
+
+
+function statusAndJudgeUpdate(caseId, status, judge, user) {
+	if (!["Court Manager", "Admin"].includes(user.userType)) return {}
+	CaseValidator.validateResolvePendingCaseData({ caseId, status, judge });
+	return { status, judge };
+}
+
+function titleAndDescriptionUpdate(caseId, title, description,) {
+	CaseValidator.validateUpdateCaseData({ caseId, title, description });
+	return { title, description };
+}
+
+function NotesUpdate(claimantLawyerNotes, respondentLawyerNotes, judgeNotes, parties, user) {
+	console.log(!["Lawyer", "Judge"].includes(user.userType));
+	if (!["Lawyer", "Judge"].includes(user.userType)) return {};
+	console.log(user.userType)
+	console.log(user._id)
+	console.log(parties)
+	console.log(parties?.[0]?.lawyer?._id)
+	if (user.userType === "Lawyer" && user._id == parties?.[0]?.lawyer?._id) {
+		return { claimantLawyerNotes };
+	}
+	console.log(user._id)
+	console.log(parties?.[1]?.lawyer?._id)
+	if (user.userType === "Lawyer" && user._id == parties?.[1]?.lawyer?._id) {
+		return { respondentLawyerNotes };
+	}
+
+	if (user.userType === "Judge") return { judgeNotes };
+	return {};
+}

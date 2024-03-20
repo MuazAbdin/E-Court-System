@@ -24,10 +24,6 @@ import {
 import { loader as userLayoutLoader } from "../pages/UserLayout";
 
 import { action as authAction } from "../pages/Authentication";
-// import { action as courtAction } from "../pages/CourtForm";
-// import { action as partyCreation } from "../pages/PartyForm";
-// import { action as stakeholderCreation } from "../pages/StakeholderForm";
-// import { action as eventCreation } from "../pages/EventForm";
 
 import { loader as myCasesLoader } from "../pages/cases/MyCases";
 
@@ -35,7 +31,10 @@ import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDe
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 
 import { loader as catalogLoader } from "../pages/CaseCatalog";
-import { loader as caseDetailsLoader } from "../pages/cases/CaseDetails";
+import {
+  loader as caseDetailsLoader,
+  action as caseDetailsAction,
+} from "../pages/cases/CaseDetails";
 import {
   action as claimAction,
   loader as claimLoader,
@@ -110,6 +109,7 @@ const router = createBrowserRouter([
                     index: true,
                     element: <CaseDetails />,
                     loader: caseDetailsLoader,
+                    action: caseDetailsAction,
                   },
                   {
                     path: "docments",

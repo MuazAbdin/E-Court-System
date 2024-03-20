@@ -148,7 +148,7 @@ function Pagenation({ pagesCount, currentPage, handleSubmit }) {
     <section className="pagenation c-flex">
       <button
         className="btn page-left c-flex"
-        disabled={currentPage === 1}
+        disabled={currentPage <= 1}
         onClick={(event) => handleSubmit(event, currentPage - 1)}
       >
         <FaAnglesLeft />
@@ -166,7 +166,7 @@ function Pagenation({ pagesCount, currentPage, handleSubmit }) {
         ))}
       <button
         className="btn page-right c-flex"
-        disabled={currentPage === pagesCount}
+        disabled={currentPage >= pagesCount}
         onClick={(event) => handleSubmit(event, currentPage + 1)}
       >
         <FaAnglesRight />

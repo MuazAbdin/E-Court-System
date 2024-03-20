@@ -1,10 +1,11 @@
-import { redirect, useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 import { toast } from "react-toastify";
 
 function Claim() {
   const courts = useLoaderData();
+  const { userData } = useOutletContext();
   // console.log(courts);
   return (
     <StyledCaseForm
@@ -12,7 +13,7 @@ function Claim() {
       title="claim form"
       method="POST"
       buttonText="submit"
-      values={[]}
+      values={{ userData }}
       isEdit={false}
       courts={courts}
     />
@@ -108,7 +109,6 @@ function getPartyDetails(party, data) {
     if (!k.includes(party)) continue;
     details[k.split("_")[1]] = data[k];
   }
-  // details.phoneNumber = details.mobile;
   const { mobile, ...rest } = details;
   const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
   return filledKeys.length > 0 ? rest : null;
