@@ -31,7 +31,7 @@ class EventsController {
 
 			const notifiedUsers = [];
 			for(const party of case_.parties) {
-				notifiedUsers.push({ type: "Lawyer", email: party.lawyer.email, phoneNumber: party.lawyer.phoneNumber });
+				party.lawyer && notifiedUsers.push({ type: "Lawyer", email: party.lawyer.email, phoneNumber: party.lawyer.phoneNumber });
 				notifiedUsers.push({ type: "client", email: party.client.email, phoneNumber: party.client.phoneNumber });
 				for(const stakeholder of party.stakeholders) {
 					notifiedUsers.push({ type: "stakeholder", email: stakeholder.email, phoneNumber: stakeholder.phoneNumber });

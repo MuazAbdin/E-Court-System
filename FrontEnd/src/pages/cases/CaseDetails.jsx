@@ -1,4 +1,9 @@
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
@@ -11,14 +16,15 @@ import dayjs from "dayjs";
 function CaseDetails() {
   const { caseID } = useParams();
   const { caseData, docsData } = useLoaderData(caseID);
-  console.log({ caseData, docsData });
+  const { userData } = useOutletContext();
+  console.log({ caseData, docsData, userData });
   return (
     <StyledCaseForm
       formID="case-form"
       title="view case"
       method="PATCH"
       buttonText="save"
-      values={caseData}
+      values={{ caseData, userData }}
       isEdit={true}
       courts={[]}
     >

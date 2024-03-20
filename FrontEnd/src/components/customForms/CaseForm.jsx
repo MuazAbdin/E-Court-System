@@ -29,12 +29,24 @@ function CaseForm({
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
+  const { caseData, userData } = values;
+  const IDs = {
+    ClaimantLawyer: caseData?.parties?.[0]?.lawyer?._id,
+    RespondentLawyer: caseData?.parties?.[1]?.lawyer?._id,
+    Judge: caseData?.judge?._id,
+    CurUser: userData._id,
+  };
+
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
 
       {isEdit ? (
-        <CaseHeader formID={formID} values={values} />
+        <CaseHeader
+          formID={formID}
+          values={caseData}
+          userType={userData.userType}
+        />
       ) : (
         <StyledInputSelect
           id={`${formID}-court`}
@@ -49,7 +61,7 @@ function CaseForm({
         type="text"
         id={`${formID}-title`}
         required={!isEdit}
-        prevValue={isEdit ? values.title : ""}
+        prevValue={isEdit ? caseData.title : ""}
       />
 
       <Input
@@ -60,17 +72,23 @@ function CaseForm({
         required={!isEdit}
         multiline={true}
         rows={5}
-        prevValue={isEdit ? values.description : ""}
+        prevValue={isEdit ? caseData.description : ""}
         isSubmitted={false}
       />
 
       <CaseParties
         formID={formID}
         isEdit={isEdit}
-        values={values?.parties || []}
+        values={{ partiesData: caseData?.parties || [], userData }}
+        IDs={IDs}
       />
 
-      <CaseNotes formID={formID} isEdit={isEdit} values={values} />
+      <CaseNotes
+        formID={formID}
+        isEdit={isEdit}
+        values={{ caseData, userData }}
+        IDs={IDs}
+      />
 
       <button name="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "submitting ..." : `${buttonText}`}
@@ -82,7 +100,7 @@ function CaseForm({
         <button
           type="button"
           className="btn pdf-btn"
-          onClick={(event) => handleGeneratePDF(event, values._id)}
+          onClick={(event) => handleGeneratePDF(event, caseData._id)}
         >
           <FaRegFilePdf />
         </button>
@@ -113,7 +131,7 @@ const HEADER_FIELDS = [
   },
 ];
 
-function CaseHeader({ formID, values }) {
+function CaseHeader({ formID, values, userType }) {
   const { caseNumber, status, judge } = values;
   const court = values
     ? `${values.court.name} - ${values.court.city}`
@@ -129,7 +147,9 @@ function CaseHeader({ formID, values }) {
           type="text"
           id={`${formID}-${f.id}`}
           icon={f.icon}
-          readOnly={true}
+          readOnly={
+            userType !== "Court Manager" || ["status", "judge"].includes(f.id)
+          }
           prevValue={fieldValues?.[f.id] || ""}
         />
       ))}
@@ -137,14 +157,16 @@ function CaseHeader({ formID, values }) {
   );
 }
 
-function CaseParties({ formID, isEdit, values }) {
-  // console.log(values);
+function CaseParties({ formID, isEdit, values, IDs }) {
+  const { partiesData, userData } = values;
   return (
     <section className="parties">
       {["claimant", "respondent"].map((party) => {
-        const partyDetails = values.find(
+        const partyDetails = partiesData.find(
           (p) => p.name.toLowerCase() === party.toLowerCase()
         );
+        const IDsKey = party.charAt(0).toUpperCase() + party.slice(1);
+        const isPartyLawyer = userData._id == IDs[`${IDsKey}Lawyer`];
 
         return (
           <section key={party} className={party}>
@@ -160,7 +182,7 @@ function CaseParties({ formID, isEdit, values }) {
                   ref={null}
                   autoComplete={f.autoComplete ?? "off"}
                   validator={f.validator}
-                  readOnly={isEdit && f.id === "idNumber"}
+                  readOnly={isEdit && (f.id === "idNumber" || !isPartyLawyer)}
                   required={!isEdit && f.required}
                   severErrorMsg={""}
                   multiline={f.multiline ?? false}
@@ -179,7 +201,7 @@ function CaseParties({ formID, isEdit, values }) {
                   id={`${formID}-${party}_lawyer`}
                   readOnly={true}
                   prevValue={
-                    partyDetails
+                    partyDetails?.lawyer
                       ? `${partyDetails.lawyer.firstName} ${partyDetails.lawyer.lastName}`
                       : ""
                   }
@@ -189,7 +211,7 @@ function CaseParties({ formID, isEdit, values }) {
             {isEdit && (
               <div
                 className={`btn add-stakeholder c-flex ${
-                  partyDetails ? "" : "disabled-link"
+                  isPartyLawyer ? "" : "disabled-link"
                 }`}
               >
                 <Link
@@ -207,23 +229,34 @@ function CaseParties({ formID, isEdit, values }) {
   );
 }
 
-function CaseNotes({ formID, isEdit, values }) {
+function CaseNotes({ formID, isEdit, values, IDs }) {
+  const { caseData, userData } = values;
+
   return (
     <section className="notes">
       <h5 className="title">Notes</h5>
-      {["Claimant Lawyer", "Respondent Lawyer", "Judge"].map((side) => (
-        <Input
-          key={`${formID}-${side.split(" ").join("")}Notes`}
-          label={`${side} Notes`}
-          type="text"
-          id={`${formID}-${side.split(" ").join("")}Notes`}
-          severErrorMsg={""}
-          multiline={true}
-          rows={5}
-          prevValue={isEdit ? values[`${side.split(" ").join("")}Notes`] : ""}
-          isSubmitted={false}
-        />
-      ))}
+      {["Claimant Lawyer", "Respondent Lawyer", "Judge"].map((side) => {
+        if (!isEdit && side !== "Claimant Lawyer") return;
+        let sideValue = `${side.split(" ").join("")}Notes`;
+        sideValue = sideValue.charAt(0).toLowerCase() + sideValue.slice(1);
+
+        const readOnly = userData._id != IDs[`${side.split(" ").join("")}`];
+
+        return (
+          <Input
+            key={`${formID}-${sideValue}`}
+            label={`${side} Notes`}
+            type="text"
+            id={`${formID}-${sideValue}`}
+            readOnly={readOnly}
+            severErrorMsg={""}
+            multiline={true}
+            rows={5}
+            prevValue={isEdit ? caseData[sideValue] : ""}
+            isSubmitted={false}
+          />
+        );
+      })}
     </section>
   );
 }

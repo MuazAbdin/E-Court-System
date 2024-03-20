@@ -4,8 +4,6 @@ import { redirect, useNavigate } from "react-router-dom";
 import { FaAnglesLeft } from "react-icons/fa6";
 import { fetcher } from "../../utils/fetcher";
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-dayjs.extend(customParseFormat);
 import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 
@@ -37,7 +35,7 @@ export async function action({ params, request }) {
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
-  // console.log(dayjs().locale());
+
   const reqData = {
     caseId: caseID,
     eventType: data.type,
@@ -45,7 +43,6 @@ export async function action({ params, request }) {
     description: data.description,
     location: "Jerusalem", // for now
   };
-  // return null;
 
   // for (const key in data) {
   //   if (!data[key]) {
@@ -60,7 +57,10 @@ export async function action({ params, request }) {
       body: JSON.stringify(reqData),
     });
 
-    if (!response.ok) throw response;
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
 
     toast.success("Created Successfully!");
     return redirect("..");
