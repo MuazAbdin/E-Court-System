@@ -32,7 +32,6 @@ function MyCases() {
       </Table>
     </div>
   );
-  dayjs()
 }
 
 export default MyCases;

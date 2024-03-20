@@ -22,6 +22,7 @@ import {
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
+import { loader as overViewLoader } from "../pages/userProfile/Overview";
 
 import { action as authAction } from "../pages/Authentication";
 // import { action as courtAction } from "../pages/CourtForm";
@@ -71,7 +72,11 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         loader: userLayoutLoader,
         children: [
-          { index: true, element: <Overview /> },
+          { 
+            index: true, 
+            element: <Overview />, 
+            loader: overViewLoader 
+          },
           {
             path: "edit-details",
             element: <EditUserDetails />,
