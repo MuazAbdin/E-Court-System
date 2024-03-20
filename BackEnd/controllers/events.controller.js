@@ -101,8 +101,7 @@ class EventsController {
         try {
             const events = await Event.find({ case: caseId });
             if (events.length === 0) {
-							return [];
-                // throw new NoEventsFoundError();
+                throw new NoEventsFoundError();
             }
             res.json(events);
         } catch (error) {
