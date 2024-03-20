@@ -207,6 +207,7 @@ class CasesController {
 		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes } = req.body;
 		try 
 		{
+			console.log({ status, judge, title, description })
 			const updateData = { status, judge, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
 
@@ -217,7 +218,8 @@ class CasesController {
 				throw new CaseDoesNotExistError();
 			}
 
-			if(userId == updatedCase.judge) {
+			if(req.userType === "Court Manager");
+			else if(userId == updatedCase.judge) {
 				updatedCase.judgeNotes = judgeNotes;
 			}
 			else if(updatedCase.parties.length && userId == updatedCase.parties[0].lawyer) {
