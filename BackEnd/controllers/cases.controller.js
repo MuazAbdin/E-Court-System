@@ -131,13 +131,16 @@ class CasesController {
 
 	async getUserCases(req, res) {
 		const userId = req.userId;
+		const userType = req.userType;
 		try {
-			// TODO use only apply one query based on the user type
-			const cases = [
-				...(await Case.query(req.query, { judge: userId })),
-				...((await Party.find({ lawyer: userId }).populate("case"))
-					.map(party => party.case))
-			]
+			const caseIds = userType === "Lawyer" ? 
+				(await Party.find({ lawyer: userId })).map(p => p.case) :
+				[];
+
+			const cases = userType === "Judge" ? 
+				await Case.query(req.query, { judge: userId }) :
+				await Case.query(req.query, { _id: { $in: caseIds } });
+				
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}

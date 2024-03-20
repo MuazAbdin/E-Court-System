@@ -34,6 +34,10 @@ const Wrapper = styled.table`
     /* padding-right: 0.3rem; */
     /* text-align: right; */
   }
+  a:link {
+    font-weight: bold;
+    cursor: pointer;
+  }
 `;
 
 export default Wrapper;
