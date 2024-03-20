@@ -23,6 +23,7 @@ import {
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
 import { loader as overViewLoader } from "../pages/userProfile/Overview";
+import ReviewClaims, { loader as reviewClaimsLoader } from "../pages/cases/ReviewClaims";
 
 import { action as authAction } from "../pages/Authentication";
 // import { action as courtAction } from "../pages/CourtForm";
@@ -102,6 +103,11 @@ const router = createBrowserRouter([
                 element: <Claim />,
                 loader: claimLoader,
                 action: claimAction,
+              },
+              {
+                path: "pending",
+                element: <ReviewClaims />,
+                loader: reviewClaimsLoader,
               },
               {
                 path: "respond",
