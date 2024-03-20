@@ -204,18 +204,9 @@ class CasesController {
 
 	async updateCase(req, res) {
 		const { caseId, status, judge, title, description } = req.body
-						// claimantLawyerNotes, respondentLawyerNotes, judgeNotes,
-					  // parties } = req.body
 
 		try {
-			// const user = await User.findById(req.userId);
-
-			// let updateData = { caseId };
-			// console.log(NotesUpdate(claimantLawyerNotes, respondentLawyerNotes, judgeNotes, parties, user));
-			// updateData = {...updateData, ...statusAndJudgeUpdate(caseId, status, judge, user)};
-			// updateData = {...updateData, ...titleAndDescriptionUpdate(caseId, title, description)};
-			// updateData = {...updateData, ...NotesUpdate(claimantLawyerNotes, respondentLawyerNotes, judgeNotes, parties, user)};
-
+			CaseValidator.validateUpdateCaseData({ caseId, title, description, status, court, judge });
 			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: updateData}, { new: true });
 			if (updatedCase === null) throw new CaseDoesNotExistError();
 			res.json(updatedCase);
