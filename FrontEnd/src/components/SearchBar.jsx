@@ -42,8 +42,6 @@ function SearchBar({ className, pagesCount, currentPage }) {
       end,
       page,
     });
-    // console.log(params.toString());
-    // console.log(`${routeLocation.pathname}?${params.toString()}`);
 
     submit(params);
   };

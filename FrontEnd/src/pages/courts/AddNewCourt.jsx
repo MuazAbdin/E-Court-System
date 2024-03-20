@@ -16,7 +16,6 @@ export async function action({ request }) {
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
-  console.log(data);
   for (const key in data) {
     if (!data[key]) {
       toast.error(`${key} cannot be empty!`);
@@ -29,10 +28,8 @@ export async function action({ request }) {
       body: JSON.stringify(data),
     });
 
-    console.log(response);
     if (!response.ok) {
       const data = await response.text();
-      console.log(data);
       throw new Error(data);
     }
 

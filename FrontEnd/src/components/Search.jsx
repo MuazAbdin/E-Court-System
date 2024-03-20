@@ -14,7 +14,6 @@ import CaseCard from "./CaseCard";
 import { fetcher } from "../utils/fetcher";
 
 export default function Search({ cases }) {
-  console.log(cases)
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");

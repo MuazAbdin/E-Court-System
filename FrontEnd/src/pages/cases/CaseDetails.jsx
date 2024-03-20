@@ -16,16 +16,15 @@ import dayjs from "dayjs";
 
 function CaseDetails() {
   const { caseID } = useParams();
-  const { caseData, docsData } = useLoaderData(caseID);
   const { userData } = useOutletContext();
-  console.log({ caseData, docsData, userData });
+  const { caseData, docsData, judges, statusTypes } = useLoaderData(caseID);
   return (
     <StyledCaseForm
       formID="case-form"
       title="view case"
       method="PATCH"
       buttonText="save"
-      values={{ caseData, userData }}
+      values={{ caseData, userData, judges, statusTypes }}
       isEdit={true}
       courts={[]}
     >
@@ -114,7 +113,13 @@ export async function loader({ params }) {
     const docsResponse = await fetcher(`/documents/case/${caseID}`);
     if (!docsResponse.ok) throw docsResponse;
     const docsData = await docsResponse.json();
-    return { caseData, docsData };
+    const judgesResponse = await fetcher(`/users/judges/`);
+    if (!judgesResponse.ok) throw judgesResponse;
+    const judges = await judgesResponse.json();
+    const statusTypesResponse = await fetcher(`/types/case-status-types`);
+    if (!statusTypesResponse.ok) throw statusTypesResponse;
+    const statusTypes = await statusTypesResponse.json();
+    return { caseData, docsData, judges, statusTypes };
   } catch (error) {
     toast.error(error.message);
     return error;
@@ -165,8 +170,6 @@ export async function action({ params, request }) {
     reqBody.parties.push({
       client: { ...respondent },
     });
-
-  console.log(reqBody);
 
   try {
     const response = await fetcher("/cases", {

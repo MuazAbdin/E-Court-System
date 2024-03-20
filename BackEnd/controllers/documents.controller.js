@@ -12,7 +12,6 @@ import { decode } from "base64-arraybuffer";
 class DocumentsController {
     async createDocument(req, res) {
 		const { caseId, title, law, subject, requirement, honoringParty, fileData } = req.body
-		// console.log(decode(fileData.buffer));
 		const uploadedBy = req.userId;
 		try {
 			DocumentsValidator.validateDocumentData({ caseId, title, uploadedBy, law, subject, requirement, honoringParty });

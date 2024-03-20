@@ -19,7 +19,7 @@ const caseSchema = new Schema({
     },
     judgeNotes: { type: String, default: "" },
     claimantLawyerNotes: { type: String, default: "" },
-    respondantLawyerNotes: { type: String, default: "" },
+    respondentLawyerNotes: { type: String, default: "" },
     public: { type: Boolean, default: false }
 }, { timestamps: true })
 

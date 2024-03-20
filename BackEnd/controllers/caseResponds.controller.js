@@ -3,7 +3,7 @@ import errorHandler from "../errors/errorHandler.js";
 import Case from "../models/case.model.js";
 import CaseRespond from "../models/caseRespond.model.js";
 import GenericValidator from "../validators/generic.validate.js";
-import { CaseDoesNotHaveARespondantPartyError, CaseRespondDoesNotExistError, NoCaseRespondsFoundError, RespondantPartyAlreadyHasALawyerError } from "../errors/caseRespond.error.js";
+import { CaseDoesNotHaveARespondentPartyError, CaseRespondDoesNotExistError, NoCaseRespondsFoundError, RespondentPartyAlreadyHasALawyerError } from "../errors/caseRespond.error.js";
 import Party from "../models/party.model.js";
 import { PartyDoesNotExistError } from "../errors/party.error.js";
 import { CaseDoesNotExistError } from "../errors/case.error.js";
@@ -20,10 +20,10 @@ class CaseRespondController {
                 throw new CaseDoesNotExistError();
             }
             if(!case_.parties[1]) {
-                throw new CaseDoesNotHaveARespondantPartyError();
+                throw new CaseDoesNotHaveARespondentPartyError();
             }
             if(case_.parties[1].lawyer !== null) {
-                throw new RespondantPartyAlreadyHasALawyerError();
+                throw new RespondentPartyAlreadyHasALawyerError();
             }
 
             await CaseRespond.create({ lawyer: userId, case: case_._id });
@@ -62,10 +62,10 @@ class CaseRespondController {
                     throw new CaseDoesNotExistError();
                 }
                 if(!caseRespond.case.parties[1]) {
-                    throw new CaseDoesNotHaveARespondantPartyError();
+                    throw new CaseDoesNotHaveARespondentPartyError();
                 }
                 if(caseRespond.case.parties[1].lawyer !== null) {
-                    throw new RespondantPartyAlreadyHasALawyerError();
+                    throw new RespondentPartyAlreadyHasALawyerError();
                 }
     
                 const party = await Party.findByIdAndUpdate(caseRespond.case.parties[1]._id, 

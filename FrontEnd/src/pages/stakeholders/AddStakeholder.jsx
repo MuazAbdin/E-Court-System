@@ -50,8 +50,6 @@ export async function action({ params, request }) {
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
 
-  // console.log({ partyId, ...data });
-
   // for (const key in data) {
   //   if (!data[key]) {
   //     toast.error(`${key} cannot be empty!`);
