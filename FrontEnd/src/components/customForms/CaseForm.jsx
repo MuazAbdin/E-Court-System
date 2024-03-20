@@ -64,6 +64,7 @@ function CaseForm({
         id={`${formID}-title`}
         required={!isEdit}
         prevValue={isEdit ? caseData.title : ""}
+        readOnly={userData.userType !== "Court Manager"}
       />
 
       <Input
@@ -76,6 +77,7 @@ function CaseForm({
         rows={5}
         prevValue={isEdit ? caseData.description : ""}
         isSubmitted={false}
+        readOnly={userData.userType !== "Court Manager"}
       />
 
       <CaseParties
@@ -158,8 +160,7 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
       ))}
 
       { userType !== "Court Manager" && 
-        <>
-          <Input
+        <Input
             key={`${formID}-judge`}
             label="judge"
             type="text"
@@ -167,7 +168,16 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
             icon={<GavelIcon />}
             prevValue={judgeName || ""}
             readOnly={true}
-          />
+        />
+        ||
+        <StyledInputSelect
+          id={`${formID}-judge`}
+          label="Judge"
+          menuItems={judgesData}
+          initValue={judge._id}
+        />
+      }
+      { userType === "Lawyer" &&
           <Input
             key={`${formID}-status`}
             label="status"
@@ -177,22 +187,13 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
             prevValue={status || ""}
             readOnly={true}
           />
-        </>
         ||
-        <>
-          <StyledInputSelect
-            id={`${formID}-judge`}
-            label="Judge"
-            menuItems={judgesData}
-            initValue={judge._id}
-          />
           <StyledInputSelect
             id={`${formID}-status`}
             label="Status"
             menuItems={statusTypesData}
             initValue={status}
           />
-        </>
       }
     </section>
   );
