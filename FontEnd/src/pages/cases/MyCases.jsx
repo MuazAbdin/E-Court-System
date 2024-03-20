@@ -5,19 +5,19 @@ import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
 
 function MyCases() {
-  const casesData = useLoaderData();
+  const { pagesCount, currentPage, cases } = useLoaderData();
 
   return (
     <div>
-      <StyledSearchBar pagesCount={casesData.pagesCount} currentPage={1} />
+      <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
       <Table
         tableCaption=""
         tableHeader={["", "#", "Title", "Status", "Judge", "Last Update"]}
       >
-        {casesData.result.map((r) => (
+        {cases.map((r) => (
           <tr key={r.number}>
             <td>
-              <Link>{r.number}</Link>
+              <Link>{r.caseNumber}</Link>
             </td>
             <td>{r.title}</td>
             <td>{r.status}</td>
@@ -33,12 +33,36 @@ function MyCases() {
 export default MyCases;
 
 
-export async function loader() {
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const searchQuery = {};
+  const query = url.searchParams.get("query") || "";
+  if (query.trim() !== "") searchQuery.query = query;
+  const location = url.searchParams.getAll("location");
+  if (location.length > 0 && location[0] !== "")
+    searchQuery.location = location;
+  const status = url.searchParams.getAll("status");
+  if (status.length > 0 && status[0] !== "") searchQuery.status = status;
+  const page = parseInt(url.searchParams.get("page") || "1");
+  const start = url.searchParams.get("start") || "";
+  if (start.trim() !== "") searchQuery.start = start;
+  const end = url.searchParams.get("end") || "";
+  if (end.trim() !== "") searchQuery.end = end;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  const serverSearchParams = new URLSearchParams({
+    ...searchQuery,
+    offset,
+    limit,
+  });
+
+
   try {
-    const response = await fetcher("/cases/user/");
+    const response = await fetcher(`/cases/user/?${serverSearchParams}`);
     if(!response.ok) throw response;
     const cases = await response.json();
-    return cases;
+    return { pagesCount: cases.pagesCount, currentPage: page, cases: cases.result };
   }
   catch(error) {
     toast.error(error.statusText);
