@@ -23,7 +23,8 @@ function AddEvent() {
 
 export default AddEvent;
 
-export async function action({ request }) {
+export async function action({ params, request }) {
+  const { caseID } = params;
   const fd = await request.formData();
   const data = Object.fromEntries(
     [...fd.entries()]
@@ -32,6 +33,7 @@ export async function action({ request }) {
   );
 
   console.log(data);
+  console.log(caseID);
 
   // for (const key in data) {
   //   if (!data[key]) {
@@ -41,17 +43,17 @@ export async function action({ request }) {
   // }
 
   try {
-    //   const response = await fetcher("/cases/", {
-    //     method: request.method,
-    //     body: JSON.stringify(data),
-    //   });
+    const response = await fetcher("/events/case/:id", {
+      method: request.method,
+      body: JSON.stringify(data),
+    });
 
-    //   console.log(response);
-    //   if (!response.ok) {
-    //     const data = await response.text();
-    //     console.log(data);
-    //     throw new Error(data);
-    //   }
+    console.log(response);
+    if (!response.ok) {
+      const data = await response.text();
+      console.log(data);
+      throw new Error(data);
+    }
 
     toast.success("Created Successfully!");
     return redirect("..");

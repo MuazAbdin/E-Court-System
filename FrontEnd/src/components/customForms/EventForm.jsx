@@ -40,12 +40,12 @@ function EventForm({
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             margin="normal"
-            disableFuture
             id={`${formID}-date`}
             label="Date"
             name={`${formID}-date`}
             value={eventDate}
             onChange={(newValue) => setEventDate(newValue)}
+            minDate={dayjs()}
             format="DD-MM-YYYY"
             slotProps={{ textField: { size: "small", variant: "filled" } }}
           />
