@@ -1,5 +1,6 @@
 import {
   Link,
+  redirect,
   useLoaderData,
   useOutletContext,
   useParams,
@@ -15,16 +16,15 @@ import dayjs from "dayjs";
 
 function CaseDetails() {
   const { caseID } = useParams();
-  const { caseData, docsData } = useLoaderData(caseID);
   const { userData } = useOutletContext();
-  console.log({ caseData, docsData, userData });
+  const { caseData, docsData, judges, statusTypes } = useLoaderData(caseID);
   return (
     <StyledCaseForm
       formID="case-form"
       title="view case"
       method="PATCH"
       buttonText="save"
-      values={{ caseData, userData }}
+      values={{ caseData, userData, judges, statusTypes }}
       isEdit={true}
       courts={[]}
     >
@@ -107,21 +107,96 @@ export default CaseDetails;
 export async function loader({ params }) {
   try {
     const { caseID } = params;
-    // console.log(params);
     const caseResponse = await fetcher(`/cases/${caseID}`);
     if (!caseResponse.ok) throw caseResponse;
     const caseData = await caseResponse.json();
     const docsResponse = await fetcher(`/documents/case/${caseID}`);
     if (!docsResponse.ok) throw docsResponse;
-    // {
-    //   const message = docsResponse.text();
-    //   if (message !== "No documents found!") throw docsResponse;
-    // }
     const docsData = await docsResponse.json();
-    // console.log(docsData);
-    return { caseData, docsData };
+    const judgesResponse = await fetcher(`/users/judges/`);
+    if (!judgesResponse.ok) throw judgesResponse;
+    const judges = await judgesResponse.json();
+    const statusTypesResponse = await fetcher(`/types/case-status-types`);
+    if (!statusTypesResponse.ok) throw statusTypesResponse;
+    const statusTypes = await statusTypesResponse.json();
+    return { caseData, docsData, judges, statusTypes };
   } catch (error) {
     toast.error(error.message);
     return error;
   }
+}
+
+export async function action({ params, request }) {
+  const { caseID } = params;
+  const fd = await request.formData();
+  const data = Object.fromEntries(
+    [...fd.entries()]
+      .filter((entry) => entry[0] !== "submit")
+      .map((entry) => [entry[0].split("-")[2], entry[1]])
+  );
+
+  const {
+    status,
+    court,
+    judge,
+    title,
+    description,
+    claimantLawyerNotes,
+    respondentLawyerNotes,
+    judgeNotes,
+  } = data;
+
+  const claimant = getPartyDetails("claimant_", data);
+  const respondent = getPartyDetails("respondent_", data);
+
+  const reqBody = {
+    caseId: caseID,
+    status,
+    court,
+    judge,
+    title,
+    description,
+    claimantLawyerNotes,
+    respondentLawyerNotes,
+    judgeNotes,
+    parties: [],
+  };
+
+  if (claimant)
+    reqBody.parties.push({
+      client: { ...claimant },
+    });
+  if (respondent)
+    reqBody.parties.push({
+      client: { ...respondent },
+    });
+
+  try {
+    const response = await fetcher("/cases", {
+      method: request.method,
+      body: JSON.stringify(reqBody),
+    });
+
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
+
+    toast.success("Updated Successfully!");
+    return redirect("");
+  } catch (error) {
+    toast.error(error.message);
+    return error;
+  }
+}
+
+function getPartyDetails(party, data) {
+  const details = {};
+  for (const k in data) {
+    if (!k.includes(party)) continue;
+    details[k.split("_")[1]] = data[k];
+  }
+  const { mobile, ...rest } = details;
+  const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
+  return filledKeys.length > 0 ? rest : null;
 }

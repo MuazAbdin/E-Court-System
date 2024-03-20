@@ -11,9 +11,7 @@ export async function action({ request }) {
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
-  console.log(data);
   const preSubmitValidation = validateForm(data);
-  console.log(preSubmitValidation);
   if (preSubmitValidation.msg === "Invalid inputs") return preSubmitValidation;
 
   const { url, successMessage, redirectPath } = getFormMetadata(data);
@@ -23,7 +21,6 @@ export async function action({ request }) {
       body: JSON.stringify(data),
     });
 
-    // console.log(response);
     if (!response.ok) {
       const data = await response.text();
       // return { msg: "register failed" };

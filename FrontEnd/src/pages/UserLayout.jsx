@@ -6,7 +6,6 @@ import { fetcher } from "../utils/fetcher";
 
 function UserLayout() {
   const { userData } = useLoaderData();
-  // console.log(userData);
 
   return (
     <Wrapper>
@@ -27,10 +26,8 @@ export async function loader() {
     if(response.status === 401) return redirect("/")
     if (!response.ok) throw response;
     const data = await response.json();
-    // console.log(data);
     const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data;
     const userData = { IDcard, mobile, ...rest };
-    // console.log(userData);
     return { userData };
   } catch (error) {
     toast.error(error.message);

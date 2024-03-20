@@ -29,7 +29,7 @@ function CaseForm({
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const { caseData, userData } = values;
+  const { caseData, userData, judges, statusTypes } = values;
   const IDs = {
     ClaimantLawyer: caseData?.parties?.[0]?.lawyer?._id,
     RespondentLawyer: caseData?.parties?.[1]?.lawyer?._id,
@@ -46,6 +46,8 @@ function CaseForm({
           formID={formID}
           values={caseData}
           userType={userData.userType}
+          judges={judges}
+          statusTypes={statusTypes}
         />
       ) : (
         <StyledInputSelect
@@ -62,6 +64,7 @@ function CaseForm({
         id={`${formID}-title`}
         required={!isEdit}
         prevValue={isEdit ? caseData.title : ""}
+        readOnly={userData.userType !== "Court Manager"}
       />
 
       <Input
@@ -74,6 +77,7 @@ function CaseForm({
         rows={5}
         prevValue={isEdit ? caseData.description : ""}
         isSubmitted={false}
+        readOnly={userData.userType !== "Court Manager"}
       />
 
       <CaseParties
@@ -113,30 +117,31 @@ export default CaseForm;
 
 const HEADER_FIELDS = [
   { label: "Case Number", id: "caseNumber" },
-  { label: "Status", id: "status" },
-  // {
-  //   label: "Next Event",
-  //   id: "nextEvent",
-  //   icon: <EventNoteIcon />,
-  // },
   {
     label: "Court",
     id: "court",
     icon: <AccountBalanceIcon />,
-  },
-  {
-    label: "Judge",
-    id: "judge",
-    icon: <GavelIcon />,
-  },
+  }
 ];
 
-function CaseHeader({ formID, values, userType }) {
+function CaseHeader({ formID, values, userType, judges, statusTypes }) {
   const { caseNumber, status, judge } = values;
   const court = values
     ? `${values.court.name} - ${values.court.city}`
     : undefined;
-  const fieldValues = { caseNumber, status, court, judge };
+  const fieldValues = { caseNumber, court };
+  const judgeName = `${judge.firstName} ${judge.lastName}`;
+
+  const judgesData = judges.map(j => { return {
+    id: j._id,
+    value: `${j.firstName} ${j.lastName}`,
+    icon: <GavelIcon />
+  }})
+
+  const statusTypesData = statusTypes.map(st => { return {
+    id: st,
+    value: st
+  }})
 
   return (
     <section className="case-header">
@@ -147,12 +152,47 @@ function CaseHeader({ formID, values, userType }) {
           type="text"
           id={`${formID}-${f.id}`}
           icon={f.icon}
-          readOnly={
-            userType !== "Court Manager" || ["status", "judge"].includes(f.id)
-          }
           prevValue={fieldValues?.[f.id] || ""}
-        />
+          readOnly={true}
+          />
       ))}
+
+      { userType !== "Court Manager" && 
+        <Input
+            key={`${formID}-judge`}
+            label="judge"
+            type="text"
+            id={`${formID}-judge`}
+            icon={<GavelIcon />}
+            prevValue={judgeName || ""}
+            readOnly={true}
+        />
+        ||
+        <StyledInputSelect
+          id={`${formID}-judge`}
+          label="Judge"
+          menuItems={judgesData}
+          initValue={judge._id}
+        />
+      }
+      { userType === "Lawyer" &&
+          <Input
+            key={`${formID}-status`}
+            label="status"
+            type="text"
+            id={`${formID}-status`}
+            icon={<GavelIcon />}
+            prevValue={status || ""}
+            readOnly={true}
+          />
+        ||
+          <StyledInputSelect
+            id={`${formID}-status`}
+            label="Status"
+            menuItems={statusTypesData}
+            initValue={status}
+          />
+      }
     </section>
   );
 }
@@ -182,7 +222,7 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   ref={null}
                   autoComplete={f.autoComplete ?? "off"}
                   validator={f.validator}
-                  readOnly={isEdit && (f.id === "idNumber" || !isPartyLawyer)}
+                  readOnly={true || isEdit && (f.id === "idNumber" || !isPartyLawyer)}
                   required={!isEdit && f.required}
                   severErrorMsg={""}
                   multiline={f.multiline ?? false}

@@ -14,11 +14,12 @@ import { UserDoesNotExistError } from "../errors/user.error.js";
 
 class EventsController {
 	async createEvent(req, res) {
-		const { caseId, eventType, date, description, location } = req.body;
+		const { caseId, eventType, date, description } = req.body;
 		try {
-			EventValidator.validateEventData(req.body);
+			EventValidator.validateEventData({ caseId, eventType, date, description });
 
-			// by userid if it is court extract the location, for now I will send it in req.body
+			const court = (await Case.findById(caseId).populate("court")).court;
+			const location = court.city;
 
 			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
 			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true })

@@ -31,7 +31,6 @@ export async function action({ params, request }) {
       .filter((entry) => entry[0] !== "submit")
       .map((entry) => [entry[0].split("-")[2], entry[1]])
   );
-  console.log(data);
 
   try {
     // const response = await fetcher("", {
@@ -39,7 +38,6 @@ export async function action({ params, request }) {
     //   body: JSON.stringify(data),
     // });
 
-    // // console.log(response);
     // if (!response.ok) {
     //   const data = await response.text();
     //   // return { msg: "register failed" };
