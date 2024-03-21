@@ -23,7 +23,9 @@ import {
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
 import { loader as overViewLoader } from "../pages/userProfile/Overview";
-import ReviewClaims, { loader as reviewClaimsLoader } from "../pages/cases/ReviewClaims";
+import ReviewClaims, {
+  loader as reviewClaimsLoader,
+} from "../pages/cases/ReviewClaims";
 
 import { action as authAction } from "../pages/Authentication";
 
@@ -45,6 +47,7 @@ import { action as respondAction } from "../pages/cases/Respond";
 import { action as documentAction } from "../pages/documents/AddDocument";
 import { action as stakeholderAction } from "../pages/stakeholders/AddStakeholder";
 import { action as eventAction } from "../pages/events/AddEvent";
+import { action as breakdownAction } from "../pages/userProfile/Overview";
 
 import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 
@@ -72,10 +75,11 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         loader: userLayoutLoader,
         children: [
-          { 
-            index: true, 
-            element: <Overview />, 
-            loader: overViewLoader 
+          {
+            index: true,
+            element: <Overview />,
+            loader: overViewLoader,
+            action: breakdownAction,
           },
           {
             path: "edit-details",

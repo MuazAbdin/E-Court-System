@@ -6,6 +6,7 @@ export const router = Router();
 
 router.post("/", permissionsMiddleWare, casesController.createCase);
 router.post("/file-a-case", permissionsMiddleWare, casesController.fileACase);
+router.post("/breakdown/", casesController.breakdown)
 router.get("/", permissionsMiddleWare, casesController.getCases);
 router.get("/pending", permissionsMiddleWare, casesController.getPendingCases);
 router.get("/user", permissionsMiddleWare, casesController.getUserCases);

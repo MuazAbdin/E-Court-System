@@ -63,7 +63,9 @@ function CaseDetails() {
               <td>{d.party.name}</td>
               <td>{d.title}</td>
               <td>
-                <FaDownload onClick={(event) => handleDownloadDocument(event, d._id)}/>
+                <FaDownload
+                  onClick={(event) => handleDownloadDocument(event, d._id)}
+                />
               </td>
               <td>
                 <FaTrashCan />
@@ -107,7 +109,6 @@ function CaseDetails() {
 
 export default CaseDetails;
 
-
 async function handleDownloadDocument(event, caseId) {
   event.preventDefault();
   try {
@@ -125,7 +126,6 @@ async function handleDownloadDocument(event, caseId) {
   }
 }
 
-
 export async function loader({ params }) {
   try {
     const { caseID } = params;
@@ -136,8 +136,10 @@ export async function loader({ params }) {
     if (!docsResponse.ok) throw docsResponse;
     const docsData = await docsResponse.json();
     const judgesResponse = await fetcher(`/users/judges/`);
-    if (!judgesResponse.ok) throw judgesResponse;
-    const judges = await judgesResponse.json();
+    if (!judgesResponse.ok && judgesResponse.status != 404)
+      throw judgesResponse;
+    const judges =
+      judgesResponse.status === 404 ? [] : await judgesResponse.json();
     const statusTypesResponse = await fetcher(`/types/case-status-types`);
     if (!statusTypesResponse.ok) throw statusTypesResponse;
     const statusTypes = await statusTypesResponse.json();

@@ -1,61 +1,67 @@
 import { toast } from "react-toastify";
 import { Breakdown, CardsDeck } from "../../components";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { useActionData, useLoaderData } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
-import { useLoaderData } from "react-router-dom";
-
-const CARD_DECKS = [
-  {
-    title: "upcoming events",
-    cards: [
-      {
-        id: 1,
-        date: "March 18",
-        time: "3:00 PM",
-        court: "Jerusalem",
-        event: "hearing",
-      },
-      {
-        id: 2,
-        date: "April 5",
-        time: "9:00 AM",
-        court: "Tel Aviv",
-        event: "trial",
-      },
-      {
-        id: 3,
-        date: "April 23",
-        time: "11:00 AM",
-        court: "Jerusalem",
-        event: "appeal",
-      },
-    ],
-  },
-];
+dayjs.extend(utc);
 
 function Overview() {
+  const actionData = useActionData();
+  const counter = actionData ? actionData.counter : {};
+  const total = actionData ? actionData.total : 0;
   const { events } = useLoaderData();
 
   return (
     <>
       <h3 className="section-title">overview</h3>
-      <CardsDeck title={CARD_DECKS[0].title} events={events} />
-      <Breakdown />
+      <CardsDeck title="upcoming events" events={events} />
+      <Breakdown counter={counter} total={total} />
     </>
   );
 }
 
 export default Overview;
 
+export async function action({ request }) {
+  const fd = await request.formData();
+  const data = Object.fromEntries(
+    [...fd.entries()]
+      .filter((entry) => entry[0] !== "submit")
+      .map((entry) => [entry[0].split("-")[2], entry[1]])
+  );
+
+  const reqBody = {
+    start: dayjs.utc(data.start, "DD-MM-YYYY").format(),
+    end: dayjs.utc(data.end, "DD-MM-YYYY").format(),
+  };
+
+  try {
+    const response = await fetcher(`/cases/breakdown/`, {
+      method: request.method,
+      body: JSON.stringify(reqBody),
+    });
+
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
+    const { counter, total } = await response.json();
+    return { counter, total };
+  } catch (error) {
+    toast.error(error.message);
+    return error;
+  }
+}
 export async function loader() {
   try {
     const eventsResponse = await fetcher("/events/upcoming/");
-    if(!eventsResponse.ok) throw eventsResponse;
+    if (!eventsResponse.ok) throw eventsResponse;
     const events = await eventsResponse.json();
     return { events };
-  }
-  catch(error) {
+  } catch (error) {
     toast.error(error.statusText);
     console.log(error);
-    return { events: []};
+    return { events: [] };
   }
 }

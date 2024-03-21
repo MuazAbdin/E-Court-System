@@ -15,6 +15,8 @@ import buildCasePDF from "../utils/casePDF.utils.js";
 import path, { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import User from "../models/user.model.js";
+import { Types } from "mongoose";
+
 
 class CasesController {
 	async createCase(req, res) {
@@ -176,6 +178,39 @@ class CasesController {
 		}
 	}
 
+	async breakdown(req, res) {
+		const userId = req.userId;
+		const {start, end} = req.body;
+        const endDate = new Date(end);
+        endDate.setDate(endDate.getDate() + 1);
+        console.log(start, endDate);
+
+		try {
+			const user = await User.findById(userId);
+
+			const caseIds = user.userType === "Lawyer" ?
+			  (await Party.find({ lawyer: userId }, {_id: 0, case: 1}))
+					.map(p => p.case) :
+				[]
+
+			const result = user.userType === "Lawyer" ?
+			    await Case.aggregate([
+							{$match: { _id: { $in: caseIds }, createdAt: { $gte: start, $lte: endDate }}}, 
+							{$group: {_id: "$status", count : { $sum: 1 }}}
+						]) :
+                await Case.aggregate([
+							{$match: { judge: userId, createdAt: { $gte: start, $lte: endDate } }}, 
+							{$group: {_id: "$status", count : { $sum: 1 }}}
+						]);
+            
+            const total = result.reduce((acc, s)=> acc + s.count, 0);
+			res.json({ result, total });
+		}
+		catch(error) {
+			errorHandler.handleError(res, error);
+		}
+	}
+
 	async getCaseById(req, res) {
 			const { id } = req.params;
 			try {
@@ -206,7 +241,8 @@ class CasesController {
 		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes } = req.body;
 		try 
 		{
-			const updateData = { status, judge, title, description }
+            judge && GenericValidator.validateObjectId(judge);
+			const updateData = { status, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
 
 			const updatedCase = await Case.findById(caseId)
