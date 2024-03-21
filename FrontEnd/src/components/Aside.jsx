@@ -24,6 +24,11 @@ const CASES_SECTIONS = [
   { name: "claim", to: "cases/claim", userTypes: ["Lawyer"] },
   { name: "respond", to: "cases/respond", userTypes: ["Lawyer"] },
   {
+    name: "browse cases",
+    to: "cases/browse",
+    userTypes: ["Court Manager", "Admin"],
+  },
+  {
     name: "pending claims",
     to: "cases/pending",
     userTypes: ["Court Manager", "Admin"],
@@ -55,15 +60,6 @@ function Aside({ userType }) {
             subsectoins={CASES_SECTIONS.filter((s) =>
               s.userTypes.includes(userType)
             )}
-          />
-          <Accordion.Item
-            id="nav-court"
-            title="court"
-            Icon={AccountBalanceIcon}
-            subsectoins={[
-              // { name: "browse", to: "courts" },
-              { name: "add new", to: "courts/add-new" },
-            ]}
           />
         </Accordion>
       </nav>

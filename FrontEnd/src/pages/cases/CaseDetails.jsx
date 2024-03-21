@@ -47,12 +47,6 @@ function CaseDetails() {
             ));
           })}
         </Table>
-        {/* <div className="btn add-stakeholder c-flex">
-          <Link to="stakeholders">
-            <RiUserAddFill />
-            add new stakeholder
-          </Link>
-        </div> */}
       </section>
 
       <section className="documents">
@@ -73,12 +67,14 @@ function CaseDetails() {
             </tr>
           ))}
         </Table>
-        <div className="btn add-doc c-flex">
-          <Link to="docments">
-            <FaFileCirclePlus />
-            add new document
-          </Link>
-        </div>
+        {"Lawyer" === userData.userType && (
+          <div className="btn add-doc c-flex">
+            <Link to="docments">
+              <FaFileCirclePlus />
+              add new document
+            </Link>
+          </div>
+        )}
       </section>
 
       <section className="events">
@@ -96,12 +92,14 @@ function CaseDetails() {
             </tr>
           ))}
         </Table>
-        <div className="btn add-event c-flex">
-          <Link to="events">
-            <MdEventNote />
-            add new event
-          </Link>
-        </div>
+        {"Court Manager" === userData.userType && (
+          <div className="btn add-event c-flex">
+            <Link to="events">
+              <MdEventNote />
+              add new event
+            </Link>
+          </div>
+        )}
       </section>
     </StyledCaseForm>
   );
@@ -188,26 +186,26 @@ export async function action({ params, request }) {
   };
 
   try {
-    if(userType === "Lawyer") {
+    if (userType === "Lawyer") {
       delete caseReqBody.judge;
-      
+
       if (claimant) {
         const claimantClientUpdateReqBody = claimant;
-        const response = await fetcher("/stakeholders/",{
+        const response = await fetcher("/stakeholders/", {
           method: "PUT",
-          body: JSON.stringify(claimant)}
-        )
-        if(!response.ok) {
+          body: JSON.stringify(claimant),
+        });
+        if (!response.ok) {
           toast.error("Failed to update claimant data!");
           toast.error(await response.text());
         }
       }
       if (respondent) {
-        const response = await fetcher("/stakeholders/",{
+        const response = await fetcher("/stakeholders/", {
           method: "PUT",
-          body: JSON.stringify(respondent)}
-        )
-        if(!response.ok) {
+          body: JSON.stringify(respondent),
+        });
+        if (!response.ok) {
           toast.error("Failed to update claimant data!");
           toast.error(await response.text());
         }
@@ -234,13 +232,13 @@ export async function action({ params, request }) {
 
 function getPartyDetails(party, data) {
   const details = {};
-  console.log(party, data)
+  console.log(party, data);
   for (const k in data) {
     if (!k.includes(party)) continue;
     details[k.split("_")[1]] = data[k];
   }
   const { mobile, ...rest } = details;
   const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
-  console.log(filledKeys)
+  console.log(filledKeys);
   return filledKeys.length > 0 ? rest : null;
 }
