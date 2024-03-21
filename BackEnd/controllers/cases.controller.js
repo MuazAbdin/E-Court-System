@@ -14,6 +14,7 @@ import fs from 'fs';
 import buildCasePDF from "../utils/casePDF.utils.js";
 import path, { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import User from "../models/user.model.js";
 
 class CasesController {
 	async createCase(req, res) {
@@ -57,7 +58,6 @@ class CasesController {
 	async fileACase(req, res) {
 		const { title, description, court, parties, claimantLawyerNotes } = req.body;
 		const userId = req.userId;
-		// console.log({ title, description, court, parties, claimantLawyerNotes });
 		// Saves created Documents to delete them on faliure/error
 		const savedDocs = [];
 		try {
@@ -202,14 +202,38 @@ class CasesController {
     }
 
 	async updateCase(req, res) {
-		const { caseId, title, description, status, court, judge } = req.body
-		try{
-			CaseValidator.validateUpdateCaseData({ caseId, title, description, status, court, judge });
-			const updatedCase = await Case.findByIdAndUpdate(caseId, {$set: { title, description, status, court, judge }}, { new: true });
+		const userId = req.userId;
+		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes } = req.body;
+		try 
+		{
+			const updateData = { status, judge, title, description }
+			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
+
+			const updatedCase = await Case.findById(caseId)
+			.populate("parties").exec();
 			if(updatedCase === null) {
 				throw new CaseDoesNotExistError();
 			}
+
+			if(req.userType === "Court Manager");
+			else if(userId == updatedCase.judge) {
+				updatedCase.judgeNotes = judgeNotes;
+			}
+			else if(updatedCase.parties.length && userId == updatedCase.parties[0].lawyer) {
+				updatedCase.claimantLawyerNotes = claimantLawyerNotes;
+			}
+			else if(updatedCase.parties.length === 2 && userId == updatedCase.parties[1].lawyer) {
+				updatedCase.respondentLawyerNotes = respondentLawyerNotes;
+			}
+			else {
+				throw new NotAuthorizedError();
+			}
+
+			Object.keys(updateData).forEach(key => 
+				updatedCase[key] = updateData[key]);
+			await updatedCase.save();
 			res.json(updatedCase);
+
 		} catch(error) {
 			errorHandler.handleError(res, error);
 		}
@@ -244,13 +268,13 @@ class CasesController {
 			}
 
 			if(userId == case_.judge) {
-				case_.judgeNote = note;
+				case_.judgeNotes = judgeNotes;
 			}
-			else if(case_.parties.length && userId == case_.parties[0]) {
-				case_.claimantLawyerNote = note;
+			else if(case_.parties.length && userId == case_.parties[0].lawyer) {
+				case_.claimantLawyerNotes = claimantLawyerNotes;
 			}
-			else if(case_.parties.length === 2 && userId == case_.parties[1]) {
-				case_.respondantLawyerNote = note;
+			else if(case_.parties.length === 2 && userId == case_.parties[1].lawyer) {
+				case_.respondentLawyerNotes = respondentLawyerNotes;
 			}
 			else {
 				throw new NotAuthorizedError();

@@ -2,8 +2,9 @@ import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 import Wrapper from "../assets/stylingWrappers/CardsDeck";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import dayjs from "dayjs";
 
-function CardsDeck({ title, cards }) {
+function CardsDeck({ title, events }) {
   const selectedRef = useRef(null);
   const [index, setIndex] = useState(0);
 
@@ -11,7 +12,7 @@ function CardsDeck({ title, cards }) {
     flushSync(() => {
       if (dir === "left" && index > 0) setIndex(index - 1);
 
-      if (dir === "right" && index < cards.length - 1) setIndex(index + 1);
+      if (dir === "right" && index < events.length - 1) setIndex(index + 1);
     });
     selectedRef.current.scrollIntoView({
       behavior: "smooth",
@@ -20,7 +21,7 @@ function CardsDeck({ title, cards }) {
     });
   };
 
-  const showArrows = cards.length > 0;
+  const showArrows = events.length > 0;
 
   return (
     <Wrapper>
@@ -32,9 +33,9 @@ function CardsDeck({ title, cards }) {
       )}
       <div className="cards-container">
         <menu>
-          {cards.map((c, i) => (
-            <li key={c.id} ref={index === i ? selectedRef : null}>
-              <Card {...c} />
+          {events.map((event, i) => (
+            <li key={event._id} ref={index === i ? selectedRef : null}>
+              <Card {...event} />
             </li>
           ))}
         </menu>
@@ -52,13 +53,13 @@ CardsDeck.Card = Card;
 
 export default CardsDeck;
 
-function Card({ date, time, court, event }) {
+function Card({ date, location, type }) {
   return (
     <article className="card">
-      <div className="date">{date}</div>
-      <div className="time">{time}</div>
-      <div className="court">{court}</div>
-      <div className="event">{event}</div>
+      <div className="date">{dayjs(date).format("DD MMM YYYY")}</div>
+      <div className="time">{dayjs(date).format("HH:mm")}</div>
+      <div className="court">{location}</div>
+      <div className="event">{type}</div>
     </article>
   );
 }

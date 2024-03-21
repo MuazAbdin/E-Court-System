@@ -28,7 +28,6 @@ export async function action({ request }) {
   const fd = await request.formData();
 
   try {
-    console.log(fd);
     const { data } = await fetcher(`cases/?query=${request.search}`);
     return data;
   } catch (error) {

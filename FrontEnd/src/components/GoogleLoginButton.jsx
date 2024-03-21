@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const responseMessage = async (credentialResponse) => {
-  console.log(credentialResponse);
   const response = await fetcher("/auth/google", {
     method: "POST",
     body: JSON.stringify(credentialResponse),
   });
   const data = await response.json();
-  console.log(data);
 };
 const errorMessage = () => {
   console.log("Login Failed");

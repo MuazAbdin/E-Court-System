@@ -66,7 +66,7 @@ export default function buildCasePDF(pdfDoc, caseData) {
     .text("Respondent Lawyer Notes:", { align: "left" })
     .moveDown(0.75);
   pdfDoc.font("fonts/Ubuntu-Regular.ttf")
-    .text(`${caseData.respondantLawyerNotes}`, { align: "left", indent: 20 })
+    .text(`${caseData.respondentLawyerNotes}`, { align: "left", indent: 20 })
     .moveDown();
 
   pdfDoc.font("fonts/Ubuntu-Bold.ttf")

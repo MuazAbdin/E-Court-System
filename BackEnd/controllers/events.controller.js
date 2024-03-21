@@ -11,14 +11,16 @@ import Court from "../models/court.model.js";
 import notificationsManager from "../utils/notifications.utils.js";
 import { CaseDoesNotExistError } from "../errors/case.error.js";
 import { UserDoesNotExistError } from "../errors/user.error.js";
+import Party from "../models/party.model.js";
 
 class EventsController {
 	async createEvent(req, res) {
-		const { caseId, eventType, date, description, location } = req.body;
+		const { caseId, eventType, date, description } = req.body;
 		try {
-			EventValidator.validateEventData(req.body);
+			EventValidator.validateEventData({ caseId, eventType, date, description });
 
-			// by userid if it is court extract the location, for now I will send it in req.body
+			const court = (await Case.findById(caseId).populate("court")).court;
+			const location = court.city;
 
 			const newEvent = await Event.create({case: caseId, type: eventType, date, description, location});
 			const case_ = await Case.findByIdAndUpdate(caseId, { $push: { events: newEvent }}, { new: true })
@@ -51,8 +53,14 @@ class EventsController {
 	}
 
     async getUpcomingEvents(req, res) {
+		const userId = req.userId;
+		const userType = req.userType;
 		try {
-			const events = await Event.find({ _id: req.userId, date: { $gte: Date.now() } });
+			const caseIds = userType === "Judge" ?
+				(await Case.find({ judge: userId })).map(c => c._id) :
+				(await Party.find({ lawyer: userId })).map(p => p.case);
+
+			const events = await Event.find({ case: { $in: caseIds }, date: { $gte: Date.now() } }).sort({ date: 1 });
 			res.send(events);
 		}
 		catch(error) {

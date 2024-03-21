@@ -1,18 +1,18 @@
-import { redirect, useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 import { toast } from "react-toastify";
 
 function Claim() {
   const courts = useLoaderData();
-  // console.log(courts);
+  const { userData } = useOutletContext();
   return (
     <StyledCaseForm
       formID="claim-form"
       title="claim form"
       method="POST"
       buttonText="submit"
-      values={[]}
+      values={{ userData }}
       isEdit={false}
       courts={courts}
     />
@@ -53,7 +53,6 @@ export async function action({ request }) {
 
   const claimant = getPartyDetails("claimant_", data);
   const respondent = getPartyDetails("respondent_", data);
-  // console.log(claimant, respondent);
 
   const reqBody = {
     court,
@@ -73,8 +72,6 @@ export async function action({ request }) {
     reqBody.parties.push({
       client: { ...respondent },
     });
-
-  console.log(reqBody);
 
   // for (const key in data) {
   //   if (!data[key]) {
@@ -108,7 +105,6 @@ function getPartyDetails(party, data) {
     if (!k.includes(party)) continue;
     details[k.split("_")[1]] = data[k];
   }
-  // details.phoneNumber = details.mobile;
   const { mobile, ...rest } = details;
   const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
   return filledKeys.length > 0 ? rest : null;

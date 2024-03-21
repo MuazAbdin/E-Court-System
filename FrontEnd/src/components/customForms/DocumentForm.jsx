@@ -14,9 +14,7 @@ export default function DocumentForm({
   values,
 }) {
   const actionData = useActionData();
-  // console.log(actionData);
   // const invalidCredentials = actionData?.msg === "invalid credentials";
-  // console.log(invalidCredentials);
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";

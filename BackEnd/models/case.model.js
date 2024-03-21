@@ -19,7 +19,7 @@ const caseSchema = new Schema({
     },
     judgeNotes: { type: String, default: "" },
     claimantLawyerNotes: { type: String, default: "" },
-    respondantLawyerNotes: { type: String, default: "" },
+    respondentLawyerNotes: { type: String, default: "" },
     public: { type: Boolean, default: false }
 }, { timestamps: true })
 
@@ -59,7 +59,7 @@ caseSchema.statics.query = async function(queries, mainQuery) {
 
     if(queries.status) {
         dbQuery.push({ 
-            status: queries.status 
+            status: { $in: queries.status.split(",") } 
         });
     }
 

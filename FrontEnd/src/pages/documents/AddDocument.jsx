@@ -56,8 +56,6 @@ export async function action({ params, request }) {
     ...rest,
   };
 
-  console.log(reqData);
-
   // for (const key in data) {
   //   if (!data[key]) {
   //     toast.error(`${key} cannot be empty!`);

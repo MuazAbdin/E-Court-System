@@ -20,9 +20,7 @@ function AuthForm({
   const insertedPassword = useRef(null);
 
   const actionData = useActionData();
-  // console.log(actionData);
   // const invalidCredentials = actionData?.msg === "invalid credentials";
-  // console.log(invalidCredentials);
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -66,7 +64,6 @@ function AuthForm({
       <h3 className="title">{title}</h3>
       {children?.filter((c) => c.type === "fieldset")}
       {fields.map((f) => {
-        // console.log(values[f.id]);
         const validator =
           f.id === "passwordConfirm"
             ? (value) =>

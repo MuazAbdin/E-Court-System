@@ -7,8 +7,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-function InputSelect({ className, id, label, menuItems }) {
-  const [optionValue, setOptionValue] = useState(menuItems?.[0]?.id || "");
+function InputSelect({ className, id, label, menuItems, initValue }) {
+  const [optionValue, setOptionValue] = useState(initValue || menuItems?.[0]?.id || "");
 
   const handleChange = (event) => {
     setOptionValue(event.target.value);
