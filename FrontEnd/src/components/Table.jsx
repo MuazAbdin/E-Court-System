@@ -10,7 +10,7 @@ function Table({ tableCaption, tableHeader, children }) {
       >
         <tr>
           {tableHeader.map((h, index) => (
-            <th key={index}>{h}</th>
+            <th key={`${index}-${h}`}>{h}</th>
           ))}
         </tr>
       </thead>

@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import errorGenerator from "../utils/errorGenerator.utils.js";
 
-export const NoCaseRespondsFoundError = errorGenerator.noDataErrorGenerator("case respondant lawyer requests");
+export const NoCaseRespondsFoundError = errorGenerator.noDataErrorGenerator("case respondent lawyer requests");
 
-export const CaseRespondDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("case respondant lawyer request");
+export const CaseRespondDoesNotExistError = errorGenerator.itemDoesNotExistErrorGenerator("case respondaet lawyer request");
 
-export const CaseDoesNotHaveARespondantPartyError = errorGenerator.createErrorClass("Case does not have a respondant party!", StatusCodes.NOT_FOUND);
+export const CaseDoesNotHaveARespondentPartyError = errorGenerator.createErrorClass("Case does not have a respondent party!", StatusCodes.NOT_FOUND);
 
-export const RespondantPartyAlreadyHasALawyerError = errorGenerator.createErrorClass("Respondant party already has a lawyer!", StatusCodes.CONFLICT);
+export const RespondentPartyAlreadyHasALawyerError = errorGenerator.createErrorClass("Respondent party already has a lawyer!", StatusCodes.CONFLICT);

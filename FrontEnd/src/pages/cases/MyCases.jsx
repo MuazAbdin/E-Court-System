@@ -13,20 +13,28 @@ function MyCases() {
       <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
       <Table
         tableCaption=""
-        tableHeader={["", "#", "Title", "Status", "Court", "Judge", "Last Update"]}
+        tableHeader={[
+          "",
+          "#",
+          "Title",
+          "Status",
+          "Court",
+          "Judge",
+          "Last Update",
+        ]}
       >
         {cases.map((r) => (
-          <tr key={r.number}>
-              <td>
-                <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
-              </td>
-              <td>
-                <Link to={`/user/cases/${r._id}`}>{r.title}</Link>
-              </td>
-              <td>{r.status}</td>
-              <td>{r.court.name}</td>
-              <td>{r.judge ? r.judge.firstName + " " + r.judge.lastName : ""}</td>
-              <td>{dayjs(r.updatedAt).format("DD MMM YYYY - HH:mm")}</td>
+          <tr key={r.caseNumber}>
+            <td>
+              <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
+            </td>
+            <td>
+              <Link to={`/user/cases/${r._id}`}>{r.title}</Link>
+            </td>
+            <td>{r.status}</td>
+            <td>{r.court.name}</td>
+            <td>{r.judge ? r.judge.firstName + " " + r.judge.lastName : ""}</td>
+            <td>{dayjs(r.updatedAt).format("DD MMM YYYY - HH:mm")}</td>
           </tr>
         ))}
       </Table>
@@ -35,7 +43,6 @@ function MyCases() {
 }
 
 export default MyCases;
-
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -61,16 +68,22 @@ export async function loader({ request }) {
     limit,
   });
 
-
   try {
     const response = await fetcher(`/cases/user/?${serverSearchParams}`);
-    if(!response.ok) throw response;
+    if (!response.ok) throw response;
     const cases = await response.json();
-    return { pagesCount: cases.pagesCount, currentPage: page, cases: cases.result };
-  }
-  catch(error) {
+    return {
+      pagesCount: cases.pagesCount,
+      currentPage: page,
+      cases: cases.result,
+    };
+  } catch (error) {
     toast.error(error.statusText);
     console.log(error);
-    return [];
+    return {
+      pagesCount: 0,
+      currentPage: 0,
+      cases: [],
+    };
   }
 }
