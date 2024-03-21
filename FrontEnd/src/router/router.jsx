@@ -10,6 +10,7 @@ import {
   Overview,
   Cases,
   BrowseCourts,
+  Court,
   AddNewCourt,
   Courts,
   MyCases,
@@ -26,6 +27,8 @@ import { loader as overViewLoader } from "../pages/userProfile/Overview";
 import ReviewClaims, {
   loader as reviewClaimsLoader,
 } from "../pages/cases/ReviewClaims";
+import { loader as browseCourtsLoader } from "../pages/courts/BrowseCourts";
+import { loader as courtLoader } from "../pages/courts/Court";
 
 import { action as authAction } from "../pages/Authentication";
 
@@ -80,6 +83,11 @@ const router = createBrowserRouter([
             element: <Overview />,
             loader: overViewLoader,
             action: breakdownAction,
+          },
+          {
+            path: "courts/add-new",
+            element: <AddNewCourt />,
+            action: newCourtAction,
           },
           {
             path: "edit-details",
@@ -145,23 +153,21 @@ const router = createBrowserRouter([
               },
             ],
           },
+        ]
+      },
+      {
+        path: "courts",
+        // element: <Courts />,
+        children: [
+          { 
+            index: true, 
+            element: <BrowseCourts />,
+            loader: browseCourtsLoader
+          },
           {
-            path: "courts",
-            element: <Courts />,
-            children: [
-              { index: true, element: <BrowseCourts /> },
-              {
-                path: "add-new",
-                element: <AddNewCourt />,
-                action: newCourtAction,
-              },
-              {
-                path: ":courtID",
-                children: [
-                  // { path: "edit", element: <CourtEditForm /> }
-                ],
-              },
-            ],
+            path: ":courtId",
+            element: <Court />,
+            loader: courtLoader
           },
         ],
       },

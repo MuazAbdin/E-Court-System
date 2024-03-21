@@ -21,3 +21,4 @@ export { default as AddEvent } from "./events/AddEvent";
 export { default as Courts } from "./courts/Courts";
 export { default as BrowseCourts } from "./courts/BrowseCourts";
 export { default as AddNewCourt } from "./courts/AddNewCourt";
+export { default as Court } from "./courts/Court";
