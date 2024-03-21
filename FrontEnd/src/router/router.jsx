@@ -4,6 +4,7 @@ import {
   Landing,
   Authentication,
   CaseCatalog,
+  PublicCases,
   UserLayout,
   EditUserDetails,
   ChangeUserPassword,
@@ -40,6 +41,7 @@ import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDe
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 
 import { loader as catalogLoader } from "../pages/CaseCatalog";
+import { loader as publicCasesLoader } from "../pages/cases/PublicCases";
 import {
   loader as caseDetailsLoader,
   action as caseDetailsAction,
@@ -69,6 +71,11 @@ const router = createBrowserRouter([
         path: "auth/:page",
         element: <Authentication />,
         action: authAction,
+      },
+      {
+        path: "public",
+        element: <PublicCases />,
+        loader: publicCasesLoader
       },
       {
         path: "catalog",

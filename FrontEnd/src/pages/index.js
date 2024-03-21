@@ -2,6 +2,7 @@ export { default as HomeLayout } from "./HomeLayout";
 export { default as Landing } from "./Landing";
 export { default as Authentication } from "./Authentication";
 export { default as CaseCatalog } from "./CaseCatalog";
+export { default as PublicCases } from "./cases/PublicCases"
 
 export { default as UserLayout } from "./UserLayout";
 export { default as Overview } from "./userProfile/Overview";
