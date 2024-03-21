@@ -47,7 +47,6 @@ export async function action({ params, request }) {
     return redirect("..");
   } catch (error) {
     toast.error(error.message);
-    // toast.error(error?.response?.data?.msg || "register failed");
     return error;
   }
 }

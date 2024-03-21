@@ -13,6 +13,7 @@ export { default as MyCases } from "./cases/MyCases";
 export { default as Claim } from "./cases/Claim";
 export { default as Respond } from "./cases/Respond";
 export { default as CaseDetails } from "./cases/CaseDetails";
+export { default as RespondRequests } from "./cases/RespondRequests";
 
 export { default as AddDocument } from "./documents/AddDocument";
 export { default as AddStakeholder } from "./stakeholders/AddStakeholder";

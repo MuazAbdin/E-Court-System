@@ -30,7 +30,8 @@ function Aside() {
               { name: "my cases", to: "cases" },
               { name: "claim", to: "cases/claim" },
               { name: "respond", to: "cases/respond" },
-              { name: "Pending Claims", to: "cases/pending"}
+              { name: "pending claims", to: "cases/pending" },
+              { name: "respondents", to: "cases/respond-requests" },
             ]}
           />
           <Accordion.Item

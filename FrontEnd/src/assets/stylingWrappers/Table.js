@@ -34,9 +34,28 @@ const Wrapper = styled.table`
     /* padding-right: 0.3rem; */
     /* text-align: right; */
   }
+
   a:link {
     font-weight: bold;
     cursor: pointer;
+  }
+
+  .accept,
+  .reject {
+    font-size: 1.5rem;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .accept {
+    background-color: var(--green-light);
+    color: var(--green-dark);
+  }
+
+  .reject {
+    background-color: var(--red-light);
+    color: var(--red-dark);
   }
 `;
 

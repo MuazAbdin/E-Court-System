@@ -62,7 +62,7 @@ const PERMISSIONS_TABLE = {
         "/cases/status/": ["Court Manager", "Judge", "Admin"],
         "/cases/resolve-pending/": ["Court Manager", "Admin"],
         /* ----- Case Respond routes ----- */
-        "/case-responds/": ["Court Manager", "Admin"],
+        "/case-responds/review/": ["Court Manager", "Admin"],
         /* ----- Courts routes ----- */
         "/courts/": ["Court Manager", "Admin"],
         /* ----- Document routes ----- */
@@ -105,6 +105,7 @@ export async function permissionsMiddleWare(req, res, next) {
         const userType = req.userType;
 
         const url = createUrl(req.originalUrl, req.params);
+        console.log(url);
         if(!PERMISSIONS_TABLE[req.method][url].includes(userType)) {
             throw new NotAuthorizedError();
         }
