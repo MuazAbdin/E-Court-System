@@ -33,22 +33,20 @@ export async function action({ params, request }) {
   );
 
   try {
-    // const response = await fetcher("", {
-    //   method: request.method,
-    //   body: JSON.stringify(data),
-    // });
+    const response = await fetcher("/case-responds", {
+      method: request.method,
+      body: JSON.stringify(data),
+    });
 
-    // if (!response.ok) {
-    //   const data = await response.text();
-    //   // return { msg: "register failed" };
-    //   throw new Error(data);
-    // }
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
 
     toast.success("request submitted successfully");
     return redirect("..");
   } catch (error) {
     toast.error(error.message);
-    // toast.error(error?.response?.data?.msg || "register failed");
     return error;
   }
 }

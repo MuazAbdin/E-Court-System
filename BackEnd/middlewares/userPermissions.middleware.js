@@ -62,7 +62,7 @@ const PERMISSIONS_TABLE = {
         "/cases/status/": ["Court Manager", "Judge", "Admin"],
         "/cases/resolve-pending/": ["Court Manager", "Admin"],
         /* ----- Case Respond routes ----- */
-        "/case-responds/": ["Court Manager", "Admin"],
+        "/case-responds/review/": ["Court Manager", "Admin"],
         /* ----- Courts routes ----- */
         "/courts/": ["Court Manager", "Admin"],
         /* ----- Document routes ----- */

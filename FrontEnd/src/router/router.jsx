@@ -20,10 +20,11 @@ import {
   CaseDetails,
   AddStakeholder,
   AddEvent,
+  RespondRequests,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
-import { loader as overViewLoader } from "../pages/userProfile/Overview";
+import { loader as overviewLoader } from "../pages/userProfile/Overview";
 import ReviewClaims, {
   loader as reviewClaimsLoader,
 } from "../pages/cases/ReviewClaims";
@@ -33,6 +34,7 @@ import { loader as courtLoader } from "../pages/courts/Court";
 import { action as authAction } from "../pages/Authentication";
 
 import { loader as myCasesLoader } from "../pages/cases/MyCases";
+import { loader as requestsLoader } from "../pages/cases/RespondRequests";
 
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
@@ -81,7 +83,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Overview />,
-            loader: overViewLoader,
+            loader: overviewLoader,
             action: breakdownAction,
           },
           {
@@ -107,7 +109,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <MyCases />,
                 loader: myCasesLoader,
-                // action: browseAction,
               },
               {
                 path: "claim",
@@ -124,6 +125,11 @@ const router = createBrowserRouter([
                 path: "respond",
                 element: <Respond />,
                 action: respondAction,
+              },
+              {
+                path: "respond-requests",
+                element: <RespondRequests />,
+                loader: requestsLoader,
               },
               {
                 path: ":caseID",

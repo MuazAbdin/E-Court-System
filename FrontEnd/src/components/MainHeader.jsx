@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/MainHeader.js";
 import {
-  FaBriefcase,
-  FaCapsules,
   FaEnvelope,
-  FaFile,
   FaHouse,
-  FaHouseMedical,
+  FaBuildingColumns,
   FaScaleBalanced,
 } from "react-icons/fa6";
+
 import Logo from "./Logo.jsx";
 import ToggleTheme from "./ToggleTheme.jsx";
 import { useState } from "react";
@@ -29,12 +27,12 @@ function MainHeader({ isDark, themeToggle }) {
         <menu>
           <li>
             <FaHouse />
-            <Link to="/">Home</Link>
+            <Link to="/user">Home</Link>
           </li>
-          {/* <li>
-            <FaFile />
-            <Link to="dashboard/cases">Cases</Link>
-          </li> */}
+          <li>
+            <FaBuildingColumns />
+            <Link to="/courts">courts</Link>
+          </li>
           <li onClick={toggleDisplay}>
             <FaScaleBalanced />
             <span>Services</span>
@@ -56,11 +54,10 @@ function MainHeader({ isDark, themeToggle }) {
 export default MainHeader;
 
 const SERVICES = [
-  { id: 1, name: "case catalog", link: "/catalog" },
+  { id: 1, name: "browse cases", link: "/public" },
   { id: 2, name: "file a claim", link: "/user/cases/claim" },
   { id: 3, name: "file a response", link: "/user/cases/respond" },
-  // { id: 4, name: "case judgment", link: "/" },
-  // { id: 5, name: "case managment", link: "/" },
+  { id: 4, name: "review cases", link: "/user/cases" },
 ];
 
 function ServicesList() {
