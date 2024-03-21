@@ -160,6 +160,7 @@ export async function action({ params, request }) {
   );
 
   const {
+    userType,
     status,
     court,
     judge,
@@ -173,7 +174,7 @@ export async function action({ params, request }) {
   const claimant = getPartyDetails("claimant_", data);
   const respondent = getPartyDetails("respondent_", data);
 
-  const reqBody = {
+  const caseReqBody = {
     caseId: caseID,
     status,
     court,
@@ -183,22 +184,39 @@ export async function action({ params, request }) {
     claimantLawyerNotes,
     respondentLawyerNotes,
     judgeNotes,
-    parties: [],
+    // parties: [],
   };
 
-  if (claimant)
-    reqBody.parties.push({
-      client: { ...claimant },
-    });
-  if (respondent)
-    reqBody.parties.push({
-      client: { ...respondent },
-    });
-
   try {
-    const response = await fetcher("/cases", {
+    if(userType === "Lawyer") {
+      delete caseReqBody.judge;
+      
+      if (claimant) {
+        const claimantClientUpdateReqBody = claimant;
+        const response = await fetcher("/stakeholders/",{
+          method: "PUT",
+          body: JSON.stringify(claimant)}
+        )
+        if(!response.ok) {
+          toast.error("Failed to update claimant data!");
+          toast.error(await response.text());
+        }
+      }
+      if (respondent) {
+        const response = await fetcher("/stakeholders/",{
+          method: "PUT",
+          body: JSON.stringify(respondent)}
+        )
+        if(!response.ok) {
+          toast.error("Failed to update claimant data!");
+          toast.error(await response.text());
+        }
+      }
+    }
+
+    const response = await fetcher("/cases/", {
       method: request.method,
-      body: JSON.stringify(reqBody),
+      body: JSON.stringify(caseReqBody),
     });
 
     if (!response.ok) {
@@ -206,7 +224,7 @@ export async function action({ params, request }) {
       throw new Error(data);
     }
 
-    toast.success("Updated Successfully!");
+    toast.success("Updated Case Successfully!");
     return redirect("");
   } catch (error) {
     toast.error(error.message);
@@ -216,11 +234,13 @@ export async function action({ params, request }) {
 
 function getPartyDetails(party, data) {
   const details = {};
+  console.log(party, data)
   for (const k in data) {
     if (!k.includes(party)) continue;
     details[k.split("_")[1]] = data[k];
   }
   const { mobile, ...rest } = details;
   const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
+  console.log(filledKeys)
   return filledKeys.length > 0 ? rest : null;
 }

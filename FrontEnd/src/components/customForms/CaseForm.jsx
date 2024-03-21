@@ -185,7 +185,7 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
           id={`${formID}-judge`}
           label="Judge"
           menuItems={judgesData}
-          initValue={judge._id}
+          initValue={judge?._id || ""}
         />
       )}
       {(userType === "Lawyer" && (
@@ -225,6 +225,12 @@ function CaseParties({ formID, isEdit, values, IDs }) {
           <section key={party} className={party}>
             <h5 className="title">{party}</h5>
             <div className="client">
+              <input
+                type="hidden"
+                id={`${formID}-${party}_id`}
+                name={`${formID}-${party}_id`}
+                value={partyDetails?.client?._id || ""}
+              />
               {PARTY_DETAILS_FIELDS.map((f) => (
                 <Input
                   key={`${formID}-${party}_${f.id}`}
@@ -237,7 +243,7 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   validator={f.validator}
                   readOnly={
                     isEdit &&
-                    userData.userType !== "Court Manager" &&
+                    !["Court Manager", "Lawyer"].includes(userData.userType)  ||
                     (f.id === "idNumber" || !isPartyLawyer)
                   }
                   required={!isEdit && f.required}
