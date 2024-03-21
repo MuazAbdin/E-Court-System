@@ -5,7 +5,7 @@ import {
   useOutletContext,
   useParams,
 } from "react-router-dom";
-import { fetcher } from "../../utils/fetcher";
+import { BASE_URL, fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 import { Table } from "../../components";
@@ -112,15 +112,17 @@ export default CaseDetails;
 async function handleDownloadDocument(event, caseId) {
   event.preventDefault();
   try {
-    const response = await fetcher(`/documents/download/${caseId}`);
+    window.open(BASE_URL + `/documents/download/${caseId}`, "_blank");
+    return ;
+    // const response = await fetcher(`/documents/download/${caseId}`);
 
-    if (!response.ok) {
-      throw new Error("Failed to download document");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to download document");
+    // }
 
-    const blob = await response.blob();
-    const fileURL = URL.createObjectURL(blob);
-    window.open(fileURL, "_blank");
+    // const blob = await response.blob();
+    // const fileURL = URL.createObjectURL(blob);
+    // window.open(fileURL, "_blank");
   } catch (error) {
     toast.error(error.message);
   }
