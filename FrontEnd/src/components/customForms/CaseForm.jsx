@@ -243,7 +243,7 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   validator={f.validator}
                   readOnly={
                     isEdit &&
-                    userData.userType !== "Court Manager" &&
+                    !["Court Manager", "Lawyer"].includes(userData.userType)  ||
                     (f.id === "idNumber" || !isPartyLawyer)
                   }
                   required={!isEdit && f.required}
