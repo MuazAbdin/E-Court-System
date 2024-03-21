@@ -105,7 +105,6 @@ export async function permissionsMiddleWare(req, res, next) {
         const userType = req.userType;
 
         const url = createUrl(req.originalUrl, req.params);
-        console.log(url);
         if(!PERMISSIONS_TABLE[req.method][url].includes(userType)) {
             throw new NotAuthorizedError();
         }
