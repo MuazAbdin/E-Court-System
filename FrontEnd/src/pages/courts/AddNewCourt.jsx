@@ -1,8 +1,7 @@
-import { redirect } from "react-router-dom";
+import { redirect, useOutletContext } from "react-router-dom";
 import { CourtForm } from "../../components";
 import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
-import Wrapper from "../../assets/stylingWrappers/CaseCatalog";
 
 function AddNewCourt() {
   return (
