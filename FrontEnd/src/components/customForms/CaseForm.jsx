@@ -41,6 +41,13 @@ function CaseForm({
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
 
+      <input
+        type="hidden"
+        id={`${formID}-userType`}
+        name={`${formID}-userType`}
+        value={userDate.userType}
+      />
+
       {isEdit ? (
         <CaseHeader
           formID={formID}
@@ -64,7 +71,7 @@ function CaseForm({
         id={`${formID}-title`}
         required={!isEdit}
         prevValue={isEdit ? caseData.title : ""}
-        readOnly={userData.userType !== "Court Manager"}
+        readOnly={isEdit && userData.userType !== "Court Manager"}
       />
 
       <Input
@@ -77,7 +84,7 @@ function CaseForm({
         rows={5}
         prevValue={isEdit ? caseData.description : ""}
         isSubmitted={false}
-        readOnly={userData.userType !== "Court Manager"}
+        readOnly={isEdit && userData.userType !== "Court Manager"}
       />
 
       <CaseParties
@@ -121,7 +128,7 @@ const HEADER_FIELDS = [
     label: "Court",
     id: "court",
     icon: <AccountBalanceIcon />,
-  }
+  },
 ];
 
 function CaseHeader({ formID, values, userType, judges, statusTypes }) {
@@ -130,18 +137,22 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
     ? `${values.court.name} - ${values.court.city}`
     : undefined;
   const fieldValues = { caseNumber, court };
-  const judgeName = `${judge.firstName} ${judge.lastName}`;
+  const judgeName = judge ? `${judge.firstName} ${judge.lastName}` : "";
 
-  const judgesData = judges.map(j => { return {
-    id: j._id,
-    value: `${j.firstName} ${j.lastName}`,
-    icon: <GavelIcon />
-  }})
+  const judgesData = judges.map((j) => {
+    return {
+      id: j._id,
+      value: `${j.firstName} ${j.lastName}`,
+      icon: <GavelIcon />,
+    };
+  });
 
-  const statusTypesData = statusTypes.map(st => { return {
-    id: st,
-    value: st
-  }})
+  const statusTypesData = statusTypes.map((st) => {
+    return {
+      id: st,
+      value: st,
+    };
+  });
 
   return (
     <section className="case-header">
@@ -153,48 +164,48 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
           id={`${formID}-${f.id}`}
           icon={f.icon}
           readOnly={
-            userType !== "Court Manager"  || !["status", "judge"].includes(f.id)
+            userType !== "Court Manager" || !["status", "judge"].includes(f.id)
           }
           prevValue={fieldValues?.[f.id] || ""}
-          />
+        />
       ))}
 
-      { userType !== "Court Manager" && 
+      {(userType !== "Court Manager" && (
         <Input
-            key={`${formID}-judge`}
-            label="judge"
-            type="text"
-            id={`${formID}-judge`}
-            icon={<GavelIcon />}
-            prevValue={judgeName || ""}
-            readOnly={true}
+          key={`${formID}-judge`}
+          label="judge"
+          type="text"
+          id={`${formID}-judge`}
+          icon={<GavelIcon />}
+          prevValue={judgeName || ""}
+          readOnly={true}
         />
-        ||
+      )) || (
         <StyledInputSelect
           id={`${formID}-judge`}
           label="Judge"
           menuItems={judgesData}
           initValue={judge._id}
         />
-      }
-      { userType === "Lawyer" &&
-          <Input
-            key={`${formID}-status`}
-            label="status"
-            type="text"
-            id={`${formID}-status`}
-            icon={<GavelIcon />}
-            prevValue={status || ""}
-            readOnly={true}
-          />
-        ||
-          <StyledInputSelect
-            id={`${formID}-status`}
-            label="Status"
-            menuItems={statusTypesData}
-            initValue={status}
-          />
-      }
+      )}
+      {(userType === "Lawyer" && (
+        <Input
+          key={`${formID}-status`}
+          label="status"
+          type="text"
+          id={`${formID}-status`}
+          icon={<GavelIcon />}
+          prevValue={status || ""}
+          readOnly={true}
+        />
+      )) || (
+        <StyledInputSelect
+          id={`${formID}-status`}
+          label="Status"
+          menuItems={statusTypesData}
+          initValue={status}
+        />
+      )}
     </section>
   );
 }
@@ -224,7 +235,11 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   ref={null}
                   autoComplete={f.autoComplete ?? "off"}
                   validator={f.validator}
-                  readOnly={true || isEdit && (f.id === "idNumber" || !isPartyLawyer)}
+                  readOnly={
+                    isEdit &&
+                    userData.userType !== "Court Manager" &&
+                    (f.id === "idNumber" || !isPartyLawyer)
+                  }
                   required={!isEdit && f.required}
                   severErrorMsg={""}
                   multiline={f.multiline ?? false}

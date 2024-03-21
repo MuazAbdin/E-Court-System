@@ -181,30 +181,30 @@ class CasesController {
 	async breakdown(req, res) {
 		const userId = req.userId;
 		const {start, end} = req.body;
+        const endDate = new Date(end);
+        endDate.setDate(endDate.getDate() + 1);
+        console.log(start, endDate);
+
 		try {
 			const user = await User.findById(userId);
-			let result = []
-			if (user.userType === "Lawyer") {
-				result = await Party.find({ lawyer: userId }, {_id: 0, case: 1})
-														.populate({ path: "case",
-    																		match: { createdAt: { $gte: start, $lte: end } }})
-														.exec();
-														
-			} else if (user.userType === "Judge") {
-				result = await Case.find({judge: userId});
-			}
-			// console.log(result);
-			if (!result) result = [];
-			const counter = {};
-			let total = 0;
-			result.forEach((c)=> {
-				const status = c.case?.status;
-				if (!status) return;
-				total++;
-				counter[status] = counter[status] ? counter[status] + 1 : 1
-			});
 
-			res.json({ counter, total });
+			const caseIds = user.userType === "Lawyer" ?
+			  (await Party.find({ lawyer: userId }, {_id: 0, case: 1}))
+					.map(p => p.case) :
+				[]
+
+			const result = user.userType === "Lawyer" ?
+			    await Case.aggregate([
+							{$match: { _id: { $in: caseIds }, createdAt: { $gte: start, $lte: endDate }}}, 
+							{$group: {_id: "$status", count : { $sum: 1 }}}
+						]) :
+                await Case.aggregate([
+							{$match: { judge: userId, createdAt: { $gte: start, $lte: endDate } }}, 
+							{$group: {_id: "$status", count : { $sum: 1 }}}
+						]);
+            
+            const total = result.reduce((acc, s)=> acc + s.count, 0);
+			res.json({ result, total });
 		}
 		catch(error) {
 			errorHandler.handleError(res, error);
@@ -241,7 +241,8 @@ class CasesController {
 		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes } = req.body;
 		try 
 		{
-			const updateData = { status, judge, title, description }
+            judge && GenericValidator.validateObjectId(judge);
+			const updateData = { status, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
 
 			const updatedCase = await Case.findById(caseId)
