@@ -26,6 +26,7 @@ import { loader as overViewLoader } from "../pages/userProfile/Overview";
 import ReviewClaims, {
   loader as reviewClaimsLoader,
 } from "../pages/cases/ReviewClaims";
+import { loader as browseCourtsLoader } from "../pages/courts/BrowseCourts";
 
 import { action as authAction } from "../pages/Authentication";
 
@@ -149,7 +150,11 @@ const router = createBrowserRouter([
             path: "courts",
             element: <Courts />,
             children: [
-              { index: true, element: <BrowseCourts /> },
+              { 
+                index: true, 
+                element: <BrowseCourts />,
+                loader: browseCourtsLoader
+              },
               {
                 path: "add-new",
                 element: <AddNewCourt />,
