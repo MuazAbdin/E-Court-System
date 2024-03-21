@@ -17,7 +17,7 @@ export default function buildCasePDF(pdfDoc, caseData) {
         .moveDown();
 
   pdfDoc.fontSize(15).font("fonts/Ubuntu-Regular.ttf")
-        .text(`Before Judge: ${caseData.judge || ""}`, { align: "center" })
+        .text(`Before Judge: ${`${caseData.judge?.firstName || ""} ${caseData.judge?.lastName || ""}`}`, { align: "center" })
         .moveDown();
 
   pdfDoc.fontSize(13).font("fonts/Ubuntu-Bold.ttf")

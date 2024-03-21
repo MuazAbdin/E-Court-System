@@ -6,12 +6,36 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import BalanceIcon from "@mui/icons-material/Balance";
 
 const PROFILE_SECTIONS = [
-  { name: "overview", to: "" },
-  { name: "edit details", to: "edit-details" },
-  { name: "change password", to: "change-password" },
+  { name: "overview", to: "", userTypes: ["Lawyer", "Judge"] },
+  {
+    name: "edit details",
+    to: "edit-details",
+    userTypes: ["Lawyer", "Judge", "Court Manager", "Admin"],
+  },
+  {
+    name: "change password",
+    to: "change-password",
+    userTypes: ["Lawyer", "Judge", "Court Manager", "Admin"],
+  },
 ];
 
-function Aside() {
+const CASES_SECTIONS = [
+  { name: "my cases", to: "cases", userTypes: ["Lawyer", "Judge"] },
+  { name: "claim", to: "cases/claim", userTypes: ["Lawyer"] },
+  { name: "respond", to: "cases/respond", userTypes: ["Lawyer"] },
+  {
+    name: "pending claims",
+    to: "cases/pending",
+    userTypes: ["Court Manager", "Admin"],
+  },
+  {
+    name: "respondents",
+    to: "cases/respond-requests",
+    userTypes: ["Court Manager", "Admin"],
+  },
+];
+
+function Aside({ userType }) {
   return (
     <Wrapper>
       <nav>
@@ -20,19 +44,17 @@ function Aside() {
             id="nav-profile"
             title="profile"
             Icon={FaRegCircleUser}
-            subsectoins={PROFILE_SECTIONS}
+            subsectoins={PROFILE_SECTIONS.filter((s) =>
+              s.userTypes.includes(userType)
+            )}
           />
           <Accordion.Item
             id="nav-cases"
             title="cases"
             Icon={MdGavel}
-            subsectoins={[
-              { name: "my cases", to: "cases" },
-              { name: "claim", to: "cases/claim" },
-              { name: "respond", to: "cases/respond" },
-              { name: "pending claims", to: "cases/pending" },
-              { name: "respondents", to: "cases/respond-requests" },
-            ]}
+            subsectoins={CASES_SECTIONS.filter((s) =>
+              s.userTypes.includes(userType)
+            )}
           />
           <Accordion.Item
             id="nav-court"

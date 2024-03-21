@@ -9,7 +9,7 @@ function UserLayout() {
 
   return (
     <Wrapper>
-      <Aside />
+      <Aside userType={userData.userType} />
       <PageHeader name={`${userData.firstName} ${userData.lastName}`} />
       <section className="content">
         <Outlet context={{ userData }} />
@@ -23,7 +23,7 @@ export default UserLayout;
 export async function loader() {
   try {
     const response = await fetcher("/users/user");
-    if(response.status === 401) return redirect("/")
+    if (response.status === 401) return redirect("/");
     if (!response.ok) throw response;
     const data = await response.json();
     const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data;

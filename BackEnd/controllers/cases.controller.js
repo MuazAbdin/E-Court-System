@@ -245,6 +245,8 @@ class CasesController {
             judge && GenericValidator.validateObjectId(judge);
 			const updateData = { status, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
+			if(judge)
+			    updateData.judge = judge;
 
 			const updatedCase = await Case.findById(caseId)
 			.populate("parties").exec();

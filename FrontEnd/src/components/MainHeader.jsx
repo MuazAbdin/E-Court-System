@@ -29,12 +29,8 @@ function MainHeader({ isDark, themeToggle }) {
         <menu>
           <li>
             <FaHouse />
-            <Link to="/">Home</Link>
+            <Link to="/user">Home</Link>
           </li>
-          {/* <li>
-            <FaFile />
-            <Link to="dashboard/cases">Cases</Link>
-          </li> */}
           <li onClick={toggleDisplay}>
             <FaScaleBalanced />
             <span>Services</span>
