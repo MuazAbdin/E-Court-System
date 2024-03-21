@@ -46,7 +46,15 @@ export async function action({ request }) {
       const data = await response.text();
       throw new Error(data);
     }
-    const { counter, total } = await response.json();
+    const { result, total } = await response.json();
+    const counter = {
+      Pending: 0,
+      Active: 0,
+      Dismissed: 0,
+      Settled: 0,
+      Appealed: 0,
+    };
+    result.forEach((r) => (counter[r._id] = r.count));
     return { counter, total };
   } catch (error) {
     toast.error(error.message);
