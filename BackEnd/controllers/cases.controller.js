@@ -180,10 +180,11 @@ class CasesController {
 
 	async breakdown(req, res) {
 		const userId = req.userId;
-		const {start, end} = req.body;
+		const { start, end } = req.body;
+        const startDate = new Date(start)
         const endDate = new Date(end);
         endDate.setDate(endDate.getDate() + 1);
-        console.log(start, endDate);
+        console.log(start, endDate)
 
 		try {
 			const user = await User.findById(userId);
@@ -195,11 +196,11 @@ class CasesController {
 
 			const result = user.userType === "Lawyer" ?
 			    await Case.aggregate([
-							{$match: { _id: { $in: caseIds }, createdAt: { $gte: start, $lte: endDate }}}, 
+							{$match: { _id: { $in: caseIds }, createdAt: { $gte: startDate, $lte: endDate }}}, 
 							{$group: {_id: "$status", count : { $sum: 1 }}}
 						]) :
                 await Case.aggregate([
-							{$match: { judge: userId, createdAt: { $gte: start, $lte: endDate } }}, 
+							{$match: { judge: userId }, createdAt: { $gte: startDate, $lte: endDate }}, 
 							{$group: {_id: "$status", count : { $sum: 1 }}}
 						]);
             

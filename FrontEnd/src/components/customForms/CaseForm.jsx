@@ -45,7 +45,7 @@ function CaseForm({
         type="hidden"
         id={`${formID}-userType`}
         name={`${formID}-userType`}
-        value={userDate.userType}
+        value={userData.userType}
       />
 
       {isEdit ? (
