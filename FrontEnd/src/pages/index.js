@@ -1,7 +1,6 @@
 export { default as HomeLayout } from "./HomeLayout";
 export { default as Landing } from "./Landing";
 export { default as Authentication } from "./Authentication";
-export { default as CaseCatalog } from "./CaseCatalog";
 
 export { default as UserLayout } from "./UserLayout";
 export { default as Overview } from "./userProfile/Overview";
@@ -10,6 +9,7 @@ export { default as ChangeUserPassword } from "./userProfile/ChangeUserPassword"
 
 export { default as Cases } from "./cases/Cases";
 export { default as MyCases } from "./cases/MyCases";
+export { default as BrowseCases } from "./cases/BrowseCases";
 export { default as Claim } from "./cases/Claim";
 export { default as Respond } from "./cases/Respond";
 export { default as CaseDetails } from "./cases/CaseDetails";

@@ -3,7 +3,6 @@ import {
   HomeLayout,
   Landing,
   Authentication,
-  CaseCatalog,
   UserLayout,
   EditUserDetails,
   ChangeUserPassword,
@@ -21,6 +20,7 @@ import {
   AddStakeholder,
   AddEvent,
   RespondRequests,
+  BrowseCases,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -34,12 +34,12 @@ import { loader as courtLoader } from "../pages/courts/Court";
 import { action as authAction } from "../pages/Authentication";
 
 import { loader as myCasesLoader } from "../pages/cases/MyCases";
+import { loader as browseCasesLoader } from "../pages/cases/BrowseCases";
 import { loader as requestsLoader } from "../pages/cases/RespondRequests";
 
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
 
-import { loader as catalogLoader } from "../pages/CaseCatalog";
 import {
   loader as caseDetailsLoader,
   action as caseDetailsAction,
@@ -69,11 +69,6 @@ const router = createBrowserRouter([
         path: "auth/:page",
         element: <Authentication />,
         action: authAction,
-      },
-      {
-        path: "catalog",
-        element: <CaseCatalog />,
-        loader: catalogLoader,
       },
       {
         path: "user",
@@ -109,6 +104,11 @@ const router = createBrowserRouter([
                 index: true,
                 element: <MyCases />,
                 loader: myCasesLoader,
+              },
+              {
+                path: "browse",
+                element: <BrowseCases />,
+                loader: browseCasesLoader,
               },
               {
                 path: "claim",
@@ -159,21 +159,21 @@ const router = createBrowserRouter([
               },
             ],
           },
-        ]
+        ],
       },
       {
         path: "courts",
         // element: <Courts />,
         children: [
-          { 
-            index: true, 
+          {
+            index: true,
             element: <BrowseCourts />,
-            loader: browseCourtsLoader
+            loader: browseCourtsLoader,
           },
           {
             path: ":courtId",
             element: <Court />,
-            loader: courtLoader
+            loader: courtLoader,
           },
         ],
       },
