@@ -59,7 +59,7 @@ caseSchema.statics.query = async function(queries, mainQuery) {
 
     if(queries.status) {
         dbQuery.push({ 
-            status: queries.status 
+            status: { $in: queries.status.split(",") } 
         });
     }
 

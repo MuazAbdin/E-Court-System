@@ -11,6 +11,7 @@ import Court from "../models/court.model.js";
 import notificationsManager from "../utils/notifications.utils.js";
 import { CaseDoesNotExistError } from "../errors/case.error.js";
 import { UserDoesNotExistError } from "../errors/user.error.js";
+import Party from "../models/party.model.js";
 
 class EventsController {
 	async createEvent(req, res) {
@@ -52,8 +53,14 @@ class EventsController {
 	}
 
     async getUpcomingEvents(req, res) {
+		const userId = req.userId;
+		const userType = req.userType;
 		try {
-			const events = await Event.find({ _id: req.userId, date: { $gte: Date.now() } });
+			const caseIds = userType === "Judge" ?
+				(await Case.find({ judge: userId })).map(c => c._id) :
+				(await Party.find({ lawyer: userId })).map(p => p.case);
+
+			const events = await Event.find({ case: { $in: caseIds }, date: { $gte: Date.now() } }).sort({ date: 1 });
 			res.send(events);
 		}
 		catch(error) {
