@@ -152,8 +152,10 @@ function CaseHeader({ formID, values, userType, judges, statusTypes }) {
           type="text"
           id={`${formID}-${f.id}`}
           icon={f.icon}
+          readOnly={
+            userType !== "Court Manager"  || !["status", "judge"].includes(f.id)
+          }
           prevValue={fieldValues?.[f.id] || ""}
-          readOnly={true}
           />
       ))}
 

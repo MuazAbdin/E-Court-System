@@ -9,7 +9,7 @@ import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 import { Table } from "../../components";
-import { FaFileCirclePlus, FaTrashCan } from "react-icons/fa6";
+import { FaFileCirclePlus, FaTrashCan, FaDownload } from "react-icons/fa6";
 import { RiUserAddFill } from "react-icons/ri";
 import { MdEventNote } from "react-icons/md";
 import dayjs from "dayjs";
@@ -57,11 +57,14 @@ function CaseDetails() {
 
       <section className="documents">
         <h5 className="section-title">documents</h5>
-        <Table tableHeader={["", "party", "title", ""]}>
+        <Table tableHeader={["", "party", "title", "", ""]}>
           {docsData.map((d) => (
             <tr key={d._id}>
               <td>{d.party.name}</td>
               <td>{d.title}</td>
+              <td>
+                <FaDownload onClick={(event) => handleDownloadDocument(event, d._id)}/>
+              </td>
               <td>
                 <FaTrashCan />
               </td>
@@ -103,6 +106,25 @@ function CaseDetails() {
 }
 
 export default CaseDetails;
+
+
+async function handleDownloadDocument(event, caseId) {
+  event.preventDefault();
+  try {
+    const response = await fetcher(`/documents/download/${caseId}`);
+
+    if (!response.ok) {
+      throw new Error("Failed to download document");
+    }
+
+    const blob = await response.blob();
+    const fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, "_blank");
+  } catch (error) {
+    toast.error(error.message);
+  }
+}
+
 
 export async function loader({ params }) {
   try {
