@@ -1,50 +1,26 @@
+import { toast } from "react-toastify";
 import { Breakdown, CardsDeck } from "../../components";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { useActionData } from "react-router-dom";
+import {
+  useActionData,
+  useLoaderData,
+  useOutletContext,
+} from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetcher } from "../../utils/fetcher";
 dayjs.extend(utc);
 
-const CARD_DECKS = [
-  {
-    title: "upcoming events",
-    cards: [
-      {
-        id: 1,
-        date: "March 18",
-        time: "3:00 PM",
-        court: "Jerusalem",
-        event: "hearing",
-      },
-      {
-        id: 2,
-        date: "April 5",
-        time: "9:00 AM",
-        court: "Tel Aviv",
-        event: "trial",
-      },
-      {
-        id: 3,
-        date: "April 23",
-        time: "11:00 AM",
-        court: "Jerusalem",
-        event: "appeal",
-      },
-    ],
-  },
-];
-
 function Overview() {
   const actionData = useActionData();
-  console.log(actionData);
   const counter = actionData ? actionData.counter : {};
   const total = actionData ? actionData.total : 0;
+  const { events } = useLoaderData();
 
   return (
     <>
       <h3 className="section-title">overview</h3>
-      <CardsDeck title={CARD_DECKS[0].title} cards={CARD_DECKS[0].cards} />
+      <CardsDeck title="upcoming events" events={events} />
       <Breakdown counter={counter} total={total} />
     </>
   );
@@ -64,7 +40,6 @@ export async function action({ request }) {
     start: dayjs.utc(data.start, "DD-MM-YYYY").format(),
     end: dayjs.utc(data.end, "DD-MM-YYYY").format(),
   };
-  console.log(reqBody);
 
   try {
     const response = await fetcher(`/cases/breakdown/`, {
@@ -78,10 +53,20 @@ export async function action({ request }) {
     }
     const { counter, total } = await response.json();
     return { counter, total };
-    // toast.success("");
-    // return redirect("");
   } catch (error) {
     toast.error(error.message);
     return error;
+  }
+}
+export async function loader() {
+  try {
+    const eventsResponse = await fetcher("/events/upcoming/");
+    if (!eventsResponse.ok) throw eventsResponse;
+    const events = await eventsResponse.json();
+    return { events };
+  } catch (error) {
+    toast.error(error.statusText);
+    console.log(error);
+    return { events: [] };
   }
 }

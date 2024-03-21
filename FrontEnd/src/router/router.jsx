@@ -22,6 +22,10 @@ import {
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
+import { loader as overViewLoader } from "../pages/userProfile/Overview";
+import ReviewClaims, {
+  loader as reviewClaimsLoader,
+} from "../pages/cases/ReviewClaims";
 
 import { action as authAction } from "../pages/Authentication";
 
@@ -71,7 +75,12 @@ const router = createBrowserRouter([
         element: <UserLayout />,
         loader: userLayoutLoader,
         children: [
-          { index: true, element: <Overview />, action: breakdownAction },
+          {
+            index: true,
+            element: <Overview />,
+            loader: overViewLoader,
+            action: breakdownAction,
+          },
           {
             path: "edit-details",
             element: <EditUserDetails />,
@@ -97,6 +106,11 @@ const router = createBrowserRouter([
                 element: <Claim />,
                 loader: claimLoader,
                 action: claimAction,
+              },
+              {
+                path: "pending",
+                element: <ReviewClaims />,
+                loader: reviewClaimsLoader,
               },
               {
                 path: "respond",

@@ -1,11 +1,11 @@
-import StyledSearchBar from "../../assets/stylingWrappers/SearchBar";
-import { Table } from "../../components";
-import { Link, useLoaderData } from "react-router-dom";
-import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
+import { fetcher } from "../../utils/fetcher";
+import { Link, useLoaderData } from "react-router-dom";
+import { Table } from "../../components";
+import StyledSearchBar from "../../assets/stylingWrappers/SearchBar";
 import dayjs from "dayjs";
 
-function MyCases() {
+function ReviewClaims() {
   const { pagesCount, currentPage, cases } = useLoaderData();
 
   return (
@@ -13,28 +13,20 @@ function MyCases() {
       <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
       <Table
         tableCaption=""
-        tableHeader={[
-          "",
-          "#",
-          "Title",
-          "Status",
-          "Court",
-          "Judge",
-          "Last Update",
-        ]}
+        tableHeader={["", "#", "Title", "Court", "Lawyer", "Client", "Created"]}
       >
         {cases.map((r) => (
-          <tr key={r.caseNumber}>
-            <td>
-              <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
-            </td>
-            <td>
-              <Link to={`/user/cases/${r._id}`}>{r.title}</Link>
-            </td>
-            <td>{r.status}</td>
-            <td>{r.court.name}</td>
-            <td>{r.judge ? r.judge.firstName + " " + r.judge.lastName : ""}</td>
-            <td>{dayjs(r.updatedAt).format("DD MMM YYYY - HH:mm")}</td>
+          <tr key={r.number}>
+              <td>
+                <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
+              </td>
+              <td>
+                <Link to={`/user/cases/${r._id}`}>{r.title}</Link>
+              </td>
+              <td>{r.court.name}</td>
+              <td>{r.parties[0].lawyer.firstName + " " + r.parties[0].lawyer.lastName}</td>
+              <td>{r.parties[0].client.firstName }</td>
+              <td>{dayjs(r.updatedAt).format("DD MMM YYYY")}</td>
           </tr>
         ))}
       </Table>
@@ -42,7 +34,7 @@ function MyCases() {
   );
 }
 
-export default MyCases;
+export default ReviewClaims
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -69,21 +61,14 @@ export async function loader({ request }) {
   });
 
   try {
-    const response = await fetcher(`/cases/user/?${serverSearchParams}`);
-    if (!response.ok) throw response;
+    const response = await fetcher(`/cases/pending/?${serverSearchParams}`);
+    if(!response.ok) throw response;
     const cases = await response.json();
-    return {
-      pagesCount: cases.pagesCount,
-      currentPage: page,
-      cases: cases.result,
-    };
-  } catch (error) {
+    return { pagesCount: cases.pagesCount, currentPage: page, cases: cases.result };
+  }
+  catch(error) {
     toast.error(error.statusText);
     console.log(error);
-    return {
-      pagesCount: 0,
-      currentPage: 0,
-      cases: [],
-    };
+    return [];
   }
-}
+} 
