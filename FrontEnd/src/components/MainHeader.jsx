@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useRouteLoaderData } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/MainHeader.js";
 import {
   FaEnvelope,
@@ -18,6 +18,8 @@ function MainHeader({ isDark, themeToggle }) {
     setDisplay((prev) => (prev === "none" ? "flex" : "none"));
   };
 
+  const { userData } = useRouteLoaderData("root");
+
   return (
     <Wrapper display={display}>
       <Link to="/">
@@ -27,7 +29,15 @@ function MainHeader({ isDark, themeToggle }) {
         <menu>
           <li>
             <FaHouse />
-            <Link to="/user">Home</Link>
+            <Link
+              to={
+                ["Lawyer", "Judge"].includes(userData.userType)
+                  ? "/user"
+                  : "/user/cases/browse"
+              }
+            >
+              Home
+            </Link>
           </li>
           <li>
             <FaBuildingColumns />

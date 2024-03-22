@@ -13,7 +13,7 @@ const Wrapper = styled.main`
   line-height: 1.2;
 
   .title {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-family: var(--subtitle-font);
     margin-bottom: 0.5rem;
   }

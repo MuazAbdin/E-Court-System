@@ -16,7 +16,7 @@ function Forms({
   values,
   readOnly,
   noSubmit,
-  itemId
+  itemId,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -68,15 +68,14 @@ function Forms({
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
-      {/* {children.filter((c) => c.type === "fieldset")} */}
-      {itemId &&  
+      {itemId && (
         <input
-        type="hidden"
-        id={`${formID}-id`}
-        name={`${formID}-id`}
-        value={itemId}
-      />
-      }
+          type="hidden"
+          id={`${formID}-id`}
+          name={`${formID}-id`}
+          value={itemId}
+        />
+      )}
       {fields.map((f) => {
         const validator =
           f.id === "passwordConfirm"
@@ -110,11 +109,11 @@ function Forms({
         );
       })}
       {children}
-      { noSubmit === true ||
+      {noSubmit === true || (
         <button name="submit" className="btn" disabled={isSubmitting}>
           {isSubmitting ? "submitting ..." : `${buttonText}`}
         </button>
-      }
+      )}
     </Form>
   );
 }

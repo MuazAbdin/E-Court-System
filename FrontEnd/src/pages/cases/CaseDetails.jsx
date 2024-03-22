@@ -111,7 +111,7 @@ async function handleDownloadDocument(event, caseId) {
   event.preventDefault();
   try {
     window.open(BASE_URL + `/documents/download/${caseId}`, "_blank");
-    return ;
+    return;
     // const response = await fetcher(`/documents/download/${caseId}`);
 
     // if (!response.ok) {
@@ -161,6 +161,7 @@ export async function action({ params, request }) {
 
   const {
     userType,
+    public: public_,
     status,
     court,
     judge,
@@ -175,6 +176,7 @@ export async function action({ params, request }) {
   const respondent = getPartyDetails("respondent_", data);
 
   const caseReqBody = {
+    public: public_ === "on",
     caseId: caseID,
     status,
     court,

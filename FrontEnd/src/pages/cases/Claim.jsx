@@ -1,11 +1,25 @@
-import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
+import {
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from "react-router-dom";
 import { fetcher } from "../../utils/fetcher";
 import StyledCaseForm from "../../assets/stylingWrappers/StyledCaseForm";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 function Claim() {
   const courts = useLoaderData();
-  const { userData } = useOutletContext();
+  const navigate = useNavigate();
+  const { userData } = useRouteLoaderData("root");
+
+  useEffect(() => {
+    if (!userData || userData.userType !== "Lawyer") {
+      navigate("/auth/login");
+    }
+  }, [userData]);
+
   return (
     <StyledCaseForm
       formID="claim-form"

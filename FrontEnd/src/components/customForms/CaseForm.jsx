@@ -9,6 +9,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { fetcher } from "../../utils/fetcher";
 import { Switch } from "@mui/material";
+import InputSwitch from "../InputSwitch";
 
 function CaseForm({
   children,
@@ -48,6 +49,8 @@ function CaseForm({
         name={`${formID}-userType`}
         value={userData.userType}
       />
+
+      <InputSwitch formID={formID} />
 
       {isEdit ? (
         <CaseHeader
@@ -243,9 +246,12 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   autoComplete={f.autoComplete ?? "off"}
                   validator={f.validator}
                   readOnly={
-                    isEdit &&
-                    !["Court Manager", "Lawyer"].includes(userData.userType)  ||
-                    (f.id === "idNumber" || !isPartyLawyer)
+                    (isEdit &&
+                      !["Court Manager", "Lawyer"].includes(
+                        userData.userType
+                      )) ||
+                    f.id === "idNumber" ||
+                    !isPartyLawyer
                   }
                   required={!isEdit && f.required}
                   severErrorMsg={""}

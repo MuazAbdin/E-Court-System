@@ -31,7 +31,10 @@ import ReviewClaims, {
   loader as reviewClaimsLoader,
 } from "../pages/cases/ReviewClaims";
 import { loader as browseCourtsLoader } from "../pages/courts/BrowseCourts";
-import { loader as courtLoader, action as courtAction } from "../pages/courts/Court";
+import {
+  loader as courtLoader,
+  action as courtAction,
+} from "../pages/courts/Court";
 
 import { action as authAction } from "../pages/Authentication";
 
@@ -74,7 +77,6 @@ const router = createBrowserRouter([
       {
         path: "auth/:page",
         element: <Authentication />,
-
         action: authAction,
       },
       {
@@ -169,7 +171,7 @@ const router = createBrowserRouter([
       },
       {
         path: "courts",
-        // element: <Courts />,
+        element: <Courts />,
         children: [
           {
             index: true,
@@ -185,7 +187,7 @@ const router = createBrowserRouter([
             path: ":courtId",
             element: <Court />,
             loader: courtLoader,
-            action: courtAction
+            action: courtAction,
           },
         ],
       },

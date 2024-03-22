@@ -3,7 +3,6 @@ import Wrapper from "../assets/stylingWrappers/Aside";
 import Accordion from "./Accordion";
 import { MdGavel } from "react-icons/md";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import BalanceIcon from "@mui/icons-material/Balance";
 
 const PROFILE_SECTIONS = [
   { name: "overview", to: "", userTypes: ["Lawyer", "Judge"] },
@@ -61,6 +60,17 @@ function Aside({ userType }) {
               s.userTypes.includes(userType)
             )}
           />
+          {["Court Manager", "Admin"].includes(userType) && (
+            <Accordion.Item
+              id="nav-court"
+              title="court"
+              Icon={AccountBalanceIcon}
+              subsectoins={[
+                { name: "browse", to: "/courts" },
+                { name: "add new", to: "/courts/add-new" },
+              ]}
+            />
+          )}
         </Accordion>
       </nav>
     </Wrapper>

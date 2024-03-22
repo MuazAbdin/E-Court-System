@@ -1,9 +1,19 @@
 import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
 import { StyledResponseForm } from "../../assets/stylingWrappers/StyledAuthForm";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate, useRouteLoaderData } from "react-router-dom";
+import { useEffect } from "react";
 
 function Respond() {
+  const navigate = useNavigate();
+  const { userData } = useRouteLoaderData("root");
+
+  useEffect(() => {
+    if (!userData || userData.userType !== "Lawyer") {
+      navigate("/auth/login");
+    }
+  }, [userData]);
+
   return (
     <StyledResponseForm
       formID="response-form"

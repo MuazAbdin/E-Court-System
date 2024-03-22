@@ -13,7 +13,6 @@ function Error() {
   }
 
   const error = useRouteError();
-  console.log(error);
 
   return (
     <div id="app-container" className={isDark ? "dark-theme" : ""}>

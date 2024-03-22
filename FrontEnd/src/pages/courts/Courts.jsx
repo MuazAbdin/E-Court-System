@@ -1,8 +1,12 @@
-import { Outlet, useOutletContext } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Wrapper from "../../assets/stylingWrappers/Courts";
 
 function Courts() {
-  const { userData } = useOutletContext();
-  return <Outlet context={{ userData }} />;
+  return (
+    <Wrapper>
+      <Outlet />
+    </Wrapper>
+  );
 }
 
 export default Courts;
