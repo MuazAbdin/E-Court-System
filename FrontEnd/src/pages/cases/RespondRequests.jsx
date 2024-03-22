@@ -21,7 +21,6 @@ function RespondRequests() {
   };
 
   const data = useLoaderData();
-  console.log(data);
 
   return (
     <Table

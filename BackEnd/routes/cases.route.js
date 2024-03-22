@@ -9,6 +9,7 @@ router.post("/file-a-case", permissionsMiddleWare, casesController.fileACase);
 router.post("/breakdown/", casesController.breakdown)
 router.get("/", permissionsMiddleWare, casesController.getCases);
 router.get("/pending", permissionsMiddleWare, casesController.getPendingCases);
+router.get("/public", permissionsMiddleWare, casesController.getPublicCases);
 router.get("/user", permissionsMiddleWare, casesController.getUserCases);
 router.get("/:id", permissionsMiddleWare, casesController.getCaseById);
 router.get("/pdf/:id", casesController.getCasePDF);

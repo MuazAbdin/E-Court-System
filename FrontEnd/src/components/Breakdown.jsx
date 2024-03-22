@@ -4,7 +4,6 @@ import BreakdownForm from "./BreakdownForm";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 function Breakdown({ counter, total }) {
-  // console.log(counter);
   return (
     <Wrapper>
       <section className="breakdown-form">
