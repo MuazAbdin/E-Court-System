@@ -79,6 +79,8 @@ function Forms({
           if (inputItem) severErrorMsg = inputItem.message;
         }
 
+        console.log(f)
+
         return (
           <Input
             key={`${formID}-${f.id}`}
@@ -95,6 +97,7 @@ function Forms({
             rows={f.rows ?? undefined}
             prevValue={values?.[f.id] || ""}
             isSubmitted={actionData?.msg === "Invalid inputs"}
+            value={f.value || ""}
           />
         );
       })}
