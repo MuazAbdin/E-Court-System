@@ -1,12 +1,9 @@
-import { Outlet, redirect, useLoaderData } from "react-router-dom";
+import { Outlet, useRouteLoaderData } from "react-router-dom";
 import Wrapper from "../assets/stylingWrappers/UserLayout";
 import { Aside, PageHeader } from "../components";
-import { toast } from "react-toastify";
-import { fetcher } from "../utils/fetcher";
 
 function UserLayout() {
-  const { userData } = useLoaderData();
-
+  const { userData } = useRouteLoaderData("root");
   return (
     <Wrapper>
       <Aside userType={userData.userType} />
@@ -19,18 +16,3 @@ function UserLayout() {
 }
 
 export default UserLayout;
-
-export async function loader() {
-  try {
-    const response = await fetcher("/users/user");
-    if (response.status === 401) return redirect("/");
-    if (!response.ok) throw response;
-    const data = await response.json();
-    const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data;
-    const userData = { IDcard, mobile, ...rest };
-    return { userData };
-  } catch (error) {
-    toast.error(error.message);
-    return error;
-  }
-}

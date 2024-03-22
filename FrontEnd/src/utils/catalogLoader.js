@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { fetcher } from "./fetcher";
 
-export async function loader({ params, request }, userTypes) {
+export async function loader({ params, request }, partialURL) {
   const url = new URL(request.url);
   const searchQuery = {};
   const query = url.searchParams.get("query") || "";
@@ -24,13 +24,6 @@ export async function loader({ params, request }, userTypes) {
     offset,
     limit,
   });
-
-  let partialURL = "/user";
-  for (const admin of ["Court Manager", "Admin"]) {
-    for (const user of userTypes) {
-      if (admin === user) partialURL = "";
-    }
-  }
 
   try {
     const response = await fetcher(
