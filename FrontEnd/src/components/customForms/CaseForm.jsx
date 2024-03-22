@@ -8,7 +8,6 @@ import Input from "../Input";
 import { RiUserAddFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { fetcher } from "../../utils/fetcher";
-import { Switch } from "@mui/material";
 import InputSwitch from "../InputSwitch";
 
 function CaseForm({

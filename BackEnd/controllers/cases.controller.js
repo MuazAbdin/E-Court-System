@@ -239,14 +239,20 @@ class CasesController {
 
 	async updateCase(req, res) {
 		const userId = req.userId;
-		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes } = req.body;
+		const userType = req.userType
+		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes, public: public_ } = req.body;
 		try 
 		{
             judge && GenericValidator.validateObjectId(judge);
 			const updateData = { status, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
-			if(judge)
+
+			if(judge) {
 			    updateData.judge = judge;
+			}
+			if(userType === "Court Manager" && public_ !== undefined) {
+				updateData.public = public_;
+			}
 
 			const updatedCase = await Case.findById(caseId)
 			.populate("parties").exec();
