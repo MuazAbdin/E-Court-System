@@ -155,7 +155,7 @@ class CasesController {
 
 	async getPublicCases(req, res) {
 		try {
-			const cases = await Case.qyery(req.query, { public: true });
+			const cases = await Case.query(req.query, { public: true });
 			if(cases.length === 0) {
 				throw new NoCasesFoundError();
 			}

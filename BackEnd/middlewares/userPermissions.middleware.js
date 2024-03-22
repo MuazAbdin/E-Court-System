@@ -11,6 +11,7 @@ const PERMISSIONS_TABLE = {
         "/cases/": ["Court Manager", "Admin"],
         "/cases/user/": ["Lawyer", "Judge"],
         "/cases/pending/": ["Court Manager", "Admin"],
+        "/cases/public/": ["Court Manager", "Admin"],
         "/cases/param/": ["Court Manager", "Lawyer", "Judge", "Admin"],
         /* ----- Case Respond routes ----- */
         "/case-responds/": ["Court Manager", "Admin"],

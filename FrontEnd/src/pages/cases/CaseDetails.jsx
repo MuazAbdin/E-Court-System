@@ -234,13 +234,11 @@ export async function action({ params, request }) {
 
 function getPartyDetails(party, data) {
   const details = {};
-  console.log(party, data);
   for (const k in data) {
     if (!k.includes(party)) continue;
     details[k.split("_")[1]] = data[k];
   }
   const { mobile, ...rest } = details;
   const filledKeys = Object.keys(rest).filter((k) => rest[k].trim().length > 0);
-  console.log(filledKeys);
   return filledKeys.length > 0 ? rest : null;
 }
