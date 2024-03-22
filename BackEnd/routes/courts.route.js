@@ -7,6 +7,6 @@ export const router = Router();
 router.post("/", permissionsMiddleWare, courtsController.createCourt);
 router.get("/", permissionsMiddleWare, courtsController.getAllCourts);
 router.get("/:id", permissionsMiddleWare, courtsController.getCourtById);
-router.patch("/", permissionsMiddleWare, courtsController.updateCourt);
+router.put("/", permissionsMiddleWare, courtsController.updateCourt);
 router.patch("/add-judge", permissionsMiddleWare, courtsController.addJudge)
 router.delete("/remove-judge", permissionsMiddleWare, courtsController.removeJudge)

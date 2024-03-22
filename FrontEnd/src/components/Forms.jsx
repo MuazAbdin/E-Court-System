@@ -14,6 +14,9 @@ function Forms({
   buttonText,
   fields,
   values,
+  readOnly,
+  noSubmit,
+  itemId
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -66,6 +69,14 @@ function Forms({
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
       {/* {children.filter((c) => c.type === "fieldset")} */}
+      {itemId &&  
+        <input
+        type="hidden"
+        id={`${formID}-id`}
+        name={`${formID}-id`}
+        value={itemId}
+      />
+      }
       {fields.map((f) => {
         const validator =
           f.id === "passwordConfirm"
@@ -78,7 +89,6 @@ function Forms({
           const inputItem = actionData.data.find((item) => item.name === f.id);
           if (inputItem) severErrorMsg = inputItem.message;
         }
-
         return (
           <Input
             key={`${formID}-${f.id}`}
@@ -95,13 +105,16 @@ function Forms({
             rows={f.rows ?? undefined}
             prevValue={values?.[f.id] || ""}
             isSubmitted={actionData?.msg === "Invalid inputs"}
+            readOnly={readOnly === true}
           />
         );
       })}
       {children}
-      <button name="submit" className="btn" disabled={isSubmitting}>
-        {isSubmitting ? "submitting ..." : `${buttonText}`}
-      </button>
+      { noSubmit === true ||
+        <button name="submit" className="btn" disabled={isSubmitting}>
+          {isSubmitting ? "submitting ..." : `${buttonText}`}
+        </button>
+      }
     </Form>
   );
 }

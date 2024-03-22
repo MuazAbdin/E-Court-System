@@ -31,7 +31,7 @@ import ReviewClaims, {
   loader as reviewClaimsLoader,
 } from "../pages/cases/ReviewClaims";
 import { loader as browseCourtsLoader } from "../pages/courts/BrowseCourts";
-import { loader as courtLoader } from "../pages/courts/Court";
+import { loader as courtLoader, action as courtAction } from "../pages/courts/Court";
 
 import { action as authAction } from "../pages/Authentication";
 
@@ -91,11 +91,6 @@ const router = createBrowserRouter([
             element: <Overview />,
             loader: overviewLoader,
             action: breakdownAction,
-          },
-          {
-            path: "courts/add-new",
-            element: <AddNewCourt />,
-            action: newCourtAction,
           },
           {
             path: "edit-details",
@@ -182,9 +177,15 @@ const router = createBrowserRouter([
             loader: browseCourtsLoader,
           },
           {
+            path: "add-new",
+            element: <AddNewCourt />,
+            action: newCourtAction,
+          },
+          {
             path: ":courtId",
             element: <Court />,
             loader: courtLoader,
+            action: courtAction
           },
         ],
       },
