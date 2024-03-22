@@ -23,7 +23,6 @@ export async function action({ request }) {
 
     if (!response.ok) {
       const data = await response.text();
-      // return { msg: "register failed" };
       throw new Error(data);
     }
 
@@ -31,7 +30,6 @@ export async function action({ request }) {
     return redirect(redirectPath);
   } catch (error) {
     toast.error(error.message);
-    // toast.error(error?.response?.data?.msg || "register failed");
     return error;
   }
 }
@@ -44,7 +42,7 @@ function getFormMetadata(fields) {
         name: "login",
         url: "/auth/login",
         successMessage: "Logged in successfully",
-        redirectPath: "/user",
+        redirectPath: "/user/cases",
       };
     case 3:
       return {
@@ -58,7 +56,7 @@ function getFormMetadata(fields) {
         name: "editDetails",
         url: "/users",
         successMessage: "Updated successfully",
-        redirectPath: "/user",
+        redirectPath: "",
       };
     default:
       return {

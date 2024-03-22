@@ -1,36 +1,20 @@
-import { Outlet, useLoaderData } from "react-router-dom";
-import { Search } from "../../components";
-import { fetcher } from "../../utils/fetcher";
-import { toast } from "react-toastify";
+import { loader as catalogLoader } from "../../utils/catalogLoader";
+import CaseCatalog from "../../components/CaseCatalog";
+import { useLoaderData } from "react-router-dom";
 
 function BrowseCases() {
-  const { casesData } = useLoaderData();
-
-  return <Search cases={casesData} />;
+  const { pagesCount, currentPage, cases } = useLoaderData();
+  return (
+    <CaseCatalog
+      pagesCount={pagesCount}
+      currentPage={currentPage}
+      cases={cases}
+    />
+  );
 }
 
 export default BrowseCases;
 
-export async function loader() {
-  try {
-    const response = await fetcher("/cases/");
-    if (response.status === 404) return { casesData: [] };
-    if (!response.ok) throw response;
-    const casesData = (await response.json()) || [];
-    return { casesData };
-  } catch (error) {
-    toast.error(error.message);
-    return error;
-  }
-}
-
-export async function action({ request }) {
-  const fd = await request.formData();
-
-  try {
-    const { data } = await fetcher(`cases/?query=${request.search}`);
-    return data;
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  }
+export async function loader({ params, request }) {
+  return catalogLoader({ params, request }, "");
 }

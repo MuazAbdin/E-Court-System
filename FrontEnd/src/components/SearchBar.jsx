@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   FaMagnifyingGlass,
   FaAnglesDown,
@@ -6,7 +6,7 @@ import {
   FaAnglesLeft,
   FaAnglesRight,
 } from "react-icons/fa6";
-import { Form, useLocation, useSubmit } from "react-router-dom";
+import { Form, useSubmit } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,7 +21,6 @@ function SearchBar({ className, pagesCount, currentPage }) {
     setQuery(event.currentTarget.value);
   };
 
-  const routeLocation = useLocation();
   const submit = useSubmit();
 
   const handleSubmit = (event, page) => {

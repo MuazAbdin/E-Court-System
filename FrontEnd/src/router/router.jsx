@@ -3,7 +3,6 @@ import {
   HomeLayout,
   Landing,
   Authentication,
-  CaseCatalog,
   PublicCases,
   UserLayout,
   EditUserDetails,
@@ -22,9 +21,10 @@ import {
   AddStakeholder,
   AddEvent,
   RespondRequests,
+  BrowseCases,
 } from "../pages";
 
-import { loader as userLayoutLoader } from "../pages/UserLayout";
+import { loader as userLoader } from "../pages/HomeLayout";
 import { loader as overviewLoader } from "../pages/userProfile/Overview";
 import ReviewClaims, {
   loader as reviewClaimsLoader,
@@ -35,13 +35,13 @@ import { loader as courtLoader } from "../pages/courts/Court";
 import { action as authAction } from "../pages/Authentication";
 
 import { loader as myCasesLoader } from "../pages/cases/MyCases";
+import { loader as browseCasesLoader } from "../pages/cases/BrowseCases";
 import { loader as requestsLoader } from "../pages/cases/RespondRequests";
 
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
-
-import { loader as catalogLoader } from "../pages/CaseCatalog";
 import { loader as publicCasesLoader } from "../pages/cases/PublicCases";
+
 import {
   loader as caseDetailsLoader,
   action as caseDetailsAction,
@@ -61,7 +61,9 @@ import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 const router = createBrowserRouter([
   {
     path: "/",
+    id: "root",
     element: <HomeLayout />,
+    loader: userLoader,
     children: [
       {
         index: true,
@@ -75,17 +77,11 @@ const router = createBrowserRouter([
       {
         path: "public",
         element: <PublicCases />,
-        loader: publicCasesLoader
-      },
-      {
-        path: "catalog",
-        element: <CaseCatalog />,
-        loader: catalogLoader,
+        loader: publicCasesLoader,
       },
       {
         path: "user",
         element: <UserLayout />,
-        loader: userLayoutLoader,
         children: [
           {
             index: true,
@@ -116,6 +112,11 @@ const router = createBrowserRouter([
                 index: true,
                 element: <MyCases />,
                 loader: myCasesLoader,
+              },
+              {
+                path: "browse",
+                element: <BrowseCases />,
+                loader: browseCasesLoader,
               },
               {
                 path: "claim",
@@ -166,21 +167,21 @@ const router = createBrowserRouter([
               },
             ],
           },
-        ]
+        ],
       },
       {
         path: "courts",
         // element: <Courts />,
         children: [
-          { 
-            index: true, 
+          {
+            index: true,
             element: <BrowseCourts />,
-            loader: browseCourtsLoader
+            loader: browseCourtsLoader,
           },
           {
             path: ":courtId",
             element: <Court />,
-            loader: courtLoader
+            loader: courtLoader,
           },
         ],
       },
