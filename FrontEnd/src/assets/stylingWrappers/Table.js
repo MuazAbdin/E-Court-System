@@ -12,6 +12,7 @@ const Wrapper = styled.table`
     font-family: var(--subtitle-font);
     font-size: 1.75rem;
     font-weight: 600;
+    letter-spacing: 0.1rem;
   }
 
   .table-head th {
