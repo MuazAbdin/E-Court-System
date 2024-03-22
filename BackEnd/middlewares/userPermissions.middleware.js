@@ -11,13 +11,13 @@ const PERMISSIONS_TABLE = {
         "/cases/": ["Court Manager", "Admin"],
         "/cases/user/": ["Lawyer", "Judge"],
         "/cases/pending/": ["Court Manager", "Admin"],
-        "/cases/public/": ["Court Manager", "Admin"],
+        "/cases/public/": ["Visitor", "Lawyer", "Judge", "Court Manager", "Admin"],
         "/cases/param/": ["Court Manager", "Lawyer", "Judge", "Admin"],
         /* ----- Case Respond routes ----- */
         "/case-responds/": ["Court Manager", "Admin"],
         /* ----- Courts routes ----- */
-        "/courts/": ["Lawyer", "Judge", "Court Manager", "Admin"],
-        "/courts/param/": ["Lawyer", "Judge", "Court Manager", "Admin"],
+        "/courts/": ["Visitor", "Lawyer", "Judge", "Court Manager", "Admin"],
+        "/courts/param/": ["Visitor", "Lawyer", "Judge", "Court Manager", "Admin"],
         /* ----- Document routes ----- */
         "/documents/param/": ["Lawyer", "Judge", "Court Manager", "Admin"],
         "/documents/user/param/": ["Court Manager", "Admin"],
