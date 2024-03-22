@@ -148,12 +148,14 @@ export const CHANGE_PASSWORD_FIELDS = [
 
 export const COURT_FIELDS = [
   {
+    name: "name",
     type: "text",
     label: "Court Name",
     id: "courtName",
     required: true,
   },
   {
+    name: "email",
     label: "Email",
     id: "email",
     type: "email",
@@ -163,6 +165,7 @@ export const COURT_FIELDS = [
     validator: isEmailValid,
   },
   {
+    name: "phoneNumber",
     label: "Mobile",
     id: "mobile",
     type: "number",
@@ -171,6 +174,7 @@ export const COURT_FIELDS = [
     validator: isMobileValid,
   },
   {
+    name: "city",
     label: "City",
     id: "city",
     type: "text",
@@ -179,6 +183,7 @@ export const COURT_FIELDS = [
     validator: isAddressValid,
   },
   {
+    name: "street",
     label: "Street",
     id: "street",
     type: "text",

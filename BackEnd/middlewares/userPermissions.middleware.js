@@ -64,8 +64,6 @@ const PERMISSIONS_TABLE = {
         "/cases/resolve-pending/": ["Court Manager", "Admin"],
         /* ----- Case Respond routes ----- */
         "/case-responds/review/": ["Court Manager", "Admin"],
-        /* ----- Courts routes ----- */
-        "/courts/": ["Court Manager", "Admin"],
         /* ----- Document routes ----- */
         "/documents/": ["Lawyer", "Court Manager", "Admin"],
         /* ----- Event routes ----- */
@@ -77,6 +75,8 @@ const PERMISSIONS_TABLE = {
         "/users/password/": ["Lawyer", "Judge", "Court Manager", "Admin"],
     },
     "PUT": {
+        /* ----- Courts routes ----- */
+        "/courts/": ["Court Manager", "Admin"],
         /* ----- Stakeholder routes ----- */
         "/stakeholders/": ["Court Manager", "Admin"],
         /* ----- User routes ----- */

@@ -52,11 +52,11 @@ class CourtsController {
 	}
 
 	async updateCourt(req, res) {
-		const { id, name, phoneNumber, email } = req.body;
+		const { id, courtName: name, mobile: phoneNumber, email, city, street } = req.body;
 		try {
 			GenericValidator.validateObjectId(id);
-			CourtValidator.validateCourtData({ name, phoneNumber, email });
-			const updatedCourt = await Court.findByIdAndUpdate(id, {$set: { name, phoneNumber, email }}, { new: true });
+			CourtValidator.validateCourtData({ name, phoneNumber, email, city, street });
+			const updatedCourt = await Court.findByIdAndUpdate(id, {$set: { name, phoneNumber, email, city, street }}, { new: true });
 			if(updatedCourt === null) {
 				throw new CourtDoesNotExistError();
 			}
@@ -69,7 +69,7 @@ class CourtsController {
 
 	async addJudge(req, res) {
 		const { _id, judge } = req.body
-		try{
+		try {
 			GenericValidator.validateObjectId(_id)
 		    GenericValidator.validateObjectId(judge)
 			const updatedJudges = await Court.findByIdAndUpdate(_id, { $push: { judges: judge } }, {new: true} );
