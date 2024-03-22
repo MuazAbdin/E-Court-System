@@ -22,6 +22,7 @@ import {
   AddStakeholder,
   AddEvent,
   RespondRequests,
+  BrowseCases,
 } from "../pages";
 
 import { loader as userLayoutLoader } from "../pages/UserLayout";
@@ -35,13 +36,14 @@ import { loader as courtLoader } from "../pages/courts/Court";
 import { action as authAction } from "../pages/Authentication";
 
 import { loader as myCasesLoader } from "../pages/cases/MyCases";
+import { loader as browseCasesLoader } from "../pages/cases/BrowseCases";
 import { loader as requestsLoader } from "../pages/cases/RespondRequests";
 
 import { action as editUserDetailsAction } from "../pages/userProfile/EditUserDetails";
 import { action as changePasswordAction } from "../pages/userProfile/ChangeUserPassword";
-
 import { loader as catalogLoader } from "../pages/CaseCatalog";
 import { loader as publicCasesLoader } from "../pages/cases/PublicCases";
+
 import {
   loader as caseDetailsLoader,
   action as caseDetailsAction,
@@ -118,6 +120,11 @@ const router = createBrowserRouter([
                 loader: myCasesLoader,
               },
               {
+                path: "browse",
+                element: <BrowseCases />,
+                loader: browseCasesLoader,
+              },
+              {
                 path: "claim",
                 element: <Claim />,
                 loader: claimLoader,
@@ -166,21 +173,21 @@ const router = createBrowserRouter([
               },
             ],
           },
-        ]
+        ],
       },
       {
         path: "courts",
         // element: <Courts />,
         children: [
-          { 
-            index: true, 
+          {
+            index: true,
             element: <BrowseCourts />,
-            loader: browseCourtsLoader
+            loader: browseCourtsLoader,
           },
           {
             path: ":courtId",
             element: <Court />,
-            loader: courtLoader
+            loader: courtLoader,
           },
         ],
       },

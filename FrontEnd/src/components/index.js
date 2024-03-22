@@ -6,6 +6,7 @@ export { default as ToggleTheme } from "./ToggleTheme";
 export { default as AuthForm } from "./AuthForm";
 export { default as GoogleLoginButton } from "./GoogleLoginButton";
 export { default as SearchBar } from "./SearchBar";
+export { default as CaseCatalog } from "./CaseCatalog";
 export { default as Table } from "./Table";
 
 export { default as Accordion } from "./Accordion";
@@ -18,10 +19,7 @@ export { default as Input } from "./Input";
 export { default as InputSelect } from "./InputSelect";
 export { default as InputFileUpload } from "./InputFileUpload";
 
-export { default as Search } from "./Search";
 export { default as CaseForm } from "./customForms/CaseForm";
-
 export { default as CourtForm } from "./customForms/CourtForm";
-
 export { default as DocumentForm } from "./customForms/DocumentForm";
 export { default as EventForm } from "./customForms/EventForm";
