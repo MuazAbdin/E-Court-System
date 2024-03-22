@@ -22,6 +22,7 @@ import {
   AddEvent,
   RespondRequests,
   BrowseCases,
+  Error,
 } from "../pages";
 
 import { loader as userLoader } from "../pages/HomeLayout";
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
     path: "/",
     id: "root",
     element: <HomeLayout />,
+    errorElement: <Error />,
     loader: userLoader,
     children: [
       {
@@ -72,6 +74,7 @@ const router = createBrowserRouter([
       {
         path: "auth/:page",
         element: <Authentication />,
+
         action: authAction,
       },
       {
