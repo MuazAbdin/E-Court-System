@@ -14,12 +14,13 @@ function Authentication() {
   const { userData } = useRouteLoaderData("root");
 
   useEffect(() => {
+    console.log(userData)
     if (userData) {
       ["Lawyer", "Judge"].includes(userData.userType)
         ? navigate("/user")
         : navigate("/user/cases/browse");
     }
-  }, [userData]);
+  }, []);
 
   const { page } = useParams();
   const isFlipped = page !== "register";

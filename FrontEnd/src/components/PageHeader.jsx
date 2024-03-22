@@ -1,15 +1,18 @@
 import { FaRightFromBracket } from "react-icons/fa6";
 import { fetcher } from "../utils/fetcher";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRevalidator, useRouteLoaderData } from "react-router-dom";
 
 function PageHeader({ name }) {
   const navigate = useNavigate();
+  let revalidator = useRevalidator();
+  let { userData } = useRouteLoaderData("root");
 
   async function handleLogout() {
     await fetcher("/auth/logout", { method: "POST" });
     toast.success("Logged out successfully");
-    return navigate("/auth/login");
+    revalidator.revalidate();
+    return navigate("/");
   }
 
   return (

@@ -31,7 +31,7 @@ function MainHeader({ isDark, themeToggle }) {
             <FaHouse />
             <Link
               to={
-                ["Lawyer", "Judge"].includes(userData.userType)
+                ["Lawyer", "Judge"].includes(userData?.userType)
                   ? "/user"
                   : "/user/cases/browse"
               }

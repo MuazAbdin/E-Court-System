@@ -31,17 +31,17 @@ function getTheme() {
   return isDark;
 }
 
-export async function loader() {
+export async function loader({ request }) {
   try {
     const response = await fetcher("/users/user");
-    if (response.status === 401) return redirect("/");
+    // if (response.status === 401) return redirect("/");
     if (!response.ok) throw response;
     const data = await response.json();
     const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data;
     const userData = { IDcard, mobile, ...rest };
     return { userData };
   } catch (error) {
-    toast.error(error.message);
-    return null;
+    // toast.error(error.message);
+    return {};
   }
 }
