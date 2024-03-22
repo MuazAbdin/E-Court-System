@@ -16,5 +16,5 @@ function MyCases() {
 export default MyCases;
 
 export async function loader({ params, request }) {
-  return catalogLoader({ params, request }, ["Lawyer", "Judge"]);
+  return catalogLoader({ params, request }, "/user");
 }

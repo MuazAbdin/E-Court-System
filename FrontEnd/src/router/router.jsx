@@ -23,7 +23,7 @@ import {
   BrowseCases,
 } from "../pages";
 
-import { loader as userLayoutLoader } from "../pages/UserLayout";
+import { loader as userLoader } from "../pages/HomeLayout";
 import { loader as overviewLoader } from "../pages/userProfile/Overview";
 import ReviewClaims, {
   loader as reviewClaimsLoader,
@@ -59,7 +59,9 @@ import { action as newCourtAction } from "../pages/courts/AddNewCourt";
 const router = createBrowserRouter([
   {
     path: "/",
+    id: "root",
     element: <HomeLayout />,
+    loader: userLoader,
     children: [
       {
         index: true,
@@ -73,7 +75,6 @@ const router = createBrowserRouter([
       {
         path: "user",
         element: <UserLayout />,
-        loader: userLayoutLoader,
         children: [
           {
             index: true,

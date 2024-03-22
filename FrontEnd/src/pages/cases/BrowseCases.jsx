@@ -16,5 +16,5 @@ function BrowseCases() {
 export default BrowseCases;
 
 export async function loader({ params, request }) {
-  return catalogLoader({ params, request }, ["Court Manager", "Admin"]);
+  return catalogLoader({ params, request }, "");
 }

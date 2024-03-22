@@ -4,15 +4,24 @@ import {
   StyledLoginForm,
 } from "../assets/stylingWrappers/StyledAuthForm";
 import { LOGIN_FIELDS, REGISTER_FIELDS } from "../utils/constants";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import { action as submitAction } from "../utils/submitAction";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Authentication() {
-  const { page } = useParams();
   const navigate = useNavigate();
-  // const [isFlipped, setIsFlipped] = useState(page === "register");
+  const { userData } = useRouteLoaderData("root");
+
+  useEffect(() => {
+    if (userData) {
+      ["Lawyer", "Judge"].includes(userData.userType)
+        ? navigate("/user")
+        : navigate("/user/cases/browse");
+    }
+  }, [userData]);
+
+  const { page } = useParams();
   const isFlipped = page !== "register";
 
   const [radioValue, setRadiovalue] = useState("Lawyer");
