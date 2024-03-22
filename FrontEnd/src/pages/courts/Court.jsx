@@ -1,38 +1,68 @@
-import { fetcher } from '../../utils/fetcher';
 import { toast } from 'react-toastify';
-import Wrapper from "../../assets/stylingWrappers/CaseCatalog";
-import { Input } from '@mui/material';
-import { useLoaderData } from 'react-router-dom';
+import { CourtForm } from '../../components'
+import { fetcher } from '../../utils/fetcher';
+import { redirect, useLoaderData, useRouteLoaderData } from 'react-router-dom';
 
 function Court() {
-  const court = useLoaderData();
-
-  const COURT_FIELDS = [
-    "name", "city", "street", 
-    "phoneNumber", "email" 
-  ];
+  const { userData } = useRouteLoaderData("root");
+  const courtData = useLoaderData();
+  const isCourtManager = userData.userType === "Court Manager"
 
   return (
-    <Wrapper>
-      { COURT_FIELDS.map(field => 
-          <h3 key={field}>{court[field]}</h3>
-        )
-      }
-    </Wrapper>
+    <CourtForm 
+      courtData={courtData} 
+      readOnly={!isCourtManager} 
+      noSubmit={!isCourtManager}
+      buttonText="Edit Court"
+    />
   )
 }
 
 export default Court
 
 export async function loader({ params }) {
+  const { courtId } = params;
   try {
-    const { courtId } = params;
     const response = await fetcher(`/courts/${courtId}`);
     if (!response.ok) throw response;
-    const courts = await response.json();
-    return courts;
+    const courtData = await response.json();
+    return courtData;
   } catch (error) {
-    toast.error(await error.text());
-    return [];
+    toast.error(error.statusText);
+    console.log(error);
+    return null;
+  }
+}
+
+
+export async function action({ request }) {
+  const fd = await request.formData();
+  const data = Object.fromEntries(
+    [...fd.entries()]
+      .filter((entry) => entry[0] !== "submit")
+      .map((entry) => [entry[0].split("-")[2], entry[1]])
+  );
+  for (const key in data) {
+    if (!data[key]) {
+      toast.error(`${key} cannot be empty!`);
+      return null;
+    }
+  }
+  try {
+    const response = await fetcher("/courts/", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const data = await response.text();
+      throw new Error(data);
+    }
+
+    toast.success("Court Updated Successfully!");
+    return redirect("");
+  } catch (error) {
+    toast.error(error.message);
+    return error;
   }
 }
