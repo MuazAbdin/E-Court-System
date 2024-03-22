@@ -24,3 +24,24 @@
   background-repeat: no-repeat;
   transition: all 1s ease;
 }
+
+a:link {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+a:visited {
+  color: var(--text-color);
+}
+
+a:focus {
+  color: var(--text-color);
+}
+
+a:hover {
+  color: var(--text-color);
+}
+
+a:active {
+  color: var(--text-color);
+}
