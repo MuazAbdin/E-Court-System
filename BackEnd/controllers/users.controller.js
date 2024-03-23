@@ -37,9 +37,23 @@ class UserController {
 
     async getUser(req, res) {
         const userId = req.userId;
+        const userType = req.userType;
         try {
-            const user = await User.findById(userId);
-            res.json(user);
+            if(userType === "Visitor") {
+                res.json({
+                    userType,
+                    firstName: req.firstName,
+                    lastName: req.lastName,
+                    email: req.email,
+                })
+            }
+            else {
+                const user = await User.findById(userId);
+                if(user === null) {
+                    throw new UserDoesNotExistError();
+                }
+                res.json(user);
+            }
         }
         catch (error) {
             errorHandler.handleError(res, error);

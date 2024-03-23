@@ -38,7 +38,7 @@ const PERMISSIONS_TABLE = {
         "/users/judges/": ["Lawyer", "Judge", "Court Manager", "Admin"],
         "/users/lawyers/": ["Lawyer", "Judge", "Court Manager", "Admin"],
         "/users/": ["Admin"],
-        "/users/user/": ["Lawyer", "Judge", "Court Manager", "Admin"],
+        "/users/user/": ["Visitor", "Lawyer", "Judge", "Court Manager", "Admin"],
     },
     "POST": {
         /* ----- Case routes ----- */

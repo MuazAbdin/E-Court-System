@@ -39,8 +39,10 @@ export async function loader({ request }) {
     const data = await response.json();
     const { idNumber: IDcard, phoneNumber: mobile, ...rest } = data;
     const userData = { IDcard, mobile, ...rest };
+    console.log(userData)
     return { userData };
   } catch (error) {
+    console.log("TEST")
     // toast.error(error.message);
     return {};
   }
