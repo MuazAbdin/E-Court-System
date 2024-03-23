@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from "react-router-dom";
-import Wrapper from "../../assets/stylingWrappers/CaseCatalog";
 import StyledSearchBar from "../../assets/stylingWrappers/SearchBar";
+import Wrapper from "../../assets/stylingWrappers/Courts";
 import { Table } from "../../components";
 import { fetcher } from "../../utils/fetcher";
 import { toast } from "react-toastify";
@@ -14,15 +14,15 @@ function PublicCases() {
       <StyledSearchBar pagesCount={pagesCount} currentPage={currentPage} />
       <Table
         tableCaption=""
-        tableHeader={["", "number", "court", "title", "status"]}
+        tableHeader={["", "number", "title", "court", "status"]}
       >
         {result.map((r) => (
           <tr key={r._id}>
             <td>
               <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
             </td>
+            <td><Link to={`/user/cases/${r._id}`}>{r.title}</Link></td>
             <td>{`${r.court.name} - ${r.court.city}`}</td>
-            <td>{r.title}</td>
             <td>{r.status}</td>
           </tr>
         ))}
