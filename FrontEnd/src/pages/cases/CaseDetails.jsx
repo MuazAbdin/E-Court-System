@@ -49,33 +49,35 @@ function CaseDetails() {
         </Table>
       </section>
 
-      <section className="documents">
-        <h5 className="section-title">documents</h5>
-        <Table tableHeader={["", "party", "title", "", ""]}>
-          {docsData.map((d) => (
-            <tr key={d._id}>
-              <td>{d.party.name}</td>
-              <td>{d.title}</td>
-              <td>
-                <FaDownload
-                  onClick={(event) => handleDownloadDocument(event, d._id)}
-                />
-              </td>
-              <td>
-                <FaTrashCan />
-              </td>
-            </tr>
-          ))}
-        </Table>
-        {"Lawyer" === userData.userType && (
-          <div className="btn add-doc c-flex">
-            <Link to="docments">
-              <FaFileCirclePlus />
-              add new document
-            </Link>
-          </div>
-        )}
-      </section>
+      { userData.userType !== "Visitor" &&
+        <section className="documents">
+          <h5 className="section-title">documents</h5>
+          <Table tableHeader={["", "party", "title", "", ""]}>
+            {docsData.map((d) => (
+              <tr key={d._id}>
+                <td>{d.party.name}</td>
+                <td>{d.title}</td>
+                <td>
+                  <FaDownload
+                    onClick={(event) => handleDownloadDocument(event, d._id)}
+                  />
+                </td>
+                <td>
+                  <FaTrashCan />
+                </td>
+              </tr>
+            ))}
+          </Table>
+          {"Lawyer" === userData.userType && (
+            <div className="btn add-doc c-flex">
+              <Link to="docments">
+                <FaFileCirclePlus />
+                add new document
+              </Link>
+            </div>
+          )}
+        </section>
+      }
 
       <section className="events">
         <h5 className="section-title">events</h5>
@@ -132,17 +134,15 @@ export async function loader({ params }) {
     const caseResponse = await fetcher(`/cases/${caseID}`);
     if (!caseResponse.ok) throw caseResponse;
     const caseData = await caseResponse.json();
+
     const docsResponse = await fetcher(`/documents/case/${caseID}`);
-    if (!docsResponse.ok) throw docsResponse;
-    const docsData = await docsResponse.json();
+    const docsData = docsResponse.ok ? await docsResponse.json() : [];
+
     const judgesResponse = await fetcher(`/users/judges/`);
-    if (!judgesResponse.ok && judgesResponse.status != 404)
-      throw judgesResponse;
-    const judges =
-      judgesResponse.status === 404 ? [] : await judgesResponse.json();
+    const judges = judgesResponse.ok ? await judgesResponse.json() : [];
+    
     const statusTypesResponse = await fetcher(`/types/case-status-types`);
-    if (!statusTypesResponse.ok) throw statusTypesResponse;
-    const statusTypes = await statusTypesResponse.json();
+    const statusTypes = statusTypesResponse ? await statusTypesResponse.json() : [];
     return { caseData, docsData, judges, statusTypes };
   } catch (error) {
     toast.error(error.message);
@@ -194,7 +194,6 @@ export async function action({ params, request }) {
       delete caseReqBody.judge;
 
       if (claimant) {
-        const claimantClientUpdateReqBody = claimant;
         const response = await fetcher("/stakeholders/", {
           method: "PUT",
           body: JSON.stringify(claimant),

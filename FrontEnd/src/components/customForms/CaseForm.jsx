@@ -104,9 +104,11 @@ function CaseForm({
         IDs={IDs}
       />
 
-      <button name="submit" className="btn" disabled={isSubmitting}>
-        {isSubmitting ? "submitting ..." : `${buttonText}`}
-      </button>
+      { userData.userType !== "Visitor" &&
+        <button name="submit" className="btn" disabled={isSubmitting}>
+          {isSubmitting ? "submitting ..." : `${buttonText}`}
+        </button>
+      }
 
       {children}
 
@@ -224,6 +226,12 @@ function CaseParties({ formID, isEdit, values, IDs }) {
         const IDsKey = party.charAt(0).toUpperCase() + party.slice(1);
         const isPartyLawyer = userData._id == IDs[`${IDsKey}Lawyer`];
 
+        const partyDetailsField = [ ...PARTY_DETAILS_FIELDS ];
+        if(userData.userType === "Visitor") {
+          partyDetailsField.splice(3);
+          partyDetailsField.splice(0, 1);
+        }
+
         return (
           <section key={party} className={party}>
             <h5 className="title">{party}</h5>
@@ -234,7 +242,7 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                 name={`${formID}-${party}_id`}
                 value={partyDetails?.client?._id || ""}
               />
-              {PARTY_DETAILS_FIELDS.map((f) => (
+              {partyDetailsField.map((f) => (
                 <Input
                   key={`${formID}-${party}_${f.id}`}
                   label={f.label}
@@ -277,7 +285,7 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                 />
               </div>
             )}
-            {isEdit && (
+            {isEdit && userData.userType !== "Visitor" && (
               <div
                 className={`btn add-stakeholder c-flex ${
                   isPartyLawyer ? "" : "disabled-link"

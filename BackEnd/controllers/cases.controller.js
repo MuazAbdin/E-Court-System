@@ -222,7 +222,17 @@ class CasesController {
 			if(!case_) {
 				throw new CaseDoesNotExistError();
 			}
-            res.json(case_);
+
+			if(req.userType === "Visitor") {
+				for(const party of case_.parties) {
+					party.client.idNumber = undefined;
+					party.client.email = undefined;
+					party.client.phoneNumber = undefined;
+					// party.lawyer = { firstName: party.lawyer.firstName, lastName: party.lawyer.lastName } 
+				}
+			}
+
+			res.json(case_);
         }
         catch(error) {
             errorHandler.handleError(res, error);

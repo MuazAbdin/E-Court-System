@@ -14,7 +14,6 @@ function Authentication() {
   const { userData } = useRouteLoaderData("root");
 
   useEffect(() => {
-    console.log(userData)
     if (userData) {
       ["Lawyer", "Judge"].includes(userData.userType)
         ? navigate("/user")
