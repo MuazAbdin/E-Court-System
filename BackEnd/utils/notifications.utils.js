@@ -2,9 +2,9 @@ import nodeMailerManager from "../services/nodeMailer.service.js";
 import twilioMessagesManager from "../services/twilio.service.js";
 
 class NotificationsManager {
-    sendEventNotifications(time, eventType, caseTitle, location, recipients) {
-        const message = `You have a ${eventType} event for The ${caseTitle} case\nLocation: ${location}\nTime: ${time}`;
-        const stakeholderMessage = `You are invited to a ${eventType} event for The ${caseTitle} case\nLocation: ${location}\nTime: ${time}`;
+    sendEventNotifications(time, eventType, eventDescription, caseTitle, location, recipients) {
+        const message = `You have a ${eventType} event for The ${caseTitle} case\nLocation: ${location}\nTime: ${time}\nDescription: ${eventDescription}`;
+        const stakeholderMessage = `You are invited to a ${eventType} event for The ${caseTitle} case\nLocation: ${location}\nTime: ${time}\nDescription: ${eventDescription}`;
         for(const recipient of recipients) {
             const sendMsg = recipient.type === "stakeholder"  ? stakeholderMessage : message;
             if(recipient.email) {
