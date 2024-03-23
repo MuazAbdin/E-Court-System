@@ -49,7 +49,9 @@ function CaseForm({
         value={userData.userType}
       />
 
-      <InputSwitch formID={formID} />
+      { userData.userType === "Court Manager" &&
+        <InputSwitch formID={formID} />
+      }
 
       {isEdit ? (
         <CaseHeader
