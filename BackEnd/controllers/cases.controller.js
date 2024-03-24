@@ -65,6 +65,8 @@ class CasesController {
 		try {
 			CaseValidator.validateFilaACaseData({ title, description, court, parties });
 			for(const party of parties) {
+				delete party.client.id;
+				console.log(party)
 			 	PartyValidator.validateFileACasePartyData(party);
 			}
 

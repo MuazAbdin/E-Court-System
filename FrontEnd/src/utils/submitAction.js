@@ -29,6 +29,7 @@ export async function action({ request }) {
     toast.success(successMessage);
     return redirect(redirectPath);
   } catch (error) {
+    console.log("WAAt")
     toast.error(error.message);
     return error;
   }

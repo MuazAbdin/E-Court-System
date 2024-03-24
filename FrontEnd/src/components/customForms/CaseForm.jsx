@@ -38,6 +38,9 @@ function CaseForm({
     CurUser: userData._id,
   };
 
+  console.log(caseData)
+  console.log(IDs)
+
   return (
     <Form method={method} id={formID} className={className} noValidate>
       <h3 className="title">{title}</h3>
@@ -234,6 +237,8 @@ function CaseParties({ formID, isEdit, values, IDs }) {
           partyDetailsField.splice(0, 1);
         }
 
+        console.log(isPartyLawyer);
+
         return (
           <section key={party} className={party}>
             <h5 className="title">{party}</h5>
@@ -255,12 +260,8 @@ function CaseParties({ formID, isEdit, values, IDs }) {
                   autoComplete={f.autoComplete ?? "off"}
                   validator={f.validator}
                   readOnly={
-                    (isEdit &&
-                      !["Court Manager", "Lawyer"].includes(
-                        userData.userType
-                      )) ||
-                    f.id === "idNumber" ||
-                    !isPartyLawyer
+                    !(!isEdit || isPartyLawyer)
+                    || (isEdit && f.id === "idNumber")
                   }
                   required={!isEdit && f.required}
                   severErrorMsg={""}
@@ -319,6 +320,7 @@ function CaseNotes({ formID, isEdit, values, IDs }) {
         let sideValue = `${side.split(" ").join("")}Notes`;
         sideValue = sideValue.charAt(0).toLowerCase() + sideValue.slice(1);
 
+        console.log(userData._id, IDs[`${side.split(" ").join("")}`])
         const readOnly = userData._id != IDs[`${side.split(" ").join("")}`];
 
         return (
