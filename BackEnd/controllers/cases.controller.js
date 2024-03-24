@@ -66,7 +66,6 @@ class CasesController {
 			CaseValidator.validateFilaACaseData({ title, description, court, parties });
 			for(const party of parties) {
 				delete party.client.id;
-				console.log(party)
 			 	PartyValidator.validateFileACasePartyData(party);
 			}
 
@@ -186,7 +185,6 @@ class CasesController {
         const startDate = new Date(start)
         const endDate = new Date(end);
         endDate.setDate(endDate.getDate() + 1);
-        console.log(start, endDate)
 
 		try {
 			const user = await User.findById(userId);
