@@ -20,7 +20,7 @@ function GoogleLoginButton() {
   const handleSuccess = (credentialResponse) => {
     responseMessage(credentialResponse);
     toast.success("Logged in successfully");
-    return navigate("/guest");
+    return navigate("/public");
   };
 
   return (

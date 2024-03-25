@@ -17,7 +17,9 @@ function Authentication() {
     if (userData) {
       ["Lawyer", "Judge"].includes(userData.userType)
         ? navigate("/user")
-        : navigate("/user/cases/browse");
+        : (userData.userType === "Visitor" ? 
+          navigate("/public") 
+          : navigate("/user/cases/browse"));
     }
   }, []);
 
