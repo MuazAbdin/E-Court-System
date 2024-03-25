@@ -44,13 +44,13 @@ function CaseForm({
 
       <input
         type="hidden"
-        id={`${formID}-userType`}
-        name={`${formID}-userType`}
-        value={userData.userType}
+        id={`${formID}-userData`}
+        name={`${formID}-userData`}
+        value={JSON.stringify(userData)}
       />
 
       { userData.userType === "Court Manager" &&
-        <InputSwitch formID={formID} />
+        <InputSwitch formID={formID} initialValue={caseData.public} />
       }
 
       {isEdit ? (

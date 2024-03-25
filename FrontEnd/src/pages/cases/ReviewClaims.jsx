@@ -67,7 +67,9 @@ export async function loader({ request }) {
     return { pagesCount: cases.pagesCount, currentPage: page, cases: cases.result };
   }
   catch(error) {
-    toast.error(error.statusText);
+    if(error.status === 401) {
+      toast.error(error.statusText);
+    }
     console.log(error);
     return [];
   }

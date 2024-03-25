@@ -57,7 +57,9 @@ export async function loader({ params, request }) {
     const data = response.json();
     return data;
   } catch (error) {
-    toast.error(error.message);
+    if(error.status === 401) {
+      toast.error(error.message);
+    }
     return [];
   }
 }

@@ -64,7 +64,9 @@ export async function loader({ request }) {
     const { pagesCount, result } = await response.json();
     return { pagesCount, currentPage: page, result };
   } catch (error) {
-    toast.error(error.message);
+    if(error.status === 401) {
+      toast.error(error.message);
+    }
     return error;
   }
 }

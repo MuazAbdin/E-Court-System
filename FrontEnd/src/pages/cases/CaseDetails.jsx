@@ -160,7 +160,7 @@ export async function action({ params, request }) {
   );
 
   const {
-    userType,
+    userData,
     public: public_,
     status,
     court,
@@ -174,6 +174,7 @@ export async function action({ params, request }) {
 
   const claimant = getPartyDetails("claimant_", data);
   const respondent = getPartyDetails("respondent_", data);
+  const { userType, _id: userId } = JSON.parse(userData);
 
   const caseReqBody = {
     public: public_ === "on",
@@ -192,6 +193,7 @@ export async function action({ params, request }) {
   try {
     if (userType === "Lawyer") {
       delete caseReqBody.judge;
+
 
       if (claimant) {
         const response = await fetcher("/stakeholders/", {
@@ -228,7 +230,9 @@ export async function action({ params, request }) {
     toast.success("Updated Case Successfully!");
     return redirect("");
   } catch (error) {
-    toast.error(error.message);
+    if(error.status === 401) {
+      toast.error(error.message);
+    }
     return error;
   }
 }

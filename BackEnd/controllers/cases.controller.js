@@ -253,11 +253,11 @@ class CasesController {
 		const { caseId, status, judge, title, description, claimantLawyerNotes, judgeNotes, respondentLawyerNotes, public: public_ } = req.body;
 		try 
 		{
-            judge && GenericValidator.validateObjectId(judge);
 			const updateData = { status, title, description }
 			CaseValidator.validateUpdateCaseData({ caseId, ...updateData });
 
-			if(judge) {
+			if(userType === "Court Manager" && judge) {
+				GenericValidator.validateObjectId(judge);
 			    updateData.judge = judge;
 			}
 			if(userType === "Court Manager" && public_ !== undefined) {

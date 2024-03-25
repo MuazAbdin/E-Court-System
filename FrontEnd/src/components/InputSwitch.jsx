@@ -2,8 +2,8 @@ import { useState } from "react";
 import Wrapper from "../assets/stylingWrappers/InputSwitch";
 import { BsToggleOn, BsToggleOff } from "react-icons/bs";
 
-function InputSwitch({ formID }) {
-  const [checked, setChecked] = useState(false);
+function InputSwitch({ formID, initialValue }) {
+  const [checked, setChecked] = useState(initialValue);
 
   const handleChange = () => {
     setChecked(!checked);

@@ -37,7 +37,9 @@ export async function loader({ params, request }, partialURL) {
       cases: cases.result,
     };
   } catch (error) {
-    toast.error(error.statusText);
+    if(error.status === 401) {
+      toast.error(error.statusText);
+    }
     return {
       pagesCount: 0,
       currentPage: 0,

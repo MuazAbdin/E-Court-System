@@ -43,7 +43,7 @@ export async function loader({ params, request }) {
 
     return data;
   } catch (error) {
-    toast.error(error.message);
+    // toast.error(error.message);
     return error;
   }
 }
