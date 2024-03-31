@@ -1,11 +1,12 @@
 import { Router } from "express";
 import courtsController from "../controllers/courts.controller.js";
+import { permissionsMiddleWare } from "../middlewares/userPermissions.middleware.js";
 
 export const router = Router();
 
-router.post("/", courtsController.createCourt);
-router.get("/", courtsController.getAllCourts);
-router.get("/:id", courtsController.getCourtById);
-router.patch("/", courtsController.updateCourt);
-router.patch("/add-judge", courtsController.addJudge)
-router.delete("/remove-judge", courtsController.removeJudge)
+router.post("/", permissionsMiddleWare, courtsController.createCourt);
+router.get("/", permissionsMiddleWare, courtsController.getAllCourts);
+router.get("/:id", permissionsMiddleWare, courtsController.getCourtById);
+router.put("/", permissionsMiddleWare, courtsController.updateCourt);
+router.patch("/add-judge", permissionsMiddleWare, courtsController.addJudge)
+router.delete("/remove-judge", permissionsMiddleWare, courtsController.removeJudge)

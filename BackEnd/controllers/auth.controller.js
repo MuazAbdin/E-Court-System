@@ -94,8 +94,6 @@ class AuthController {
                 email_verified,
             } = payload;
             if (!email_verified) throw new InvalidCredintialsError();
-            // console.log(payload);
-            // console.log({ userGID, firstName, lastName, email });
             const jwtPayload = { userGID, firstName, lastName, email, visitor: true };
             const tokenCookie = authUtils.createTokenCookie(jwtPayload);
             res.setHeader("Set-Cookie", tokenCookie);

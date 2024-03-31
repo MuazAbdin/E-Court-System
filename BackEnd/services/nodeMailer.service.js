@@ -7,8 +7,8 @@ class NodeMailerManager {
             this.transporter = nodemailer.createTransport({
                 service: 'gmail', 
                 auth: {
-                    user: Config.NODE_MAILER_EMAIL, 
-                    pass: Config.NODE_MAILER_SECRET, 
+                    user: Config.NODE_MAILER_EMAIL,
+                    pass: Config.NODE_MAILER_SECRET,
                 },
             });
         }
@@ -27,7 +27,8 @@ class NodeMailerManager {
                 text: text,
             };
             await this.transporter.sendMail(mailOptions);
-        } catch (error) {
+        }
+        catch (error) {
             console.error('Error sending email:');
             console.log(error);
         }
