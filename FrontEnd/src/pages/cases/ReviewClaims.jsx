@@ -16,7 +16,7 @@ function ReviewClaims() {
         tableHeader={["", "#", "Title", "Court", "Lawyer", "Client", "Created"]}
       >
         {cases.map((r) => (
-          <tr key={r.number}>
+          <tr key={r.caseNumber}>
               <td>
                 <Link to={`/user/cases/${r._id}`}>{r.caseNumber}</Link>
               </td>
