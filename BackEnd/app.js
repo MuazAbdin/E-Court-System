@@ -26,7 +26,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-console.log(Config.FRONTEND_URL);
 app.use(
   cors({
     credentials: true, // important part here
