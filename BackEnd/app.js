@@ -18,6 +18,7 @@ import { router as caseRespondsRoutes } from "./routes/caseResponds.route.js"
 
 import { authorizationMiddleWare } from "./middlewares/userAuth.middleware.js";
 import { permissionsMiddleWare } from "./middlewares/userPermissions.middleware.js";
+import Config from "./config.js";
 
 const app = express();
 
@@ -25,10 +26,11 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+console.log(Config.FRONTEND_URL);
 app.use(
   cors({
     credentials: true, // important part here
-    origin: "http://localhost:5173",
+    origin: Config.FRONTEND_URL,
     optionsSuccessStatus: 200,
   })
 );
