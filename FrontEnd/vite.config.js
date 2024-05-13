@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
     server: {
       host: true,
       strictPort: true,
-      port: 8000
+      port: 8080
     }
   };
 });
