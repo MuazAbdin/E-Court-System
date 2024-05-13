@@ -12,7 +12,8 @@ class AuthUtils {
             secure: true,
             sameSite: "strict",
             path: "/",
-            maxAge: Config.JWT_EXPIRE_TIME
+            maxAge: Config.JWT_EXPIRE_TIME,
+            partitioned: true
         })
         return tokenCookie;
     }
