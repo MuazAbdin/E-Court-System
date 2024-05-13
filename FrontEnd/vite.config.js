@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
       "process.env.BASE_URL": JSON.stringify(env.BASE_URL),
     },
     server: {
-      port: env.PORT ? JSON.stringify(env.PORT) || 8080
+      port: env.PORT ? JSON.stringify(env.PORT) : 8080
     }
   };
 });
