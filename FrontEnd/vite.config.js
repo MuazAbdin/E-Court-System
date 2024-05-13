@@ -10,5 +10,8 @@ export default defineConfig(({ mode }) => {
       "process.env.GOOGLE_CLIENT_ID": JSON.stringify(env.GOOGLE_CLIENT_ID),
       "process.env.BASE_URL": JSON.stringify(env.BASE_URL),
     },
+    server: {
+      port: env.PORT ? JSON.stringify(env.PORT) || 8080
+    }
   };
 });
